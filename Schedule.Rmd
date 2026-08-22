@@ -1,0 +1,10 @@
+---
+title: "Course schedule"
+---
+
+Some words go here
+
+| Date | Topic | Links |
+|------|-------|-------|
+|8/25  |Intro  | None  |
+|8/27  |Intro 2| None  |
