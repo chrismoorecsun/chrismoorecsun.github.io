@@ -3,8 +3,6 @@ output_dir: docs
 navbar:
   title: "Computational Modeling"
   left:
-    - text: "Schedule"
-      href: schedule.html
     - text: "Resources"
       href: resources.html
     - text: "Textbook"
