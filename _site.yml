@@ -5,5 +5,9 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "Schedule"
+      href: schedule.html
+    - text: "Resources"
+      href: resources.html
+    - text: "Textbook"
+      href: https://hankstevens.github.io/Primer-of-Ecology/index.html
