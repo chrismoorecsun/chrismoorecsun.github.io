@@ -27,44 +27,45 @@ After taking this course as successful student should:
 
 <img src="https://imgs.xkcd.com/comics/computer_problems.png" alt="XKCD comic" width="400" align="right">
 
-# Professor information
+# Course information
+## Professor information
 Christopher M. Moore, Ph.D.  
 Pronouns: he/him  
 Email: chris.moore  
 Office: Chaparral Hall (CH) 5314 $\left(\frac{1}{2} \tau\right)$  
 Office phone: 818-677-3350
 
-# TA information
+## TA information
 Wes Moore  
 Email: wesley.moore.197  
 Office: Chaparral Hall 5310  
 Office phone: 818-677-4497
 
-# Meetings for discussions and labs
+## Meetings for discussions and labs
 Class: TR, 1-1:50 PM, CH 5427  
 Labs: TR, 2-4:50 PM, CH 5427  
 
-# Office hours
+## Office hours
 TBA
 
-# Textbook
+## Textbook
 I decided to use the second edition of *A primer of ecology with R* by [Hank Stevens](https://sites.miamioh.edu/stevens-lab/members/). It is an open access textbook. It's the most comprehensive and accessible text on contemporary concepts in population ecology. It's not perfect and the code that he uses is different than me, but I think it's the most suitable for this course. Reading the preface you'll notice that it was written through iterations of a graduate course that he teaches over the years, so it's at the right level for this course. Last, the book is linked above on the site's navigation bar.
 
-# Assignment and assessment
-## Assignments
+## Assignment and assessment
+### Assignments
 - **Problem sets**: Problem sets are exercises to give students practice working through and learning how to solve problems in population modeling outside of class. They are derived from the textbook, and supplemented by notes on the schedule. They are due Fridays by 5 PM of every week.
 - **Quizzes**: Quizzes are in-class assignments to give students practice retrieval and processing of information from the week's reading. Every Tuesday there will be a quiz, with roughly five multiple choice problems, based on the forthcoming week's material. You will first take it individually, then with a group.
 - **Lab notebooks**: The lab notebooks are R markdown documents written as logs as you learn methods in R in lab. The are all strictly in-lab work.
 - **Remodeling project**: This is the big project of the semester where you will choose a scientific paper with an ecological model and recreate it. Throughout the semester you will give several small presentations on the paper and model. The first presentation will be an overview of the paper, the second presentation will be on the methods used by the authors and you, the third presentation will be on the results of the Remodeling attempt, and there will be a final paper summarizing the project.
 - **Participation**: Participation is necessary for this course to succeed.
 
-## Assessment
+### Assessment
 During the first class meeting we discussed and agreed upon a narrative model of grading for course assessment. This means that I will regularly meet with you and discuss and evaluate your learning in this course. I will meet with you every three weeks, beginning week 4 (weeks 4, 7, 12, finals). Here is the document I will add to, to prepare you for our meetings: [link](../Misc/Reflection.html). Please sign up here: [link](https://calendar.app.google/bg1hWLXoDbKbxwGm9). At the end of the semester, I will need to assign you a grade, and we agreed upon a contract model. This means that so long as you make an honest attempt at your assignments you will earn an A. If you do not complete your Remodeling Project you will earn an B. At least 80% or each of the quizzes and problem sets need to be completed to earn an A, with 60% earning a B.
 
 Syllabus statement prior to the semester:
 > During the first class we will discuss the model of assessment, which will either be narrative or quantified. The former will take the form of meeting regularly and discussing your progress towards learning; the latter will be a traditional point system. At the end of the course I do need to assign you a grade. If we decide upon the narrative model we will need to decide how that will be done.
 
-<img src="https://imgs.xkcd.com/comics/purity.png" alt="XKCD purity comic" width="200" align="right">
+<img src="https://imgs.xkcd.com/comics/purity.png" alt="XKCD purity comic" width="500" align="right">
 
 # Course policy
 ## Attendance
