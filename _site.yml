@@ -1,6 +1,7 @@
 name: "my-website"
 output_dir: docs
 navbar:
+  title: "Computational Modeling"
   left:
     - text: "Course"
       href: index.html
