@@ -1,9 +1,8 @@
 name: "my-website"
 output_dir: docs
 navbar:
-  title: "My Website"
   left:
-    - text: "Home"
+    - text: "Course"
       href: index.html
     - text: "Schedule"
       href: schedule.html
