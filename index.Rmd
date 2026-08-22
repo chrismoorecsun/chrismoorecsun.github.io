@@ -1,5 +1,11 @@
 ---
 title: "Computational modeling (BIOL551)"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: false
+    toc_depth: 3
 ---
 
 # Course description
@@ -19,26 +25,32 @@ After taking this course as successful student should:
 4. **Be able to build, analyze, and present ecological models using the R programming language and environment.** This includes understanding and use of R data structures, functional programming, libraries for simulation and analysis of ecological models, and dynamic reports/documents using R Markdown Documents.
 5. **Be able to (re)create a scientific model.** The “Remodeling Project” will include assessing and choosing a peer-reviewed model that can feasibly be recreated, recreate the model, and critique the model.
 
+<img src="https://imgs.xkcd.com/comics/computer_problems.png" alt="XKCD comic" width="400" align="right">
 
 # Professor information
 Christopher M. Moore, Ph.D.  
+Pronouns: he/him  
 Email: chris.moore  
 Office: Chaparral Hall (CH) 5314 $\left(\frac{1}{2} \tau\right)$  
-Office phone: XXX-XXX-XXX  
+Office phone: 818-677-3350
+
+# TA information
+Wes Moore  
+Email: wesley.moore.197  
+Office: Chaparral Hall 5310  
+Office phone: 818-677-4497
 
 # Meetings for discussions and labs
-Class: TR, 1-1:50 PM, CH54XX  
-Labs: TR, 2-4:50 PM, CH54XX  
+Class: TR, 1-1:50 PM, CH 5427  
+Labs: TR, 2-4:50 PM, CH 5427  
 
 # Office hours
 TBA
 
-# Text
-The text is free and available digitally. The second is available for free on the World Wide Web. You can find links to them on this site's sidebar.
-* *Population ecology: from first principles*, 2<sup>nd</sup> ed., 2013, by Vandermeer and Goldberg, Princeton University Press  
-* *A primer of ecology with R*, 2023, by Stevens
+# Textbook
+I decided to use the second edition of *A primer of ecology with R* by [Hank Stevens](https://sites.miamioh.edu/stevens-lab/members/). It is an open access textbook. It's the most comprehensive and accessible text on contemporary concepts in population ecology. It's not perfect and the code that he uses is different than me, but I think it's the most suitable for this course. Reading the preface you'll notice that it was written through iterations of a graduate course that he teaches over the years, so it's at the right level for this course. Last, the book is linked above on the site's navigation bar.
 
-## Assignment and assessment
+# Assignment and assessment
 ## Assignments
 - **Problem sets**: Problem sets are exercises to give students practice working through and learning how to solve problems in population modeling outside of class. They are derived from the textbook, and supplemented by notes on the schedule. They are due Fridays by 5 PM of every week.
 - **Quizzes**: Quizzes are in-class assignments to give students practice retrieval and processing of information from the week's reading. Every Tuesday there will be a quiz, with roughly five multiple choice problems, based on the forthcoming week's material. You will first take it individually, then with a group.
@@ -46,64 +58,90 @@ The text is free and available digitally. The second is available for free on th
 - **Remodeling project**: This is the big project of the semester where you will choose a scientific paper with an ecological model and recreate it. Throughout the semester you will give several small presentations on the paper and model. The first presentation will be an overview of the paper, the second presentation will be on the methods used by the authors and you, the third presentation will be on the results of the Remodeling attempt, and there will be a final paper summarizing the project.
 - **Participation**: Participation is necessary for this course to succeed.
 
-#### Assessment
+## Assessment
 During the first class meeting we discussed and agreed upon a narrative model of grading for course assessment. This means that I will regularly meet with you and discuss and evaluate your learning in this course. I will meet with you every three weeks, beginning week 4 (weeks 4, 7, 12, finals). Here is the document I will add to, to prepare you for our meetings: [link](../Misc/Reflection.html). Please sign up here: [link](https://calendar.app.google/bg1hWLXoDbKbxwGm9). At the end of the semester, I will need to assign you a grade, and we agreed upon a contract model. This means that so long as you make an honest attempt at your assignments you will earn an A. If you do not complete your Remodeling Project you will earn an B. At least 80% or each of the quizzes and problem sets need to be completed to earn an A, with 60% earning a B.
 
 Syllabus statement prior to the semester:
 > During the first class we will discuss the model of assessment, which will either be narrative or quantified. The former will take the form of meeting regularly and discussing your progress towards learning; the latter will be a traditional point system. At the end of the course I do need to assign you a grade. If we decide upon the narrative model we will need to decide how that will be done.
 
-<!---
+<img src="https://imgs.xkcd.com/comics/purity.png" alt="XKCD purity comic" width="200" align="right">
 
-| Assignments          | Each  | No.  | Proportion of the course |
-| :------------------- | :---: | :--: | :----------------------: |
-| Problem sets         | 0.035 |  9   |           0.315          |
-| Quizzes (individual) | 0.011 |  10  |           0.110          |
-| Quizzes (group)      | 0.011 |  10  |           0.110          |
-| Lab experiments      | 0.040 |  2   |           0.080          |
-| Lab reports          | 0.030 |  4   |           0.120          |
-| Remodeling project   | 0.240 |  1   |           0.240          |
-| Participation        | 0.025 |  1   |           0.025          |
-
-
---->
-
-# Attendance
+# Course policy
+## Attendance
 Role will not be taken, but regular attendance is necessary for you to succeed in this course.
 
-# Titles and names
+## Titles and names
 Students are often curious about how to address their professors. I am comfortable with Dr. Moore, Professor Moore, or Chris. What’s most important to me is that we create a culture of mutual respect in the classroom. As a sign of respect to you I will, by default, address you by your first name. Should you have preferred way of being addressed (Mx. last name, nickname, etc.), I encourage your to communicate that to me.
 
-# Participation
+## What I expect from you
+
+I presume that you have chosen to attend university, pursue studies in biology (or a similar field), enroll in this course, and try to learn about biology broadly and plant ecology  specifically in this course by means of your own agency.
+
+You are ultimately responsible for how much and what you learn, and I am sharing my expert knowledge and facilitating your learning to the best of my abilities and in good faith. I expect that you understand our roles in the classroom; especially understanding our roles of learning and facilitator of learning, as a collaboration.
+
+You will learn best in this course by learning independently and in class. Learning independently means having studied content before the day's lecture as well as after. The clear consensus from years of studies on pre-lecture learning is that it's incredibly effective. Learners who study before lecture learn more and engage with lecture in a fundamentally different way. Instead of learning material for the first time, they are engaging with and understanding the material, better shaping their understanding of what they've learned, filling in gaps in what they missed, and fixing misconceptions. And on the other end, post-lecture learning will more finely hone what you have learned. 
+
+## What you can expect from me
+
+I made a very deliberate decision to become an educator. I made this decision based on being an insatiable learner, being a tenacious sharer of what I've learned, and the delight I experience when I teach or help someone understand something.  In the classroom, I see my role as someone who is an expert in a field of biology that, to the best of my abilities and in good faith, has created and will share with you a narrative on the topics of plant ecology, with a goal of fostering your intellectual growth and prepare you to be degreed biologists from CSUN.
+
+You can expect that I use the best methods of which I'm aware to meet my goal of fostering your intellectual growth and finishing preparing you for other courses in the biology major. I've done this through creating a distilled narrative on the topics on plant ecology, assigning reasonable amounts of reading and work outside of the classroom, using a diverse set of means for assessing your learning for your and my sake, and being clear and transparent with course methods and content.
+
+You can expect that I will create an environment to meet my goal of fostering your intellectual growth and finishing preparing you for other courses in the biology major. This means that I must curate an environment conducive to learning through fairness, transparency, and inclusiveness. Tragically, the tradition of biology, science generally, academia, and Western culture are laden with inequity, elitism, exclusion, prejudice, discrimination, and antagonism. Examples in biology include sexism, racism, homophobia, biological determinism, and eugenics. We are still in a process of combating these traditions, but they have profoundly affected the history of biology and contemporary biological thought. Consequently, foundational knowledge in biology, like what is taught in this course, is biased towards the privileged and powerful benefactors of the unjust and prejudicial treatment of others. So although I aim for inclusiveness, to be fully transparent, the voices of marginalized peoples are missing or rare for no other reason aside from their exclusion.
+
+Lastly, you can expect me to be empathetic as a person and as your instructor. I want be explicitly clear that I want every single one of you to succeed by reaching your maximum potential in this course. If there is anything you need to better learn in this course, I implore you to let me know.
+
+## Participation
 This success of the class (group) is contingent upon each student (individual) coming prepared and eager to engage with the course material and one another. Of course I will employ methods to muster enthusiasm and energy, but to be clear, this is a group effort. I ask that you do your best to come to class prepared by not only having read, but doing your best to understand to the extent that if called upon, you could recall the material from the reading in addition to stating your’s own analysis of the reading's strengths, weaknesses, and higher-level analogies (e.g., relating concepts to other areas of basic and applied science).
 
-The quality and the quantity of participation will be taken into account. That is, I *fully*
-encourage you to participate, but I'd like for a somewhat uniform distribution of substantive discussion. In addition, an egalitarian approach is encouraged to better facilitate exchange of ideas. Nobody is interested in group members dominating discussion. If you are one that tends to monopolize discussion, try to engage others, as this is—at least—as important as the
-matter at hand and is a skill that is greatly underrated and can really boost the level of
-discussion. If you are one that does not participate, *please* realize that your input is
-important to all of us! We are all intelligent and insightful, and engagement and input by
-all is how we will better understand the topic.
+The quality and the quantity of participation will be taken into account. That is, I *fully* encourage you to participate, but I'd like for a somewhat uniform distribution of substantive discussion. In addition, an egalitarian approach is encouraged to better facilitate exchange of ideas. Nobody is interested in group members dominating discussion. If you are one that tends to monopolize discussion, try to engage others, as this is—at least—as important as the
+matter at hand and is a skill that is greatly underrated and can really boost the level of discussion. If you are one that does not participate, *please* realize that your input is important to all of us! We are all intelligent and insightful, and engagement and input by all is how we will better understand the topic.
 
-Overall, let’s just have fun learning, which is presumably why we are all here. Having a fun time playing ideological ping-pong (not dodge ball) with each other will only harbour growth and learning. Ecological theory can be abstract, conceptually challening, and a technical subject that lends itself greatly to creative and alternative views and approaches. In addition, ecological theory and modeling is a very applied topic, so I am certain that what we cover will touch upon each each of your scientific interests in some way.
+Overall, let’s just have fun learning, which is presumably why we are all here. Having a fun time playing ideological ping-pong (not dodge ball) with each other will only harbor growth and learning. Ecological theory can be abstract, conceptually challenging, and a technical subject that lends itself greatly to creative and alternative views and approaches. In addition, ecological theory and modeling is a very applied topic, so I am certain that what we cover will touch upon each each of your scientific interests in some way.
 
-# Academic integrity
+## Academic integrity
 
-Honesty, integrity, and personal responsibility are cornerstones of a Colby education and provide the foundation for scholarly inquiry, intellectual discourse, and an open and welcoming campus community. These values are articulated in the Colby Affirmation and are central to this course. You are expected to demonstrate academic honesty in all aspects of this course. If you are clear about course expectations, give credit to those whose work you rely on, and submit your best work, you are highly unlikely to commit an act of academic dishonesty.
+Honesty, integrity, and personal responsibility are cornerstones of a CSUN education and provide the foundation for scholarly inquiry, intellectual discourse, and an open and welcoming campus community. These values are articulated in the Colby Affirmation and are central to this course. You are expected to demonstrate academic honesty in all aspects of this course. If you are clear about course expectations, give credit to those whose work you rely on, and submit your best work, you are highly unlikely to commit an act of academic dishonesty.
 
 Academic dishonesty includes, but is not limited to: violating clearly stated rules for taking an exam or completing homework; plagiarism (including material from sources without a citation and quotation marks around any borrowed words); claiming another’s work or a modification of another’s work as one’s own; buying or attempting to buy papers or projects for a course; fabricating information or citations; knowingly assisting others in acts of academic dishonesty; misrepresentations to faculty within the context of a course; and submitting the same work, including an essay that you wrote, in more than one course without the permission of the instructors.
 
-Academic dishonesty is a serious offense against the college. Sanctions for academic dishonesty are assigned by an academic review board and may include failure on the assignment, failure in the course, or suspension or expulsion from the College.
+Academic dishonesty is a serious offense against the university. Sanctions for academic dishonesty are assigned by an academic review board and may include failure on the assignment, failure in the course, or suspension or expulsion from CSUN.
 
-# Athletic participation
+## Artificial inteligence
 
-While Colby College is supportive of athletic participation by its students, academics takes priority over athletics. Both NCAA and Colby rules prohibit missing class for practices. In the case of overlapping commitments between class and athletic competitions, the student must meet with the professor as soon as possible to discuss these overlaps. The student may request permission to miss class and make up the missed work; the instructor has final authority either to grant or to withhold permission
+# Relevant university policy
+## Accessibility, accommodations, & mental health
 
-# Sexual misconduct/Title IX statement
+I'm available to discuss academic accommodations that any student with a documented disability may require. Please note that you’ll need to provide a letter from the Dean of Studies Office documenting your approved accommodations. Please meet with me within two weeks of the start of the semester to make a request for accommodations so that we can work together with the College to make the appropriate arrangements for you. Brian Doore, Associate Director of  Student Access and Disability Services (accommodations@colby.edu) is the primary contact for accommodations and any questions related to educational testing and documentation.
 
-Colby College prohibits and will not tolerate sexual misconduct or gender-based discrimination of any kind. Colby is legally obligated to investigate sexual misconduct (including, but not limited to sexual assault and sexual harassment).
+Mental health: I care about my students’ well-being and understand they may face mental health challenges. Students are encouraged to seek support from the College’s available resources, including your advising dean and Counseling Services. (For immediate care, please call 207-859-4490 and press “0” to reach the on-call counselor.) I am willing to discuss reasonable accommodations during a crisis, but to fulfill our educational mission, students are expected to adhere to the attendance policy. Failure to do so because of mental health challenges may require consultation with the Dean of Studies Office.
 
-If you wish to speak confidentially about an incident of sexual misconduct, please contact Colby Counseling Services (207-859-4490) or the Director of the Gender and Sexual Diversity Program, Emily Schusterbauer (207-859-4093).
+## Athletic participation
 
-Students should be aware that faculty members are considered responsible employees; as such, if you disclose an incident of sexual misconduct to a faculty member, they have an obligation to report it to Colby’s Title IX Coordinator. “Disclosure” may include communication in-person, via email/phone/text, or through class assignments.
+While CSUN is supportive of athletic participation by its students, academics takes priority over athletics. Both NCAA and CSUN rules prohibit missing class for practices. In the case of overlapping commitments between class and athletic competitions, the student must meet with the professor as soon as possible to discuss these overlaps. The student may request permission to miss class and make up the missed work; the instructor has final authority either to grant or to withhold permission.
 
-To learn more about sexual misconduct or report an incident, visit 
-<a href="http://www.colby.edu/sexualviolence/" target="_blank">http://www.colby.edu/sexualviolence/</a>.
+## Sexual misconduct/Title IX statement
+
+Students and faculty each have responsibility for maintaining a safe and respectful space to express their reasoned opinions. Professional courtesy and consideration for our classroom community are especially important with respect to topics dealing with differences in race, color, gender and gender identity/expression, sexual orientation, national origin, religion, disability, and age.
+
+In this course, the topic of sex (including what can be perceived sexual violence among non-human animals) emerges purposefully and may inadvertently in readings, films, class discussions, or other class materials. I recognize that such topics may be particularly upsetting for some survivors and I encourage all students to seek the support they need.
+
+While making personal connections with the topics studied in any course can be a meaningful and important endeavor, please be aware of the following policy regarding confidentiality and disclosures of incidents of sexual misconduct/sexual violence.
+
+As your instructor, one of my responsibilities is to help maintain a safe learning environment on our campus. In the event that you choose to write, speak or otherwise disclose about having experienced sexual misconduct/sexual violence, including rape, sexual assault, sexual battery, dating violence, domestic violence,or stalking and specify that this violence occurred while you or the perpetrator were a CSUN student, federal and state laws require that I, as a “responsible employee,” notify our campus Title IX Coordinator. The Title IX Coordinator will contact you to inform you of your rights and options as a survivor and connect you with support resources, including possibilities for holding accountable the person who harmed you. Know that you will not be forced to share information and your level of involvement will be your choice.
+
+CSUN’s Title IX Coordinator is:
+Susan Hua  
+University Hall, Room 285  
+Phone: 818-677-2077  
+Email: susan.hua@csun.edu
+
+If you do not want the Title IX Coordinator notified, instead of disclosing the experience to me, you can speak confidentially with our Campus Care Advocate.
+
+CSUN’s Campus Care Advocate is:
+Katie LaRue  
+Klotz Student Health Center, Room 140G  
+Phone: 818-677-7492  
+Email: katelin.larue@csun.edu  
+
+For more information regarding your university rights and options as a survivor of sexual misconduct/sexualviolence, please visit the University’s Title IX website at: http://www.csun.edu/shinealight

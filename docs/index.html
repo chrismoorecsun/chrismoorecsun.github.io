@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -219,6 +222,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -226,6 +292,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -310,35 +386,47 @@ reports/documents using R Markdown Documents.</li>
 model that can feasibly be recreated, recreate the model, and critique
 the model.</li>
 </ol>
+<p><img src="https://imgs.xkcd.com/comics/computer_problems.png" alt="XKCD comic" width="400" align="right"></p>
 </div>
 <div id="professor-information" class="section level1">
 <h1>Professor information</h1>
 <p>Christopher M. Moore, Ph.D.<br />
+Pronouns: he/him<br />
 Email: chris.moore<br />
 Office: Chaparral Hall (CH) 5314 <span
 class="math inline">\(\left(\frac{1}{2} \tau\right)\)</span><br />
-Office phone: XXX-XXX-XXX</p>
+Office phone: 818-677-3350</p>
+</div>
+<div id="ta-information" class="section level1">
+<h1>TA information</h1>
+<p>Wes Moore<br />
+Email: wesley.moore.197<br />
+Office: Chaparral Hall 5310<br />
+Office phone: 818-677-4497</p>
 </div>
 <div id="meetings-for-discussions-and-labs" class="section level1">
 <h1>Meetings for discussions and labs</h1>
-<p>Class: TR, 1-1:50 PM, CH54XX<br />
-Labs: TR, 2-4:50 PM, CH54XX</p>
+<p>Class: TR, 1-1:50 PM, CH 5427<br />
+Labs: TR, 2-4:50 PM, CH 5427</p>
 </div>
 <div id="office-hours" class="section level1">
 <h1>Office hours</h1>
 <p>TBA</p>
 </div>
-<div id="text" class="section level1">
-<h1>Text</h1>
-<p>The text is free and available digitally. The second is available for
-free on the World Wide Web. You can find links to them on this site’s
-sidebar. * <em>Population ecology: from first principles</em>,
-2<sup>nd</sup> ed., 2013, by Vandermeer and Goldberg, Princeton
-University Press<br />
-* <em>A primer of ecology with R</em>, 2023, by Stevens</p>
-<div id="assignment-and-assessment" class="section level2">
-<h2>Assignment and assessment</h2>
+<div id="textbook" class="section level1">
+<h1>Textbook</h1>
+<p>I decided to use the second edition of <em>A primer of ecology with
+R</em> by <a href="https://sites.miamioh.edu/stevens-lab/members/">Hank
+Stevens</a>. It is an open access textbook. It’s the most comprehensive
+and accessible text on contemporary concepts in population ecology. It’s
+not perfect and the code that he uses is different than me, but I think
+it’s the most suitable for this course. Reading the preface you’ll
+notice that it was written through iterations of a graduate course that
+he teaches over the years, so it’s at the right level for this course.
+Last, the book is linked above on the site’s navigation bar.</p>
 </div>
+<div id="assignment-and-assessment" class="section level1">
+<h1>Assignment and assessment</h1>
 <div id="assignments" class="section level2">
 <h2>Assignments</h2>
 <ul>
@@ -366,8 +454,9 @@ summarizing the project.</li>
 <li><strong>Participation</strong>: Participation is necessary for this
 course to succeed.</li>
 </ul>
-<div id="assessment" class="section level4">
-<h4>Assessment</h4>
+</div>
+<div id="assessment" class="section level2">
+<h2>Assessment</h2>
 <p>During the first class meeting we discussed and agreed upon a
 narrative model of grading for course assessment. This means that I will
 regularly meet with you and discuss and evaluate your learning in this
@@ -389,30 +478,18 @@ discussing your progress towards learning; the latter will be a
 traditional point system. At the end of the course I do need to assign
 you a grade. If we decide upon the narrative model we will need to
 decide how that will be done.</p>
-<!---
-
-| Assignments          | Each  | No.  | Proportion of the course |
-| :------------------- | :---: | :--: | :----------------------: |
-| Problem sets         | 0.035 |  9   |           0.315          |
-| Quizzes (individual) | 0.011 |  10  |           0.110          |
-| Quizzes (group)      | 0.011 |  10  |           0.110          |
-| Lab experiments      | 0.040 |  2   |           0.080          |
-| Lab reports          | 0.030 |  4   |           0.120          |
-| Remodeling project   | 0.240 |  1   |           0.240          |
-| Participation        | 0.025 |  1   |           0.025          |
-
-
---->
+<p><img src="https://imgs.xkcd.com/comics/purity.png" alt="XKCD purity comic" width="200" align="right"></p>
 </div>
 </div>
-</div>
-<div id="attendance" class="section level1">
-<h1>Attendance</h1>
+<div id="course-policy" class="section level1">
+<h1>Course policy</h1>
+<div id="attendance" class="section level2">
+<h2>Attendance</h2>
 <p>Role will not be taken, but regular attendance is necessary for you
 to succeed in this course.</p>
 </div>
-<div id="titles-and-names" class="section level1">
-<h1>Titles and names</h1>
+<div id="titles-and-names" class="section level2">
+<h2>Titles and names</h2>
 <p>Students are often curious about how to address their professors. I
 am comfortable with Dr. Moore, Professor Moore, or Chris. What’s most
 important to me is that we create a culture of mutual respect in the
@@ -421,8 +498,70 @@ by your first name. Should you have preferred way of being addressed
 (Mx. last name, nickname, etc.), I encourage your to communicate that to
 me.</p>
 </div>
-<div id="participation" class="section level1">
-<h1>Participation</h1>
+<div id="what-i-expect-from-you" class="section level2">
+<h2>What I expect from you</h2>
+<p>I presume that you have chosen to attend university, pursue studies
+in biology (or a similar field), enroll in this course, and try to learn
+about biology broadly and plant ecology specifically in this course by
+means of your own agency.</p>
+<p>You are ultimately responsible for how much and what you learn, and I
+am sharing my expert knowledge and facilitating your learning to the
+best of my abilities and in good faith. I expect that you understand our
+roles in the classroom; especially understanding our roles of learning
+and facilitator of learning, as a collaboration.</p>
+<p>You will learn best in this course by learning independently and in
+class. Learning independently means having studied content before the
+day’s lecture as well as after. The clear consensus from years of
+studies on pre-lecture learning is that it’s incredibly effective.
+Learners who study before lecture learn more and engage with lecture in
+a fundamentally different way. Instead of learning material for the
+first time, they are engaging with and understanding the material,
+better shaping their understanding of what they’ve learned, filling in
+gaps in what they missed, and fixing misconceptions. And on the other
+end, post-lecture learning will more finely hone what you have
+learned.</p>
+</div>
+<div id="what-you-can-expect-from-me" class="section level2">
+<h2>What you can expect from me</h2>
+<p>I made a very deliberate decision to become an educator. I made this
+decision based on being an insatiable learner, being a tenacious sharer
+of what I’ve learned, and the delight I experience when I teach or help
+someone understand something. In the classroom, I see my role as someone
+who is an expert in a field of biology that, to the best of my abilities
+and in good faith, has created and will share with you a narrative on
+the topics of plant ecology, with a goal of fostering your intellectual
+growth and prepare you to be degreed biologists from CSUN.</p>
+<p>You can expect that I use the best methods of which I’m aware to meet
+my goal of fostering your intellectual growth and finishing preparing
+you for other courses in the biology major. I’ve done this through
+creating a distilled narrative on the topics on plant ecology, assigning
+reasonable amounts of reading and work outside of the classroom, using a
+diverse set of means for assessing your learning for your and my sake,
+and being clear and transparent with course methods and content.</p>
+<p>You can expect that I will create an environment to meet my goal of
+fostering your intellectual growth and finishing preparing you for other
+courses in the biology major. This means that I must curate an
+environment conducive to learning through fairness, transparency, and
+inclusiveness. Tragically, the tradition of biology, science generally,
+academia, and Western culture are laden with inequity, elitism,
+exclusion, prejudice, discrimination, and antagonism. Examples in
+biology include sexism, racism, homophobia, biological determinism, and
+eugenics. We are still in a process of combating these traditions, but
+they have profoundly affected the history of biology and contemporary
+biological thought. Consequently, foundational knowledge in biology,
+like what is taught in this course, is biased towards the privileged and
+powerful benefactors of the unjust and prejudicial treatment of others.
+So although I aim for inclusiveness, to be fully transparent, the voices
+of marginalized peoples are missing or rare for no other reason aside
+from their exclusion.</p>
+<p>Lastly, you can expect me to be empathetic as a person and as your
+instructor. I want be explicitly clear that I want every single one of
+you to succeed by reaching your maximum potential in this course. If
+there is anything you need to better learn in this course, I implore you
+to let me know.</p>
+</div>
+<div id="participation" class="section level2">
+<h2>Participation</h2>
 <p>This success of the class (group) is contingent upon each student
 (individual) coming prepared and eager to engage with the course
 material and one another. Of course I will employ methods to muster
@@ -447,17 +586,17 @@ intelligent and insightful, and engagement and input by all is how we
 will better understand the topic.</p>
 <p>Overall, let’s just have fun learning, which is presumably why we are
 all here. Having a fun time playing ideological ping-pong (not dodge
-ball) with each other will only harbour growth and learning. Ecological
-theory can be abstract, conceptually challening, and a technical subject
-that lends itself greatly to creative and alternative views and
+ball) with each other will only harbor growth and learning. Ecological
+theory can be abstract, conceptually challenging, and a technical
+subject that lends itself greatly to creative and alternative views and
 approaches. In addition, ecological theory and modeling is a very
 applied topic, so I am certain that what we cover will touch upon each
 each of your scientific interests in some way.</p>
 </div>
-<div id="academic-integrity" class="section level1">
-<h1>Academic integrity</h1>
+<div id="academic-integrity" class="section level2">
+<h2>Academic integrity</h2>
 <p>Honesty, integrity, and personal responsibility are cornerstones of a
-Colby education and provide the foundation for scholarly inquiry,
+CSUN education and provide the foundation for scholarly inquiry,
 intellectual discourse, and an open and welcoming campus community.
 These values are articulated in the Colby Affirmation and are central to
 this course. You are expected to demonstrate academic honesty in all
@@ -474,43 +613,108 @@ knowingly assisting others in acts of academic dishonesty;
 misrepresentations to faculty within the context of a course; and
 submitting the same work, including an essay that you wrote, in more
 than one course without the permission of the instructors.</p>
-<p>Academic dishonesty is a serious offense against the college.
+<p>Academic dishonesty is a serious offense against the university.
 Sanctions for academic dishonesty are assigned by an academic review
 board and may include failure on the assignment, failure in the course,
-or suspension or expulsion from the College.</p>
+or suspension or expulsion from CSUN.</p>
 </div>
-<div id="athletic-participation" class="section level1">
-<h1>Athletic participation</h1>
-<p>While Colby College is supportive of athletic participation by its
-students, academics takes priority over athletics. Both NCAA and Colby
-rules prohibit missing class for practices. In the case of overlapping
+<div id="artificial-inteligence" class="section level2">
+<h2>Artificial inteligence</h2>
+</div>
+</div>
+<div id="relevant-university-policy" class="section level1">
+<h1>Relevant university policy</h1>
+<div id="accessibility-accommodations-mental-health"
+class="section level2">
+<h2>Accessibility, accommodations, &amp; mental health</h2>
+<p>I’m available to discuss academic accommodations that any student
+with a documented disability may require. Please note that you’ll need
+to provide a letter from the Dean of Studies Office documenting your
+approved accommodations. Please meet with me within two weeks of the
+start of the semester to make a request for accommodations so that we
+can work together with the College to make the appropriate arrangements
+for you. Brian Doore, Associate Director of Student Access and
+Disability Services (<a href="mailto:accommodations@colby.edu"
+class="email">accommodations@colby.edu</a>) is the primary contact for
+accommodations and any questions related to educational testing and
+documentation.</p>
+<p>Mental health: I care about my students’ well-being and understand
+they may face mental health challenges. Students are encouraged to seek
+support from the College’s available resources, including your advising
+dean and Counseling Services. (For immediate care, please call
+207-859-4490 and press “0” to reach the on-call counselor.) I am willing
+to discuss reasonable accommodations during a crisis, but to fulfill our
+educational mission, students are expected to adhere to the attendance
+policy. Failure to do so because of mental health challenges may require
+consultation with the Dean of Studies Office.</p>
+</div>
+<div id="athletic-participation" class="section level2">
+<h2>Athletic participation</h2>
+<p>While CSUN is supportive of athletic participation by its students,
+academics takes priority over athletics. Both NCAA and CSUN rules
+prohibit missing class for practices. In the case of overlapping
 commitments between class and athletic competitions, the student must
 meet with the professor as soon as possible to discuss these overlaps.
 The student may request permission to miss class and make up the missed
 work; the instructor has final authority either to grant or to withhold
-permission</p>
+permission.</p>
 </div>
-<div id="sexual-misconducttitle-ix-statement" class="section level1">
-<h1>Sexual misconduct/Title IX statement</h1>
-<p>Colby College prohibits and will not tolerate sexual misconduct or
-gender-based discrimination of any kind. Colby is legally obligated to
-investigate sexual misconduct (including, but not limited to sexual
-assault and sexual harassment).</p>
-<p>If you wish to speak confidentially about an incident of sexual
-misconduct, please contact Colby Counseling Services (207-859-4490) or
-the Director of the Gender and Sexual Diversity Program, Emily
-Schusterbauer (207-859-4093).</p>
-<p>Students should be aware that faculty members are considered
-responsible employees; as such, if you disclose an incident of sexual
-misconduct to a faculty member, they have an obligation to report it to
-Colby’s Title IX Coordinator. “Disclosure” may include communication
-in-person, via email/phone/text, or through class assignments.</p>
-<p>To learn more about sexual misconduct or report an incident, visit
-<a href="http://www.colby.edu/sexualviolence/" target="_blank">http://www.colby.edu/sexualviolence/</a>.</p>
+<div id="sexual-misconducttitle-ix-statement" class="section level2">
+<h2>Sexual misconduct/Title IX statement</h2>
+<p>Students and faculty each have responsibility for maintaining a safe
+and respectful space to express their reasoned opinions. Professional
+courtesy and consideration for our classroom community are especially
+important with respect to topics dealing with differences in race,
+color, gender and gender identity/expression, sexual orientation,
+national origin, religion, disability, and age.</p>
+<p>In this course, the topic of sex (including what can be perceived
+sexual violence among non-human animals) emerges purposefully and may
+inadvertently in readings, films, class discussions, or other class
+materials. I recognize that such topics may be particularly upsetting
+for some survivors and I encourage all students to seek the support they
+need.</p>
+<p>While making personal connections with the topics studied in any
+course can be a meaningful and important endeavor, please be aware of
+the following policy regarding confidentiality and disclosures of
+incidents of sexual misconduct/sexual violence.</p>
+<p>As your instructor, one of my responsibilities is to help maintain a
+safe learning environment on our campus. In the event that you choose to
+write, speak or otherwise disclose about having experienced sexual
+misconduct/sexual violence, including rape, sexual assault, sexual
+battery, dating violence, domestic violence,or stalking and specify that
+this violence occurred while you or the perpetrator were a CSUN student,
+federal and state laws require that I, as a “responsible employee,”
+notify our campus Title IX Coordinator. The Title IX Coordinator will
+contact you to inform you of your rights and options as a survivor and
+connect you with support resources, including possibilities for holding
+accountable the person who harmed you. Know that you will not be forced
+to share information and your level of involvement will be your
+choice.</p>
+<p>CSUN’s Title IX Coordinator is: Susan Hua<br />
+University Hall, Room 285<br />
+Phone: 818-677-2077<br />
+Email: <a href="mailto:susan.hua@csun.edu"
+class="email">susan.hua@csun.edu</a></p>
+<p>If you do not want the Title IX Coordinator notified, instead of
+disclosing the experience to me, you can speak confidentially with our
+Campus Care Advocate.</p>
+<p>CSUN’s Campus Care Advocate is: Katie LaRue<br />
+Klotz Student Health Center, Room 140G<br />
+Phone: 818-677-7492<br />
+Email: <a href="mailto:katelin.larue@csun.edu"
+class="email">katelin.larue@csun.edu</a></p>
+<p>For more information regarding your university rights and options as
+a survivor of sexual misconduct/sexualviolence, please visit the
+University’s Title IX website at: <a
+href="http://www.csun.edu/shinealight"
+class="uri">http://www.csun.edu/shinealight</a></p>
+</div>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -543,6 +747,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
