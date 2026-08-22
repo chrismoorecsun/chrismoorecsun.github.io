@@ -1,0 +1,6 @@
+---
+title: "Schedule"
+---
+
+# Let's hope this works
+OK, here is an attempt after deleting schedules and recreading them
