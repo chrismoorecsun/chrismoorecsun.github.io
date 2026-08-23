@@ -1,5 +1,5 @@
 ---
-title: "Computational modeling (BIOL551)"
+title: "Computer modeling in biology (BIOL551/L)"
 output:
   html_document:
     toc: true
@@ -111,7 +111,10 @@ Academic dishonesty is a serious offense against the university. Sanctions for a
 
 ## Artificial inteligence
 
+<img src="https://imgs.xkcd.com/comics/standards_2x.png" alt="XKCD standards" width="500" align="right">
+
 # Relevant university policy
+
 ## Accessibility, accommodations, & mental health
 
 I'm available to discuss academic accommodations that any student with a documented disability may require. Please note that you’ll need to provide a letter from the Dean of Studies Office documenting your approved accommodations. Please meet with me within two weeks of the start of the semester to make a request for accommodations so that we can work together with the College to make the appropriate arrangements for you. Brian Doore, Associate Director of  Student Access and Disability Services (accommodations@colby.edu) is the primary contact for accommodations and any questions related to educational testing and documentation.

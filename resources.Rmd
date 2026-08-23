@@ -2,6 +2,8 @@
 title: "Resources"
 ---
 
+<img src="https://imgs.xkcd.com/comics/dependency_2x.png" alt="XKCD dependencies comic" width="300" align="right">
+
 # Syntax
 
 ### Markdown
