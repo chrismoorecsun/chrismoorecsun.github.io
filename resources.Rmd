@@ -5,7 +5,7 @@ title: "Resources"
 # Syntax
 
 ## Markdown
-Chris' markdown quick guide: [link](../Misc/CMsMarkdown){:target="_blank"}
+Chris' markdown quick guide: [link](CMsMarkdown.html)
 
 ## LaTeX
 LaTeX guide developed by https://github.com/Fechin: [link](https://quickref.me/latex.html){:target="_blank"}
