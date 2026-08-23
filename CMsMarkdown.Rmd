@@ -28,6 +28,7 @@ output: html_document
 
 ###### header 6
 
+***
 
 # EMPHASIS
 
@@ -44,6 +45,8 @@ output: html_document
 **bold**
 
 ~~strikethrough~~
+
+***
 
 # LISTS
 
@@ -73,6 +76,7 @@ output: html_document
 2. numbered item
 3. numbered item
 
+***
 
 # TABLES
 
@@ -92,6 +96,7 @@ output: html_document
 | col2 is  | centered      | 2        |
 | col3 is  | right-aligned | 3        |
 
+***
 
 # HORIZONTAL RULE
 
@@ -102,7 +107,6 @@ output: html_document
 **output:**
 
 ***
-
 
 # CODE
 
@@ -123,6 +127,7 @@ indvar <- 1:10
 depvar <- indvar^2
 plot(x = indvar, y = depvar)
 ```
+***
 
 # LINKS
 
@@ -139,6 +144,8 @@ We'll add a link right here: [CSUN's homepage](http://www.csun.edu/)
 ```
 **output:**
 ![Duane Slick's "Green candid coyote"](https://chiaroscurosantafe.com/images_works/pl/6458_l.jpg)
+
+***
 
 # COMMENTS
 
