@@ -32,7 +32,7 @@ After taking this course as successful student should:
 Christopher M. Moore, Ph.D.  
 Pronouns: he/him  
 Email: chris.moore  
-Office: Chaparral Hall (CH) 5314 $\left(\frac{1}{2} \tau\right)$  
+Office: Chaparral Hall (CR) 5314 $\left(\frac{1}{2} \tau\right)$  
 Office phone: 818-677-3350
 
 ## TA information
@@ -43,8 +43,8 @@ Office: Chaparral Hall 5310
 Office phone: 818-677-4497
 
 ## Meetings for discussions and labs
-Class: TR, 1-1:50 PM, CH 5427  
-Labs: TR, 2-4:50 PM, CH 5427  
+Class: TR, 1-1:50 PM, CR 5427  
+Labs: TR, 2-4:50 PM, CR 5427  
 
 ## Office hours
 TBA
@@ -92,6 +92,8 @@ You can expect that I use the best methods of which I'm aware to meet my goal of
 You can expect that I will create an environment to meet my goal of fostering your intellectual growth and finishing preparing you for other courses in the biology major. This means that I must curate an environment conducive to learning through fairness, transparency, and inclusiveness. Tragically, the tradition of biology, science generally, academia, and Western culture are laden with inequity, elitism, exclusion, prejudice, discrimination, and antagonism. Examples in biology include [sexism](https://www.science.org/content/article/rosalind-franklin-and-damage-gender-harassment), [racism](https://link.springer.com/article/10.1186/s12052-019-0110-5), [homophobia](https://www.nytimes.com/2019/06/05/obituaries/alan-turing-overlooked.html), [biological determinism](https://wwnorton.com/books/The-Mismeasure-of-Man/), and [eugenics](https://www.cambridge.org/core/journals/british-journal-for-the-history-of-science/article/abs/ra-fisher-eugenics-and-the-campaign-for-family-allowances-in-interwar-britain/BD28704590AC49EAD4B6FC8F4471C455). We are still in a process of combating these traditions, but they have profoundly affected the history of biology and contemporary biological thought. Consequently, foundational knowledge in biology, like what is taught in this course, is biased towards the privileged and powerful benefactors of the unjust and prejudicial treatment of others. So although I aim for inclusiveness, to be fully transparent, the voices of marginalized peoples are missing or rare for no other reason aside from their exclusion.
 
 Lastly, you can expect me to be empathetic as a person and as your instructor. I want be explicitly clear that I want every single one of you to succeed by reaching your maximum potential in this course. If there is anything you need to better learn in this course, I implore you to let me know.
+
+<img src="https://imgs.xkcd.com/comics/differentiation_and_integration_2x.png" alt="XKCD differntiation and integration" width="400" align="left">
 
 ## Participation
 This success of the class (group) is contingent upon each student (individual) coming prepared and eager to engage with the course material and one another. Of course I will employ methods to muster enthusiasm and energy, but to be clear, this is a group effort. I ask that you do your best to come to class prepared by not only having read, but doing your best to understand to the extent that if called upon, you could recall the material from the reading in addition to stating your’s own analysis of the reading's strengths, weaknesses, and higher-level analogies (e.g., relating concepts to other areas of basic and applied science).
@@ -150,3 +152,9 @@ Phone: 818-677-7492
 Email: katelin.larue@csun.edu  
 
 For more information regarding your university rights and options as a survivor of sexual misconduct/sexualviolence, please visit the University’s Title IX website at: http://www.csun.edu/shinealight
+
+<p align="center">
+<video width="600" height="300" controls autoplay>
+  <source src="misc/CRLV_old.mp4" type="video/mp4" loop>
+</video>
+</p>
