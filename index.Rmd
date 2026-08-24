@@ -154,7 +154,7 @@ Email: katelin.larue@csun.edu
 For more information regarding your university rights and options as a survivor of sexual misconduct/sexualviolence, please visit the University’s Title IX website at: http://www.csun.edu/shinealight
 
 <p align="center">
-<video width="600" height="300" controls autoplay>
-  <source src="misc/CRLV_old.mp4" type="video/mp4" loop>
+<video width="600" height="300" controls autoplay loop>
+  <source src="misc/CRLV_old.mp4" type="video/mp4">
 </video>
 </p>
