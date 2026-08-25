@@ -16,7 +16,7 @@ Computational modeling is a course that is designed to help students learn theor
 
 <img src="https://imgs.xkcd.com/comics/compiling.png" alt="XKCD comic" width="250" align="right">
 
-# Learning outcomes
+# Course objectives and topics
 After taking this course as successful student should:
 
 1. Have gained an **appreciation of the art and science of modeling.**  
@@ -121,14 +121,13 @@ Artificial intelligence (i.e., genAI) is new tool with potential to profoundly h
 <img src="https://imgs.xkcd.com/comics/standards_2x.png" alt="XKCD standards" width="500" align="right">
 
 ## Accessibility, accommodations, & mental health
+From CSUN:
 
-I'm available to discuss academic accommodations that any student with a documented disability may require. Please note that you’ll need to provide a letter from the Dean of Studies Office documenting your approved accommodations. Please meet with me within two weeks of the start of the semester to make a request for accommodations so that we can work together with the College to make the appropriate arrangements for you. Brian Doore, Associate Director of  Student Access and Disability Services (accommodations@colby.edu) is the primary contact for accommodations and any questions related to educational testing and documentation.
+> If you have a disability and need accommodations, please register with the Disability Resources and Educational Services (DRES) office or the National Center on Deafness (NCOD). The DRES office is located in Bayramian Hall, room 110 and can be reached at 818-677-2684. NCOD is located on Bertrand Street in Jeanne Chisholm Hall and can be reached at 818-677-2611. If you would like to discuss your need for accommodations with me, please contact me to set up an appointment.
 
-Mental health: I care about my students’ well-being and understand they may face mental health challenges. Students are encouraged to seek support from the College’s available resources, including your advising dean and Counseling Services. (For immediate care, please call 207-859-4490 and press “0” to reach the on-call counselor.) I am willing to discuss reasonable accommodations during a crisis, but to fulfill our educational mission, students are expected to adhere to the attendance policy. Failure to do so because of mental health challenges may require consultation with the Dean of Studies Office.
-
-## Athletic participation
-
-While CSUN is supportive of athletic participation by its students, academics takes priority over athletics. Both NCAA and CSUN rules prohibit missing class for practices. In the case of overlapping commitments between class and athletic competitions, the student must meet with the professor as soon as possible to discuss these overlaps. The student may request permission to miss class and make up the missed work; the instructor has final authority either to grant or to withhold permission.
+> University Counseling Services (UCS) is a mental health center for students enrolled at CSUN. UCS provides a range of high-quality mental health services including initial evaluations, short-term counseling and psychotherapy, Wellness Workshops, group treatment, psychiatric services, crisis/urgent care services, and case management. UCS is located in Bayramian Hall 520 and can be reached at 818-677-2366, Option 1.  
+> Call the Suicide Prevention Hotline at 800-273-TALK (8255) or dial 988 to access the National Suicide and Crisis Lifeline 24 hours a day.  
+> Text the Crisis Text Line by texting "START" to 741-741 (Free, 24/7, confidential).
 
 ## Sexual misconduct/Title IX statement
 From CSUN:
