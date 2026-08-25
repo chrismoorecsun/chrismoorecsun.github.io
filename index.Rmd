@@ -9,7 +9,7 @@ output:
 ---
 
 # Course description
-Computational modeling is a course that is designed to help students learn theory and methods in mathematical and computational theoretical ecology. Collectively, these types quantitative approaches are central to the science of ecology for understanding, predicting, and making inferences about ecological patterns and processes. Both classic and contemporary topics will be covered, with an emphasis on using modern tools to analyze and present theory and data.
+Computer modeling in biology is a course that is designed to help students learn theory and methods in mathematical and computational theoretical ecology. Collectively, these types quantitative approaches are central to the science of ecology for understanding, predicting, and making inferences about ecological patterns and processes. Both classic and contemporary topics will be covered, with an emphasis on using modern tools to analyze and present theory and data.
 
 * Mathematical aspects of the course will cover traditional theory of simple analytical models.
 * Computational aspects of the course will cover the implementation and analysis of more complex models.
