@@ -14,7 +14,7 @@ Computational modeling is a course that is designed to help students learn theor
 * Mathematical aspects of the course will cover traditional theory of simple analytical models.
 * Computational aspects of the course will cover the implementation and analysis of more complex models.
 
-<img src="https://imgs.xkcd.com/comics/compiling.png" alt="XKCD comic" width="200" align="right">
+<img src="https://imgs.xkcd.com/comics/compiling.png" alt="XKCD comic" width="250" align="right">
 
 # Learning outcomes
 After taking this course as successful student should:
@@ -25,7 +25,7 @@ After taking this course as successful student should:
 4. **Be able to build, analyze, and present ecological models using the R programming language and environment.** This includes understanding and use of R data structures, functional programming, libraries for simulation and analysis of ecological models, and dynamic reports/documents using R Markdown Documents.
 5. **Be able to (re)create a scientific model.** The “Remodeling Project” will include assessing and choosing a peer-reviewed model that can feasibly be recreated, recreate the model, and critique the model.
 
-<img src="https://imgs.xkcd.com/comics/computer_problems.png" alt="XKCD comic" width="400" align="right">
+<img src="https://imgs.xkcd.com/comics/computer_problems.png" alt="XKCD comic" width="450" align="right">
 
 # Course information
 ## Professor information
@@ -35,12 +35,14 @@ Email: chris.moore
 Office: Chaparral Hall (CR) 5314 $\left(\frac{1}{2} \tau\right)$  
 Office phone: 818-677-3350
 
-## TA information
+## Graduate Assistant (GA) information
 Wes Moore  
 Pronouns: he/him  
 Email: wesley.moore.197  
 Office: Chaparral Hall 5310  
 Office phone: 818-677-4497
+
+Wes is a graduate student working on his Master's of Science degree in Biology. His thesis is on interactions between plants and fungi. He is well-versed in ecological topics and programming in R and his main duty will be to attend class and be there to help you trouble shoot your code and ecological topics.
 
 ## Meetings for discussions and labs
 Class: TR, 1-1:50 PM, CR 5427  
@@ -54,17 +56,17 @@ I decided to use the second edition of *A primer of ecology with R* by [Hank Ste
 
 ## Assignment and assessment
 ### Assignments
-- **Problem sets**: Problem sets are exercises to give students practice working through and learning how to solve problems in population modeling outside of class. They are derived from the textbook, and supplemented by notes on the schedule. They are due Fridays by 5 PM of every week.
+- **Problem sets**: Problem sets are exercises to give students practice working through and learning how to solve problems in population modeling outside of class. P-sets are due Fridays by 5 PM of every week via email with the subject line: `PS[##_Last]` (e.g., `PS03_Moore`). Please submit the .html output of your RMarkdown file named the same thing as subject line (e.g., `PS03_Moore.html`).
 - **Quizzes**: Quizzes are in-class assignments to give students practice retrieval and processing of information from the week's reading. Every Tuesday there will be a quiz, with roughly five multiple choice problems, based on the forthcoming week's material. You will first take it individually, then with a group.
 - **Lab notebooks**: The lab notebooks are R markdown documents written as logs as you learn methods in R in lab. The are all strictly in-lab work.
 - **Remodeling project**: This is the big project of the semester where you will choose a scientific paper with an ecological model and recreate it. Throughout the semester you will give several small presentations on the paper and model. The first presentation will be an overview of the paper, the second presentation will be on the methods used by the authors and you, the third presentation will be on the results of the Remodeling attempt, and there will be a final paper summarizing the project.
 - **Participation**: Participation is necessary for this course to succeed.
 
 ### Assessment
-During the first class meeting we discussed and agreed upon a narrative model of grading for course assessment. This means that I will regularly meet with you and discuss and evaluate your learning in this course. I will meet with you every three weeks, beginning week 4 (weeks 4, 7, 12, finals). Here is the document I will add to, to prepare you for our meetings: [link](../Misc/Reflection.html). Please sign up here: [link](https://calendar.app.google/bg1hWLXoDbKbxwGm9). At the end of the semester, I will need to assign you a grade, and we agreed upon a contract model. This means that so long as you make an honest attempt at your assignments you will earn an A. If you do not complete your Remodeling Project you will earn an B. At least 80% or each of the quizzes and problem sets need to be completed to earn an A, with 60% earning a B.
+<!--- During the first class meeting we discussed and agreed upon a narrative model of grading for course assessment. This means that I will regularly meet with you and discuss and evaluate your learning in this course. I will meet with you every three weeks, beginning week 4 (weeks 4, 7, 12, finals). Here is the document I will add to, to prepare you for our meetings: [link](../Misc/Reflection.html). Please sign up here: [link](https://calendar.app.google/bg1hWLXoDbKbxwGm9). At the end of the semester, I will need to assign you a grade, and we agreed upon a contract model. This means that so long as you make an honest attempt at your assignments you will earn an A. If you do not complete your Remodeling Project you will earn an B. At least 80% or each of the quizzes and problem sets need to be completed to earn an A, with 60% earning a B.
 
 Syllabus statement prior to the semester:
-> During the first class we will discuss the model of assessment, which will either be narrative or quantified. The former will take the form of meeting regularly and discussing your progress towards learning; the latter will be a traditional point system. At the end of the course I do need to assign you a grade. If we decide upon the narrative model we will need to decide how that will be done.
+> During the first class we will discuss the model of assessment, which will either be narrative or quantified. The former will take the form of meeting regularly and discussing your progress towards learning; the latter will be a traditional point system. At the end of the course I do need to assign you a grade. If we decide upon the narrative model we will need to decide how that will be done.--->
 
 <img src="https://imgs.xkcd.com/comics/purity.png" alt="XKCD purity comic" width="500" align="right">
 
@@ -93,7 +95,7 @@ You can expect that I will create an environment to meet my goal of fostering yo
 
 Lastly, you can expect me to be empathetic as a person and as your instructor. I want be explicitly clear that I want every single one of you to succeed by reaching your maximum potential in this course. If there is anything you need to better learn in this course, I implore you to let me know.
 
-<img src="https://imgs.xkcd.com/comics/differentiation_and_integration_2x.png" alt="XKCD differntiation and integration" width="400" align="left">
+<img src="https://imgs.xkcd.com/comics/differentiation_and_integration_2x.png" alt="XKCD differentiation and integration" width="400" align="right">
 
 ## Participation
 This success of the class (group) is contingent upon each student (individual) coming prepared and eager to engage with the course material and one another. Of course I will employ methods to muster enthusiasm and energy, but to be clear, this is a group effort. I ask that you do your best to come to class prepared by not only having read, but doing your best to understand to the extent that if called upon, you could recall the material from the reading in addition to stating your’s own analysis of the reading's strengths, weaknesses, and higher-level analogies (e.g., relating concepts to other areas of basic and applied science).
@@ -111,11 +113,12 @@ Academic dishonesty includes, but is not limited to: violating clearly stated ru
 
 Academic dishonesty is a serious offense against the university. Sanctions for academic dishonesty are assigned by an academic review board and may include failure on the assignment, failure in the course, or suspension or expulsion from CSUN.
 
-## Artificial inteligence
-
-<img src="https://imgs.xkcd.com/comics/standards_2x.png" alt="XKCD standards" width="500" align="right">
+## Artificial intelligence
+Artificial intelligence (i.e., genAI) is new tool with potential to profoundly hinder the process of learning. Given that it is my duty to help you learn, I am compelled to insist that you completely avoid using AI in this course, as well as any other instance where you are actually trying to learn. Additionally, AI results are incongruous with the way that I teach programming. I teach programming in an intentional, through, systematic, and specific manner where the process of writing code is tantamount to the output of the code. The output of AI only gives you the latter.
 
 # Relevant university policy
+
+<img src="https://imgs.xkcd.com/comics/standards_2x.png" alt="XKCD standards" width="500" align="right">
 
 ## Accessibility, accommodations, & mental health
 
