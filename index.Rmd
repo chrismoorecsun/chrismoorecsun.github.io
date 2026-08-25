@@ -114,7 +114,7 @@ Academic dishonesty includes, but is not limited to: violating clearly stated ru
 Academic dishonesty is a serious offense against the university. Sanctions for academic dishonesty are assigned by an academic review board and may include failure on the assignment, failure in the course, or suspension or expulsion from CSUN.
 
 ## Artificial intelligence
-Artificial intelligence (i.e., genAI) is new tool with potential to profoundly hinder the process of learning. Given that it is my duty to help you learn, I am compelled to insist that you completely avoid using AI in this course, as well as any other instance where you are actually trying to learn. Additionally, AI results are incongruous with the way that I teach programming. I teach programming in an intentional, through, systematic, and specific manner where the process of writing code is tantamount to the output of the code. The output of AI only gives you the latter.
+Artificial intelligence (i.e., genAI) is new tool with potential to profoundly hinder the process of learning. Given that it is my duty to help you learn, I am compelled to insist that you completely avoid using AI in this course, as well as any other instance where you are actually trying to learn. Additionally, AI results are incongruous with the way that I teach programming. I teach art of programming in an intentional, thorough, systematic, and specific manner where the process of writing code is tantamount to the output of the code. The output of AI only gives you the latter.
 
 # Relevant university policy
 
@@ -131,30 +131,25 @@ Mental health: I care about my students’ well-being and understand they may fa
 While CSUN is supportive of athletic participation by its students, academics takes priority over athletics. Both NCAA and CSUN rules prohibit missing class for practices. In the case of overlapping commitments between class and athletic competitions, the student must meet with the professor as soon as possible to discuss these overlaps. The student may request permission to miss class and make up the missed work; the instructor has final authority either to grant or to withhold permission.
 
 ## Sexual misconduct/Title IX statement
+From CSUN:
 
-Students and faculty each have responsibility for maintaining a safe and respectful space to express their reasoned opinions. Professional courtesy and consideration for our classroom community are especially important with respect to topics dealing with differences in race, color, gender and gender identity/expression, sexual orientation, national origin, religion, disability, and age.
+> CSUN is committed to maintaining a safe and respectful learning environment and campus community. As such, all faculty and staff (with few exceptions) are classified as a “responsible employee.” In the event that you choose to write, speak or otherwise disclose about having experienced discrimination or harassment based on a protected status (including Title IX violations such as dating/domestic violence, sexual exploitation, sexual harassment, sexual misconduct, or stalking), and/or retaliation and specify that this violence occurred while you or the perpetrator were a CSUN student, federal and state laws, and CSU policy, require that I notify our campus Title IX Coordinator/DHR Administrator within the Office of Equity and Compliance (equityandcompliance@csun.edu).  
+> Someone from the Office of Equity and Compliance will contact you to inform you of your rights and options and connect you with support resources, including possibilities for holding accountable the person who harmed you. Know that you will not be forced to share information and your level of involvement will be your choice.  
+> If you do not want the Office of Equity and Compliance notified, instead of disclosing
+the experience to me, you can speak confidentially* with:
 
-In this course, the topic of sex (including what can be perceived sexual violence among non-human animals) emerges purposefully and may inadvertently in readings, films, class discussions, or other class materials. I recognize that such topics may be particularly upsetting for some survivors and I encourage all students to seek the support they need.
+> Campus Care Advocate  
+> Klotz Student Health Center, Room 210  
+> Phone: (818) 677-7492  
+> Email: careadvocates@csun.edu
 
-While making personal connections with the topics studied in any course can be a meaningful and important endeavor, please be aware of the following policy regarding confidentiality and disclosures of incidents of sexual misconduct/sexual violence.
+> University Counseling Services  
+> Bayramian Hall 520  
+> Phone: (818) 677-2366, Option 1  
+> Email: coun@csun.edu
 
-As your instructor, one of my responsibilities is to help maintain a safe learning environment on our campus. In the event that you choose to write, speak or otherwise disclose about having experienced sexual misconduct/sexual violence, including rape, sexual assault, sexual battery, dating violence, domestic violence,or stalking and specify that this violence occurred while you or the perpetrator were a CSUN student, federal and state laws require that I, as a “responsible employee,” notify our campus Title IX Coordinator. The Title IX Coordinator will contact you to inform you of your rights and options as a survivor and connect you with support resources, including possibilities for holding accountable the person who harmed you. Know that you will not be forced to share information and your level of involvement will be your choice.
-
-CSUN’s Title IX Coordinator is:
-Susan Hua  
-University Hall, Room 285  
-Phone: 818-677-2077  
-Email: susan.hua@csun.edu
-
-If you do not want the Title IX Coordinator notified, instead of disclosing the experience to me, you can speak confidentially with our Campus Care Advocate.
-
-CSUN’s Campus Care Advocate is:
-Katie LaRue  
-Klotz Student Health Center, Room 140G  
-Phone: 818-677-7492  
-Email: katelin.larue@csun.edu  
-
-For more information regarding your university rights and options as a survivor of sexual misconduct/sexualviolence, please visit the University’s Title IX website at: http://www.csun.edu/shinealight
+> For more information regarding your university rights and options, please visit the Office of Equity and Compliance website at: https://www.csun.edu/office-equity-and-compliance. You can review the CSU Nondiscrimination Policy here: https://calstate.policystat.com/policy/16328404/latest/.
+> *Note: If it is determined that an alleged perpetrator poses an imminent threat to the broader campus community or if person(s) under 18 years of age are involved, our Campus Care Advocate is required to notify our Department of Police Services.
 
 <p align="center">
 <video width="600" height="300" controls autoplay loop>
