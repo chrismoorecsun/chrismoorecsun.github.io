@@ -1,4 +1,5 @@
 name: "my-website"
+exclude: ["chris"]
 output_dir: docs
 navbar:
   title: "Computer modeling in biology"
