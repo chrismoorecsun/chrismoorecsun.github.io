@@ -63,6 +63,7 @@ I decided to use the second edition of *A primer of ecology with R* by [Hank Ste
 - **Participation**: Participation is necessary for this course to succeed.
 
 ### Assessment
+
 <!--- During the first class meeting we discussed and agreed upon a narrative model of grading for course assessment. This means that I will regularly meet with you and discuss and evaluate your learning in this course. I will meet with you every three weeks, beginning week 4 (weeks 4, 7, 12, finals). Here is the document I will add to, to prepare you for our meetings: [link](../Misc/Reflection.html). Please sign up here: [link](https://calendar.app.google/bg1hWLXoDbKbxwGm9). At the end of the semester, I will need to assign you a grade, and we agreed upon a contract model. This means that so long as you make an honest attempt at your assignments you will earn an A. If you do not complete your Remodeling Project you will earn an B. At least 80% or each of the quizzes and problem sets need to be completed to earn an A, with 60% earning a B.
 
 Syllabus statement prior to the semester:
@@ -79,7 +80,7 @@ Students are often curious about how to address their professors. I am comfortab
 
 ## What I expect from you
 
-I presume that you have chosen to attend university, pursue studies in biology (or a similar field), enroll in this course, and try to learn about biology broadly and plant ecology  specifically in this course by means of your own agency.
+I presume that you have chosen to attend university, pursue studies in biology (or a similar field), enroll in this course, and try to learn about biology broadly and computer modeling in biology specifically in this course by means of your own agency.
 
 You are ultimately responsible for how much and what you learn, and I am sharing my expert knowledge and facilitating your learning to the best of my abilities and in good faith. I expect that you understand our roles in the classroom; especially understanding our roles of learning and facilitator of learning, as a collaboration.
 
