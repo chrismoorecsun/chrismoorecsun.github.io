@@ -7,7 +7,7 @@ title: "Resources"
 # Syntax
 
 ### Markdown
-Chris' markdown quick guide: [link](CMsMarkdown.html)
+Chris' markdown quick guide: [link](misc/CMsMarkdown.html)
 
 ### LaTeX
 LaTeX guide developed by https://github.com/Fechin: [link](https://quickref.me/latex.html)
