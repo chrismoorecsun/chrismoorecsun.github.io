@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Programming for populations in R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christopher Moore" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Programming for populations in R
+]
+.subtitle[
+## Iterative statements and finding numerical solutions in R
+]
+.author[
+### Christopher Moore
+]
+
+---
+
+
+
+
+class: inverse, center, bottom
+background-image: url(https://www.hongkiat.com/blog/wp-content/uploads/programming-jokes/joke-shampoo.jpg)
+background-size: center
+# Iterative statements in R
+
+---
+background-image: url(https://d33v4339jhl8k0.cloudfront.net/docs/assets/534421c6e4b09045db8e8a4b/images/5346a718e4b0b2c45b46a36b/file-ofGnbryhhh.gif)
+background-size: center
+class: inverse, center, bottom
+# Iterative statements in R
+
+---
+# `for()` loops in R: the basics
+An iterative statement (*that tells the computer to do all of the work for you*)
+
+--
+
+**Pseudocode:**
+
+`for (`variable in vector`) {`  
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;operation  
+`}`
+
+--
+
+**Code**:
+
+``` r
+for (i in 1:4) {
+  print(i)
+}
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+```
+
+---
+# `for()` loops in R: saving output
+The idea is that you give `for()` a vector, and it performs an operation over it (**note a `for()` loop isn't needed for this, but it has heuristic value to do it**)
+
+--
+
+**Code**:
+
+``` r
+my.vec &lt;- rep(x = 0, times = 4) #rep means repeat, and the arguments are "x" to repeat and number of "times"
+my.vec
+## [1] 0 0 0 0
+for (i in 1:4) {
+  # this saves to element `i` the value `i + 10`
+  my.vec[i] &lt;- i + 10
+}
+my.vec
+## [1] 11 12 13 14
+```
+
+---
+# `for()` loops in R: successive operations
+For perform an action based on a pervious value, and there are two common ways of doing this:
+
+--
+
+**Example 1, code**:
+
+``` r
+n.steps &lt;- 4
+my.vec &lt;- rep(x = 0, times = n.steps)
+initial.val &lt;- 20
+my.vec[1] &lt;- initial.val
+for (i in 1:(n.steps - 1)) {
+  # this saves to element `i + 1` the value `i + 10`
+  my.vec[i+1] &lt;- my.vec[i]*2
+}
+```
+--
+
+``` r
+my.vec
+## [1]  20  40  80 160
+```
+
+---
+# `for()` loops in R: successive operations
+For perform an action based on a pervious value, and there are two common ways of doing this:
+
+--
+
+**Example 2, code**:
+
+``` r
+n.steps &lt;- 4
+my.vec &lt;- rep(x = 0, times = n.steps)
+initial.val &lt;- 20
+my.vec[1] &lt;- initial.val
+for (i in 2:n.steps) {
+  # this saves to element `i` the value `(i - 1) + 10`
+  my.vec[i] &lt;- my.vec[i-1]*2
+}
+```
+--
+
+``` r
+my.vec
+## [1]  20  40  80 160
+```
+---
+# `for()` loops in R: a note on preallocation
+1. Open R (or RStudio)
+2. Create two vectors
+    1. One with a length of 0 (i.e., `c()`)
+    2. One with a length of 1 million (yes, we are about to do 1M things—I love loops)
+3. Write two `for()` loops (one for each vector) from 1 to 1 million and let's just save the value of i to its corresponding element in the vector (e.g., i = 1 is the first element, i = 2 is the second)
+4. Run the code a few times
+
+--
+5. Now, increase the length of both vectors to 10 million, and run one at a time for a few times: how long are they taking?
+
+--
+6. Now, increase the length of both vectors to 100 million! Try to time how long it takes each to loop through each vector.
+
+--
+### Take-home message: always preallocate!
+---
+# `for()` loops in R: a note on preallocation
+
+
+``` r
+size &lt;- 1e7
+
+d.start &lt;- proc.time()
+abc &lt;- c()
+for (i in 1:size) {
+  abc[i] &lt;- i
+}
+d.end &lt;- proc.time()
+
+p.start &lt;- proc.time()
+cba &lt;- vector(mode = "numeric", length = size)
+for (i in 1:size) {
+  cba[i] &lt;- i
+}
+p.end &lt;- proc.time()
+
+d.end - d.start 
+##    user  system elapsed 
+##   0.889   0.102   1.004
+p.end - p.start
+##    user  system elapsed 
+##   0.207   0.018   0.226
+```
+
+---
+class: inverse, center, middle
+[*Hidden Figures* Euler   scene](https://youtu.be/v-pbGAts_Fg?si=O-MzOpjCKcfCUvtB)
+# Numerical solutions in R
+
+---
+# Solving initial-value problems in discrete and continuous time
+- Download package `deSolve` if not installed
+  - There are many ways to do this, but `intall.packages(pkgs = "deSolve")` downloads straight from the Comprehensive R Archive Network
+  - You only need to do this (1) the first time you use it and (2) whenever you reinstall R
+- Import into your library using `library(package = "deSolve")`
+
+---
+# `ode()`: your new best friend for the semseter
+- Use `?ode` to navigate to help
+- `ode()` takes the arguments
+  - `y`: A vector with the initial densities of your population
+  - `times`: A vector of the times over which you wish to solve your problem
+  - `func` A function that takes 3 arguments—time, state variable values, and parameters—and returns a list of derivatives
+  - `parms`: A vector of the parameter values
+  - `method`: "iteration" for discrete time, or nothing, "lsoda" (default), or any other for continuous time
+
+---
+# `ode()` arguments, pt. 1
+
+- `y`: Variable name must match what's in the function you pass on to `func`. For a 1-variable equation, just enter one element, e.g., `c(N = 0.5)`. For a 2+-variable equation, enter *n* elements, e.g., `c(N1 = 0.5, N2= 0.1, R1 = 4)`.
+- `times`: Nothing complicated here, just the time sequence; e.g., `seq(from = 0, to = 10, by. = 0.1)`
+- `parms`: Parameter names must match what's in the function you pass on to `func`. E.g., `c(r = 0.1)`
+
+---
+# `ode()` arguments, pt. 2
+- `func`
+- There are several ways of writing a function to pass to `ode()`, but I think it'd be worth using `with(as.list(c()))` because this matches your parameters from `parms` with what is in the equation. In general, here's how you want to write it using a logistic equation:
+
+``` r
+lositic &lt;- function(time, state, pars) {
+  with(as.list(c(state, pars)), {
+    dN &lt;- r*N
+  return(list(c(dN)))
+  })
+}
+```
+
+---
+# Set up to run `ode()`
+
+``` r
+logistic &lt;- function(time, state, pars) {
+  with(as.list(c(state, pars)), {
+    dN &lt;- r*N
+  return(list(c(dN)))
+  })
+}
+N0 &lt;- c(N = 0.1)
+parm_vec &lt;- c(r = 1.2)
+time_seq &lt;- seq(from  = 0, to = 15, by = 0.1)
+
+log_ode &lt;- ode(y = N0, times = time_seq, func = logistic, parms = parm_vec)
+```
+
+---
+# Output from `ode()`, pt. 1
+
+``` r
+str(log_ode)
+##  'deSolve' num [1:151, 1:2] 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 ...
+##  - attr(*, "dimnames")=List of 2
+##   ..$ : NULL
+##   ..$ : chr [1:2] "time" "N"
+##  - attr(*, "istate")= int [1:21] 2 156 313 NA 6 6 0 36 21 NA ...
+##  - attr(*, "rstate")= num [1:5] 0.1 0.1 15.1 0 0
+##  - attr(*, "lengthvar")= int 1
+##  - attr(*, "type")= chr "lsoda"
+head(log_ode)
+##      time         N
+## [1,]  0.0 0.1000000
+## [2,]  0.1 0.1127510
+## [3,]  0.2 0.1271254
+## [4,]  0.3 0.1433341
+## [5,]  0.4 0.1616092
+## [6,]  0.5 0.1822137
+```
+
+---
+# Output from `ode()`, pt. 2
+
+``` r
+plot(x = log_ode[,1], y = log_ode[,2], xlab = "Time", ylab = "Density", las = 1, type = "l")
+```
+
+![](ProgrammingR_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

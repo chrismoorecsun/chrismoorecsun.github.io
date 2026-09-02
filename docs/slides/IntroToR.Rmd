@@ -1,5 +1,5 @@
 ---
-title: "Lab1: Introduction to the R language, R environment, RStudio, and R Markdown"
+title: "Introduction to the R language, R environment, RStudio, and R Markdown"
 author: "Christopher Moore"
 subtitle: "Data types, data structures, subsetting, functions, workflow, markdown, and R Markdown"
 output:
