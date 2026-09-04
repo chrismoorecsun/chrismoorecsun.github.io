@@ -56,13 +56,29 @@ I decided to use the second edition of *A primer of ecology with R* by [Hank Ste
 
 ## Assignment and assessment
 ### Assignments
-- **Problem sets**: Problem sets are exercises to give students practice working through and learning how to solve problems in population modeling outside of class. P-sets are due Fridays by 5 PM of every week via email with the subject line: `PS[##_Last]` (e.g., `PS03_Moore`). Please submit the .html output of your RMarkdown file named the same thing as subject line (e.g., `PS03_Moore.html`).
+- **Problem sets**: Problem sets are exercises to give students practice working through and learning how to solve problems in population modeling outside of class. P-sets are due Fridays by 5 PM of every week via email with the subject line: `PS[##_Last]` (e.g., `PS03_Moore`). Please submit the .html output of your RMarkdown file named the same thing as subject line (e.g., `PS03_Moore.html`). The week of the first problem set students decided they would be due Sundays at 23:59:59.
 - **Quizzes**: Quizzes are in-class assignments to give students practice retrieval and processing of information from the week's reading. Every Tuesday there will be a quiz, with roughly five multiple choice problems, based on the forthcoming week's material. You will first take it individually, then with a group.
 - **Lab notebooks**: The lab notebooks are R markdown documents written as logs as you learn methods in R in lab. The are all strictly in-lab work and will be collected monthly.
 - **Remodeling project**: This is the big project of the semester where you will choose a scientific paper with an ecological model and recreate it. Throughout the semester you will give several small presentations on the paper and model. The first presentation will be an overview of the paper, the second presentation will be on the methods used by the authors and you, the third presentation will be on the results of the Remodeling attempt, and there will be a final paper summarizing the project.
 - **Participation**: Participation is necessary for this course to succeed.
 
 ### Assessment
+Problem set 01 and quiz 01 are graded for completion.
+
+The remaining problem sets will be graded on the quality of your code and subjective answers (50%) and the correctness of your answers (50%). Quality of your code will include:
+
+- Using the coding tools I give you in addition to what you brought to this class, largely not copy-and-pasting code from the internet, and never AI because we discussed how it hampers learning and is an average of a lot of bad code.
+- Writing human-readable code (e.g., spacing, commenting, labeling arguments, tidy code).
+
+I will drop 1 your lowest (including missing) score.
+
+The quizzes will be graded individually and as a group. The weights of the individual and group scores will be 1:3; i.e., a 80% on the individual and a 100% on the group will be $0.8(0.25) + 1.0(0.75) =$ `r 0.80*0.25 + 1*0.75`.
+
+I expect a Lab Notebook entry every lab class; i.e., one for each Tuesday and Thursday. These will be largely graded for attempt and completion.
+
+The Remodeling Project will consist of several presentations and a paper. Rubrics for each will be provided beforehand. The presentations will be: project introduction, methods, minimal working model, and results. Each presentation will be 10% of the Remodeling Project grade, and the paper wll be 60%.
+
+Overall the problem sets will be worth 20% of your grade, quizzes 30%, lab notebook 5%, and Remodeling Project 45%.
 
 <!--- During the first class meeting we discussed and agreed upon a narrative model of grading for course assessment. This means that I will regularly meet with you and discuss and evaluate your learning in this course. I will meet with you every three weeks, beginning week 4 (weeks 4, 7, 12, finals). Here is the document I will add to, to prepare you for our meetings: [link](../Misc/Reflection.html). Please sign up here: [link](https://calendar.app.google/bg1hWLXoDbKbxwGm9). At the end of the semester, I will need to assign you a grade, and we agreed upon a contract model. This means that so long as you make an honest attempt at your assignments you will earn an A. If you do not complete your Remodeling Project you will earn an B. At least 80% or each of the quizzes and problem sets need to be completed to earn an A, with 60% earning a B.
 

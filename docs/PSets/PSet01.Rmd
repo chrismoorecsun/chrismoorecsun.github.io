@@ -62,6 +62,11 @@ Below is how one would simulate population growth starting with 42 individuals o
 
 For this problem, please modify the code above to plot three different values of the finite rate of growth, $\lambda = 1.1, 0.55, \text{and}~1.65$. Please plot all three values on the same plot by, for each subsequent simulation, use `points()` to add the points. `points()` takes many of the same arguments as `plot()`; e.g., `x = `, `y = `, `col = `, `pch = `, etc.
 
+***
+**Please see the syllabus for directions on submission.**
+
+***
+
 ## References
 Hairston, N.G. (1996). Long-term studies of vertebrate communities. Academic Press, New York, NY.
 
