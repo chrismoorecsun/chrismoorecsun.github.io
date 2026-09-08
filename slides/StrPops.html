@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>SturcturedPopulations</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christopher Moore" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# SturcturedPopulations
+]
+.subtitle[
+## Adding demography to population models
+]
+.author[
+### Christopher Moore
+]
+
+---
+
+
+
+
+# An outline of structured population models
+
+--
+
+* Age-structured populations
+  * A diversion on matrix math
+* Stage-structured populations
+* Sensitivity and elasticity
+
+---
+background-image: url(https://i.imgflip.com/25i7oj.jpg)
+class: inverse
+
+---
+# Age- structured populations
+
+--
+
+1. We have thus far examined how populations have changed assuming **the population is entirely homogeneous**
+
+--
+
+2. For many reasons, we might wish to more precisely model and analyze populations with respect to their age structure. That is, looking at the probabilities of survival and fecundity at each age.
+
+--
+
+* For simplifaction, we are working with discrete-time, discrete-age models
+
+---
+# The simplest case: two age classes
+
+* Imagine a species that lives for two years; e.g., a biennial plant. The seeds germinate at the beginning of the first year (age 0), and they leaf out and photosynthesize. During the second year (age 1), the plant flowers, sets seed, and dies.
+
+--
+
+* Verbally, the model that I just described could be more concisely written as:
+`$$\begin{align}
+&amp;\text{zero-year-old plants = (# one-year-old plants)*fecundity} \\
+&amp;\text{one-year-old plants = zero-year-old plants that survived}
+\end{align}$$`
+
+--
+
+* Let's play with some simple numbers:
+  * Let's say that the average one-year-old plants `\((x_1)\)` produces 25 seeds `\((f = 25)\)` that germinate the following year
+  * Let's say that, on average, about 20% of zero-year-old plants `\((x_0)\)` survive `\((p_{\text{survive from age class 0 to 1}})\)` to the second year `\((x_1)\)`
+  * Lastly, if we initially had 5 and 2 individuals respectively of `\(x_0\)` and `\(x_1\)`
+
+--
+
+* Calculate, by hand, how many individuals would exist at each age after 5 years
+
+---
+# The simplest case: two age classes
+## Results
+
+.pull-left[
+t | `\(x_0\)` | `\(x_1\)` |
+--|:-:|:-:|
+0 | 5 | 2
+1 | 50 | 1
+2 | 25 | 10
+3 | 250 | 5
+4 | 125 | 50
+5 | 1250 | 25
+]
+
+--
+
+.pull-right[
+&lt;img src="StrPops_files/figure-html/unnamed-chunk-1-1.png" width="450" height="400" /&gt;
+]
+
+---
+# The simplest case: two age classes
+## Results, with each age class
+
+.pull-left[
+
+t | `\(x_0\)` | `\(x_1\)` |
+--|:-:|:-:|
+0 | 5 | 2
+1 | 50 | 1
+2 | 25 | 10
+3 | 250 | 5
+4 | 125 | 50
+5 | 1250 | 25
+]
+
+.pull-right[
+&lt;img src="StrPops_files/figure-html/unnamed-chunk-2-1.png" width="450" height="400" /&gt;
+]
+
+---
+# The condensed way: matrix operations
+From a few slides back:
+* Verbally, the model that I just described could be more concisely written as:
+`$$\begin{align}\text{zero-year-old plants = (# one-year-old plants)*fecundity} \\
+\text{one-year-old plants = zero-year-old plants that survived}
+\end{align}$$`
+
+--
+
+As a pair of equations, we can write
+`$$\begin{align}
+x_0(t+1) &amp;= 25x_1(t) \\
+x_1(t+1) &amp;= 0.2x_0(t)
+\end{align}$$`
+
+--
+
+which is the same as
+`$$\begin{align}
+x_0(t+1) &amp;= 0x_0(t) + 25x_1(t) \\
+x_1(t+1) &amp;= 0.2x_0(t) + 0x_1(t)
+\end{align}$$`
+
+---
+# The condensed way: matrix operations
+
+`$$\begin{align}
+x_0(t+1) &amp;= 0x_0(t) + 25x_1(t) \\
+x_1(t+1) &amp;= 0.2x_0(t) + 0x_1(t)
+\end{align}$$`
+--
+Can be represented as
+`$$\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1)
+\end{bmatrix}$$`
+---
+# The condensed way: matrix operations
+
+`$$\begin{align}
+x_0(t+1) &amp;= 0x_0(t) + 25x_1(t) \\
+x_1(t+1) &amp;= 0.2x_0(t) + 0x_1(t)
+\end{align}$$`
+
+Can be represented as
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; 25 \\
+0.2 &amp; 0
+\end{bmatrix}\end{gather}$$`
+
+---
+# The condensed way: matrix operations
+
+`$$\begin{align}
+x_0(t+1) &amp;= 0x_0(t) + 25x_1(t) \\
+x_1(t+1) &amp;= 0.2x_0(t) + 0x_1(t)
+\end{align}$$`
+
+Can be represented as
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; 25 \\
+0.2 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+x_0(t) \\
+x_1(t)
+\end{bmatrix}\end{gather}$$`
+
+--
+
+Symbolically, this is (what would be) equation (1c) in V&amp;G:
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; f_1 \\
+p_{10} &amp; 0
+\end{bmatrix}\begin{bmatrix}
+x_0(t) \\
+x_1(t)
+\end{bmatrix}\end{gather}$$`
+
+---
+# Structured populations models
+## With 3 age classes
+
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1) \\
+x_2(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; f_1 &amp; f_2 \\
+p_{10} &amp; 0 &amp; 0 \\
+0 &amp; p_{21} &amp; 0
+\end{bmatrix}\begin{bmatrix}
+x_0(t) \\
+x_1(t) \\
+x_2(t)
+\end{bmatrix}\end{gather}$$`
+
+---
+# Structured populations models
+## With 4 age classes
+
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1) \\
+x_2(t+1) \\
+x_3(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; f_1 &amp; f_2 &amp; f_3 \\
+p_{10} &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; p_{21} &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; p_{32} &amp; 0
+\end{bmatrix}\begin{bmatrix}
+x_0(t) \\
+x_1(t) \\
+x_2(t) \\
+x_3(t)
+\end{bmatrix}\end{gather}$$`
+
+---
+# Structured populations models
+## With arbitrary `\((n)\)` numers of age classes
+
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1) \\
+x_2(t+1) \\
+x_3(t+1) \\
+\vdots \\
+x_n(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; f_1 &amp; f_2 &amp; f_3 &amp; \dots &amp; f_{m-1} \\
+p_{10} &amp; 0 &amp; 0 &amp; 0  &amp; &amp; 0 \\
+0 &amp; p_{21} &amp; 0 &amp; 0 &amp; &amp; 0 \\
+0 &amp; 0 &amp; p_{32} &amp; 0 &amp; &amp; 0 \\
+\vdots &amp; &amp; &amp; \ddots &amp; &amp; \vdots \\
+0 &amp; \dots &amp; &amp; &amp; p_{n, m-1} &amp; 0
+\end{bmatrix}\begin{bmatrix}
+x_0(t) \\
+x_1(t) \\
+x_2(t) \\
+x_3(t) \\
+\vdots \\
+x_n(t)
+\end{bmatrix}\end{gather}$$`
+
+
+---
+# Some matrix math: notation
+Annotation in **bold** signifies that we are working with matrices.
+
+--
+
+For instance, the first, 2-age-class model
+`$$\begin{gather}\begin{bmatrix}
+x_0(t+1) \\
+x_1(t+1)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; f_1 \\
+p_{10} &amp; 0
+\end{bmatrix}\begin{bmatrix}
+x_0(t) \\
+x_2(t)
+\end{bmatrix}\end{gather}$$`
+
+can be written more concisely as
+
+`$$\mathbf{X(t+1) = PX(t)}$$`
+
+---
+# Some matrix math: multiplication
+It's important to note that a vector is a matrix with one column; e.g., as the depicted `\(\mathbf{x}\)` above.
+
+--
+
+Second, let's multiply a matrix times a vector by hand. Let's say you have a matrix that looks like this:
+`$$\begin{gather}
+? = \begin{bmatrix}
+0 &amp; 4 &amp; 8 \\
+0.1 &amp; 0 &amp; 0 \\
+0 &amp; 0.9 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+6 \\
+4 \\
+2
+\end{bmatrix}\end{gather}$$`
+
+(Think about how you did this in the biennial-plant problem.)
+
+--
+
+`$$\begin{gather}\begin{bmatrix}
+6(0) + 4(4) + 2(8) \\
+6(0.1) + 4(0) + 2(0) \\
+6(0) + 4(0.9) + 2(0)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; 4 &amp; 8 \\
+0.1 &amp; 0 &amp; 0 \\
+0 &amp; 0.9 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+6 \\
+4 \\
+2
+\end{bmatrix}\end{gather}$$`
+
+---
+# Some matrix math: multiplication
+It's important to note that a vector is a matrix with one column; e.g., as the depicted `\(\mathbf{x}\)` above.
+
+Second, let's multiply a matrix times a vector by hand. Let's say you have a matrix that looks like this:
+`$$\begin{gather}
+? = \begin{bmatrix}
+0 &amp; 4 &amp; 8 \\
+0.1 &amp; 0 &amp; 0 \\
+0 &amp; 0.9 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+6 \\
+4 \\
+2
+\end{bmatrix}\end{gather}$$`
+
+(Think about how you did this in the biennial-plant problem.)
+
+`$$\begin{gather}\begin{bmatrix}
+32 \\
+0.6 \\
+3.6
+\end{bmatrix} = \begin{bmatrix}
+6(0) + 4(4) + 2(8) \\
+6(0.1) + 4(0) + 2(0) \\
+6(0) + 4(0.9) + 2(0)
+\end{bmatrix} = \begin{bmatrix}
+0 &amp; 4 &amp; 8 \\
+0.1 &amp; 0 &amp; 0 \\
+0 &amp; 0.9 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+6 \\
+4 \\
+2
+\end{bmatrix}\end{gather}$$`
+---
+# Some matrix math: using R 😌 :relieved:
+First, build the projection matrix and population vector
+
+`$$\begin{gather}
+? = \begin{bmatrix}
+0 &amp; 4 &amp; 8 \\
+0.1 &amp; 0 &amp; 0 \\
+0 &amp; 0.9 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+6 \\
+4 \\
+2
+\end{bmatrix}\end{gather}$$`
+
+--
+
+
+``` r
+proj.mat &lt;- matrix(data = c(0, 0.1, 0, 4, 0, 0.9, 8, 0, 0), nrow = 3, ncol = 3)
+proj.mat
+##      [,1] [,2] [,3]
+## [1,]  0.0  4.0    8
+## [2,]  0.1  0.0    0
+## [3,]  0.0  0.9    0
+N.vec &lt;- matrix(data = c(6, 4, 2), nrow = 3, ncol = 1)
+N.vec
+##      [,1]
+## [1,]    6
+## [2,]    4
+## [3,]    2
+```
+
+---
+# Some matrix math: using R
+
+``` r
+proj.mat*N.vec
+## Error in proj.mat * N.vec: non-conformable arrays
+```
+
+--
+
+
+``` r
+proj.mat%*%N.vec
+##      [,1]
+## [1,] 32.0
+## [2,]  0.6
+## [3,]  3.6
+```
+
+This is matrix multiplication (AKA, the inner product)!
+
+--
+
+Also, it's important to note that matrix multiplication is non-commutative
+
+``` r
+N.vec%*%proj.mat
+## Error in N.vec %*% proj.mat: non-conformable arguments
+```
+
+---
+# Projecting matrix models
+## Write a for loop for the matrix you just created
+
+--
+
+
+``` r
+steps &lt;- 7
+N.mat &lt;- matrix(data = NA, ncol = steps, nrow = length(N.vec))
+N.mat[,1] &lt;- N.vec
+for (i in 2:steps){
+  N.mat[,i] &lt;- proj.mat%*%N.mat[,i-1]
+}
+```
+
+--
+
+To sum across columns, use the `apply()` function
+
+
+``` r
+sumN &lt;- apply(X = N.mat, MARGIN = 2, FUN = sum)
+sumN
+## [1] 12.0000 36.2000 34.9400 23.1200 40.0400 34.4048 32.6624
+```
+
+(The MARGIN = 2 means apply the function over the columns; to apply a funciton over rows use MARGIN = 1)
+
+---
+# Visualizing a structured model
+
+
+
+``` r
+plot(x = 1:steps, y = sumN, type = "l", xlab = "Time step", ylab = "Density", las = 1)
+points(x = 1:steps, y = sumN, pch = 16, cex = 1.25)
+```
+
+![](StrPops_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+# Visualizing a structured model
+
+
+
+``` r
+plot(x = 1:steps, y = sumN, type = "l", xlab = "Time step", ylab = "Density", las = 1)
+points(x = 1:steps, y = sumN, pch = 16, cex = 1.25); segments(x0 = 1, x1 = 11, y0 = 50, y1 = 50, lwd = 1.5, lty = 2); text(x = 6, y = 53, labels = "Transience"); segments(x0 = 12.5, x1 = 20, y0 = 40, y1 = 59, lwd = 1.5); text(x = 17.5, y = 40, labels = "Stable(-ish)\nage\ndistribution")
+```
+
+![](StrPops_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+
+---
+
+# Visualizing a structured model (each age class)
+
+
+.pull-left[
+Same figure from previous slide, with the total population size
+![](StrPops_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+Each age class as different colors; grey as the total population)
+![](StrPops_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+]
+
+
+---
+# Visualizing a structured model (each age class)
+
+
+
+![](StrPops_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+# Visualizing a structured model (many time steps)
+
+
+
+
+``` r
+plot(x = 1:steps, y = sumN, type = "l", xlab = "Time step", ylab = "Density", las = 1)
+points(x = 1:steps, y = sumN, pch = 16, cex = 1.25)
+```
+
+![](StrPops_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+
+---
+# Can we relate stable-age distribution growth with a constant value `\((\lambda)\)`?
+
+--
+
+Yes!!!
+
+--
+
+.pull-left[
+Structured-population growth at a stable-age distribution
+`$$\begin{align}
+\mathbf{N}_{t+1} &amp;= \lambda \mathbf{N}_t \\
+\mathbf{N}_{t+2} &amp;= \lambda \mathbf{N}_{t+1} = \lambda \lambda \mathbf{N}_t = \lambda ^2\mathbf{N}_t \\
+\dots \\
+\mathbf{N}_{t+n} &amp;= \lambda ^n\mathbf{N}_t
+\end{align}$$`
+]
+
+--
+
+.pull-right[
+General structured-population growth
+`$$\begin{align}
+\mathbf{N}_{t+1} &amp;= \mathbf{P}\mathbf{N}_t \\
+\mathbf{N}_{t+2} &amp;= \mathbf{P}\mathbf{N}_{t+1} = \mathbf{P}\mathbf{P}\mathbf{N}_t = \mathbf{P}^2N_t \\
+\dots \\
+\mathbf{N}_{t+n} &amp;= \mathbf{P}^n\mathbf{N}_t
+\end{align}$$`
+]
+
+--
+
+
+*Et vualá*: `\(\mathbf{P}^n\mathbf{N}_t = \lambda ^n\mathbf{N}_t\)`
+
+
+---
+# A characteristic of matrices: die eigenvalue
+
+--
+
+It turns out if we have a projection matrix, *we can solve for the finite rate of increase `\((\lambda)\)`*!
+
+--
+
+We just need to solve for `\((\lambda)\)` from the pervious slide, `\(\mathbf{P}^n\mathbf{N}_t = \lambda ^n\mathbf{N}_t\)`
+
+--
+
+To do so, we need to conform both sides to one another (LHS is a matrix, RHS is a scalar) (eqn. 10), then solve for `\((\lambda)\)` (equation 10 until the end of the section)
+
+--
+
+Read the derivation in the book and know that the dominant eigenvalue (the largest absoute value) is equal to the finite rate of increase. Knowing that relation is important, but for finding it we should let R do it for us. In R, the eigenvalues can be found of a matrix by using the function `eigen()`. Do this over the matrix we've been looking at:
+
+`$$\begin{gather}
+? = \begin{bmatrix}
+0 &amp; 4 &amp; 8 \\
+0.1 &amp; 0 &amp; 0 \\
+0 &amp; 0.9 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+6 \\
+4 \\
+2
+\end{bmatrix}\end{gather}$$`
+
+--
+An interactive webpage to help usederstand eigenvalues, in general: [http://setosa.io/ev/eigenvectors-and-eigenvalues/](http://setosa.io/ev/eigenvectors-and-eigenvalues/)
+
+---
+class: inverse, middle, center
+# Hopefully you feel confident about these age structured models (now)!
+
+![](https://media.giphy.com/media/KBCxijnlSs9jy/giphy.gif)
+
+---
+class: inverse, center, middle
+# Stage structured models
+
+---
+# Stage structured models
+So far we have learned about age-structured models, where, with the exception to those organisms that transcend time, indiviudals must move from one age class to another. BUT, we can also model populations that are also structured demographically by *stage*. This allows us to reduce the number of effective classes (e.g., if survival and fecundity of a 44- and 45-year-old human is the same, then the classes are redundant) to more easily analyze the population dynamics.
+
+--
+
+As an example, imagine a population of holometabolan (complete metamorphosis) insects, say a dung beetle, with 4 age classes: egg, larva, pupa, adult. The adults can live many years, but the other three stages advance each year.
+---
+# Stage structured models: sea turtles
+
+![sea turtle data](StrPops_files/SeaTurtleTitle.png)
+
+---
+# Stage structured models: sea turtles
+
+![sea turtle data](StrPops_files/SeaTurtleData.png)
+
+--
+
+![sea turtle data](StrPops_files/SeaTurtleMatrix.png)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
