@@ -1,0 +1,90 @@
+---
+title: "Remodeling Project"
+subtitle: "Recreating an ecological model, Part I: The Literature Search"
+output:
+  html_document:
+    number_sections: false
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+> “. . . tracing a stream of metaphors that runs right through language and flows from the concrete to the abstract. In this contstant surge, the simplest and sturdiest of words are swepts along, one after another, and carried toward abstract meanings. As these words drift downstream, they are bleached of their original vitality and turn into pale lifeless terms for abstract concepts—the substance from which the structure of language is formed. And when at last the river sinks into the sea, these spent metaphors are deposited, layer after layer, and so the structure of language grows, as a reef of dead metaphors.” ([The Unfolding of Language](https://sites.google.com/site/theunfoldingoflanguage/), by Guy Deutscher)
+
+
+# Background and timeline
+
+Models are, among other things, tools that help us better understand the universe. To paraphrase the words of eminent evolutionary biologist [Marlene Zuk](https://www.journals.uchicago.edu/doi/10.1086/697508) "models are devices that allow what-if reasoning." One could legitimately argue that we constantly using models, and in a multiplicity of ways, including, as examples, linguistically through the use of metaphor, physically through representations of scaled-down or -up objects (solar system, cell models, buildings, etc.), symbolically through mathematics, or graphically through the depiction of relationships or flows. From models come understanding.
+
+To gain a first-hand experience of modeling in ecology (or evolution, if you're so inclined), I am assigning that you find a study that makes use of a model, and recreate it. There is a great deal to be learned from being in the weeds of a study with an ecologist that is trying to understanding an aspect of the natural world, attempting to create a model that will capture its essential elements, and trying to gain deeper understanding that would otherwise been unknown without the model. Don't get me wrong, there is a lot to learn from the broad kinds of modeling that we are studying from the text (mostly population-level, theoretical models), but there is also a lot to learn from trying to recreate a newer, (perhaps) messier, real scientific model. In doing so I'm hoping that you'll grow and learn through learning idiosyncratic approaches the authors used and see how models are created, analyzed, and used in practice—it's very different from the nice, clean models we read about in the textbook that have been studied for *many decades*! This might include discovering implicit or explicit assumptions of the model, approaches to parameterizing of the model, learning different quantitative techniques for analysis, seeing new types of visualizations, and lots of other possibilities!
+
+But perhaps most importantly, after creating and analyzing a *real* scientific model, I am hoping that this project will empower you by revealing to you (and me, of course) that you have the ability to model at a professional, scientific level. Most of you are preparing to graduate within the next year or just starting graduate school, and these types of activities will certainly benefit you in many expected and unexpected ways.
+
+The Remodeling Project will have 6 parts:
+
+1. Searching the scientific literature for potential projects and identifying the model you wish to recreate
+2. Familiarizing yourself with the paper and presenting it to your classmates
+3. Working through the methods and presenting it to your classmates
+4. Recreating the model and analyzing it
+5. Presenting the results to your classmates
+6. Writing a final paper on the original research, your research, and your experience.
+
+The timeline will follow:
+
+| Date                 | Task                                                                              |
+|----------------------|-----------------------------------------------------------------------------------|
+| September 08         | Introduction to the project and assigned literature search                        |
+| September 15         | Present Chris with *up to* 7 potential papers                                     |
+| September 15—22      | Meet with Chris to choose a the original research you wish to recreate            |
+| September 29         | Proposal presentation (essentially the paper with a light version of the methods) |
+| October 13           | Methods presentation                                                              |
+| November 05          | Preliminary results presentation                                                  |
+| November labs        | Remodeling project analysis in lab                                                |
+| December 08          | Results presentations                                                             |
+| December 15          | Final research paper due (will announce time when final schedule is released)     |
+
+> “Remember, always, that everything you know, and everything everyone knows, is only a model. Get your model out there where it can be viewed. Invite others to challenge your assumptions and add their own.” ([Thinking in Systems: A Primer](https://www.chelseagreen.com/product/thinking-in-systems/), by Donella Meadows)
+
+# Part I: Finding a paper
+The first part of the Remodeling Project will be to find a model that you wish to recreate. To do so, you will first search broadly, then narrow your choices down on your own and with my help. I highly recommend you use an *actual database* to search for articles. Perhaps the most useful tool available to you is through the library, called [SCOPUS](hhttps://libguides.csun.edu/scopus). Opposed to unmanipulatable blackboxes like Google and Google Scholar (don't get me wrong, even those can have their time and place), SCOPUS allows you to search all sorts of criteria (keywords, author, article type, etc.), and further sort and filter (e.g., filter specific journals, sort by relevance or date).
+
+Before you take to the interwebs, take some moments to reflect on aspects of ecology (or evolution) that you find most interesting. I would suggest searching for what you find interesting in addition to some of the keywords I suggest below.
+
+In terms of your search criteria, there are several journals that I would recommend you search *if* you want to recreate a model in organismal biology. I don't know the areas of microbiology, cellular biology, and molecular biology, but journals with general titles like the Journal of Theoretical Biology tend to have mode papers in those areas:
+
+* Ecology
+* Evolution
+* American Naturalist
+* Journal of Theoretical Biology
+* Conservation Biology
+* Ecological Modelling
+* Oikos
+* Journal of Applied Ecology
+* Journal of Ecology
+* Journal of Animal Ecology
+* Theoretical Population Biology
+* Theoretical Ecology
+
+Here are also some keywords that will perhaps help you find a recreatable modeling paper. Use these in combination with the aspect of ecology or evolution you're interested in (e.g., a taxon, interaction type, location):
+
+* ecological modeling (incl. modelling)
+* population dynamics
+* population modeling
+* demography
+* carrying capacity
+* Lotka-Volterra
+* biological model
+
+The types of models that we are largely focused in in this course are dynamic models, meaning that we study how populations change over time. When looking at the math, if the left-hand side of the equations have a $\mathrm{d}x/\mathrm{d}t =$ or $x_{t+1} =$, with $x$ being population size, biomass, density, etc., then you are probably looking at a suitable model for this project. I understand that I am asking you to find papers with models that you have only just begun to learn about, but that's because we need to start this project early in the semester and I am also here to help you.
+
+In terms of the age of the paper, I think that either new (within the past 10 years) or really old papers (classics from the 1970s or earlier) would be good choices. (I will strongly suggest the former.)
+
+Last bit on criteria. I would like for you to avoid two types of model: (1) individual-based models (AKA agent-based models, IBMs, ABMs) and (2) species distribution models (AKA ecological niche models, ENMs, SDMs). IBMs require a totally different type of programming, which I would like you to steer away from. If you have experience or want to learn these methods I'd of course support you, but I cannot give you the support that you may need to complete a successful project. SDMs require external data, and these data aren't always accessible. Like with the IBMs, if you have experience or want to learn these methods I'd of course support you, but I cannot give you the support that you may need to complete a successful project.
+
+For this first set of up-to-7 articles, I would like for you email me up to 7 links to articles with the subject line as `RM_papers`. In here, save .pdf copies of papers that capture your interests that have a modeling component. Have all of the papers there by **Tuesday, September 15**. I will look over them and we will arrange to meet to discuss your interests and capabilities to recreate the model.
+
+An important note is that I would like for you to look for papers without concern for the "difficulty." Each project will likely have differing degrees of difficulty, and I will do my best to standardize them all by making lighter models more substantive and more difficult models lighter. Really, I want the subject to be important and interesting to you, because that will bring out your drive and best work!
