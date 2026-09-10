@@ -1,5 +1,5 @@
 ---
-title: "Problem set 2: Stevens, Ch. 5"
+title: "Problem set 2, part I: Stevens, Ch. 5"
 output: html_document
 ---
 
@@ -7,19 +7,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, collapse = T)
 ```
 
-# 1. Population structure
-In your own words, what does is mean for populations to have "structure?" Verbally describe what  a structured population might look like in a vertebrate animal? An arthropod animal? A plant? A microbe?
-
-### 2.1
-Given the projection matrix:
+# 1. Projecting an age-structured population and reconciling classes with total population
+Consider the following population projection matrix:
 $$\begin{bmatrix}
 0 & 1 & 4 \\
 0.7 & 0 & 0 \\
 0 & 0.2 & 0
 \end{bmatrix}$$
-begin with just 10 individuals in the first age class and project the population 15 times in R. Use the code that you learned in lecture and lab. Plot the total population over time.
+
+1.1. Begin with just 10 individuals in the first age class and project the population 15 times in R.  
+1.2. Plot each age class over time on the same graph. Like always, make sure you're plotting all of the data so that none of it is outside of the plot ranges.  
+1.3. Plot the total population over time on top of the same graph you made for 1.2. First, you will need add the individuals across classes because all individuals are counted to plot the total population size. You can do this at least two ways: (1) `apply(X = , MARGIN = 2, FUN = sum)` or (2) using `colSums(x = )`. The first is preferable because you can give it  Second, make the plot.
 
 ***
+> 1.1
 
 ```{r}
 # Create the projection matrix, initial pop sizes, and test
@@ -37,17 +38,47 @@ begin with just 10 individuals in the first age class and project the population
    for (i in 2:n.steps) {
       N[,i] <- proj.mat%*%N[,i-1]  
    }
-
-# Function to sum columns to give total population size (dimension 2)
-   totalN <- apply(X = N, MARGIN = 2, FUN = sum)
-
-# Plot points at each step and connect them with a line
-   plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population")
-   points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
 ```
 
-### 2.2
-From the data in exercise 2.1, plot the logarithm of the population density over time. What equation would best fit these data? Also graph the data from only the last time time periods (times 11-15). What equation would best fit these data?
+> 1.2
+
+```{r}
+# Plot class 1 and add lines for classes 2 and 3 (note I add points to better 
+# show the steps in time and that `pch = 16` makes points solid)
+   plot(x = vec.steps, y = N[1,], type = "l", las = 1, xlab = "Time step", ylab = "Total population", col = "orange")
+    points(x = vec.steps, y = N[1,], pch = 16, col = "orange")
+   lines(x = vec.steps, y = N[2,], col = "red")
+    points(x = vec.steps, y = N[2,], col = "red", pch = 16)
+   lines(x = vec.steps, y = N[3,], col = "blue")
+    points(x = vec.steps, y = N[3,], col = "blue", pch = 16)
+```
+
+> 1.3
+
+```{r}
+# Function to sum columns to give total population size (dimension 2)
+  totalN <- apply(X = N, MARGIN = 2, FUN = sum)
+  # alternatively, you could write: totalN <- colSums(N)
+
+# Plot points at each step and connect them with a line (note I made the points
+# a little bit bigger by making `cex` > 1 of the total population so we could
+# see it below the other points)
+   plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population", ylim = c(0, 30))
+   points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
+   lines(x = vec.steps, y = N[1,], col = "orange")
+    points(x = vec.steps, y = N[1,], pch = 16, col = "orange")
+   lines(x = vec.steps, y = N[2,], col = "red")
+    points(x = vec.steps, y = N[2,], col = "red", pch = 16)
+   lines(x = vec.steps, y = N[3,], col = "blue")
+    points(x = vec.steps, y = N[3,], col = "blue", pch = 16)
+```
+
+
+# 2. The logrithmic property of density-independent change
+2.1. From the data in exercise 1., plot the logarithm of the total population density over time.
+2.2. Next, plot the logarithm of the total population density over time, but for the last 5 time steps.
+2.3. Plot the data from only the last time time periods (times 11-15). What equation would best fit these data? Estimate the slope manually by dividing the rise over the run.
+2.4. 
 
 ***
 ```{r}
@@ -55,8 +86,6 @@ log_totalN <- log(totalN)
 plot(x = vec.steps, y = log_totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population (log)")
 points(x = vec.steps, y = log_totalN, pch = 16, cex = 1.5)
 ```
-
-It's not a smooth curve, so it's difficult to describe an equation to fit these data.
 
 ```{r}
 log_totalN <- log(totalN)
@@ -67,22 +96,27 @@ points(x = vec.steps[last.five], y = log_totalN[last.five], pch = 16, cex = 1.5)
 
 Plotting the last 5 time steps, you can see that there is log-linear growth through time, just like with density-independent growth.
 
-### 2.3.
-From the projection in exercise 2.1, plot the population densities of the age categories over time. Compare the pattern with the results of exercise 2.1.
-
-***
 ```{r}
-plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population", ylim = c(0, 30))
-    points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
-  lines(x = vec.steps, y = N[1,], col = "red")
-    points(x = vec.steps, y = N[1,], col = "red", pch = 16, cex = 1.25)
-  lines(x = vec.steps, y = N[2,], col = "blue")
-    points(x = vec.steps, y = N[2,], col = "blue", pch = 16, cex = 1.25)
-  lines(x = vec.steps, y = N[3,], col = "orange")
-    points(x = vec.steps, y = N[3,], col = "orange", pch = 16, cex = 1.25)
+# The slope is rise over run, or (y1 - y0)/(x1 - x0)
+  rise <- (log_totalN[last.five][5] - log_totalN[last.five][1])
+  run <- 15 - 11
+  slope <- rise/run
+  lm(log_totalN[last.five] ~ vec.steps[last.five])
+  
+  N_vec <- rep(x = NA, times = 15)
+  N_vec[1] <- 10
+  for (i in 2:15) {
+    Nt <- N_vec[i - 1]
+    N_vec[i] <- exp(0.09438)*Nt
+  }
+
+  plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population")
+   points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
+  lines(x = 1:15, y = N_vec, col = "hotpink")
+  points(x = 1:15, y = N_vec, col = "hotpink", pch = 16)
+
 ```
 
-Each age fluctuates early in the timeseries and then stabilize. Each age seems to fluctualte more than the total population.
 
 ### 2.4
 Given the projection matrix
@@ -110,61 +144,6 @@ plot(x = vec.steps, y = total.N, type = "l", las = 1, xlab = "Timestep", ylab = 
   points(x = vec.steps, y = total.N, pch = 16, cex = 1.5)
 ```
 
-### 2.13
-Given the projection matrix $\Bigl[ \begin{smallmatrix}0 & 3 \\ 0.9 & 0\end{smallmatrix}\Bigr],$ compute the eigenvalues. Beginning with $N_1 = 21.5$ and $N_2 = 23.6$, project the final matrix forward 30 times, plot the log of the total number against time, and estimate the rate of population growth from a line drawn on the plot. (Recall from the previous chapter what the exponential rate of incrase looks like after taking a natural logs.) Does the estimate of the finite rate of population increase correspond to the computation of the dominant eigenvalue? Note here that a model in which only one category produces offspring has some unusual behaviors, and we include one here only to illustrate the general correspondence with the direct calculation of the eigenvalues and the prohjected population.
-
-***
-The eigenvalue would be solving for $\lambda$ in $\lambda ^2 - gm = 0 = \lambda ^2 - 3(0.9)$ means that $\lambda = 1.643168$.
-```{r}
-n.steps_2.13 <- 31
-vec.steps_2.13 <- 1:n.steps_2.13
-proj.mat_2.13 <- matrix(data = c(0, 0.9, 3, 0), nrow = 2, ncol = 2)
-N0_2.13 <- matrix(data = c(21.5, 23.6), ncol = 1)
-N_2.13 <- matrix(data = NA, nrow = length(N0_2.13), ncol = n.steps_2.13)
-N_2.13[,1] <- N0_2.13
-for (i in 2:n.steps_2.13) {
-  N_2.13[,i] <- proj.mat_2.13%*%N_2.13[,(i-1)]
-}
-total.N_2.13 <- apply(X = N_2.13, MARGIN = 2, FUN = sum)
-total.N_2.13_log <- log(total.N_2.13)
-plot(x = vec.steps_2.13, y = total.N_2.13_log, xlab = "Time step", ylab = "Density (log)", pch = 16)
-  lines(x = vec.steps_2.13, y = total.N_2.13_log)
-# estimate line and compare
-lm.out_2.13 <- lm(formula = total.N_2.13_log ~ vec.steps_2.13)
-slope_2.13 <- lm.out_2.13$coefficients[2]
-message(paste0("Your slope is ", round(slope_2.13, digits = 5), ". Raising e to that power, that gives you ", round(exp(slope_2.13), digits = 5),". Compare that with the calculated eigenvalue, 1.643168 You are also an astounding user of R. Pat your self on the back."))
-```
-
-I printed out the values using `message()` above. Yes, they perfectly correspond.
-
-### 2.14
-Given the projection matrix $$\Biggl[ \begin{smallmatrix}0&3&8&1 \\ 0.7&0&0&0 \\ 0&0.3&0&0 \\ 0&0&0.1&0  \end{smallmatrix}\Biggr]$$, compute the eigenvalues. Project the population starting with the population vector $$\Biggl[ \begin{smallmatrix}76 \\ 86 \\ 99 \\ 14  \end{smallmatrix}\Biggr]$$, and directly estimate the dominant eigenvalue. (Note that in these exercises the population behaves with an apparent cycling of either 3 (exercise 2.13) or 4 (exercise 2.14) time units. This is because there is on;y a single category that produces offspring, a restriction we put on the exercise so the eigenvalue could be computed analytically.)
-
-***
-```{r}
-n.steps_2.14 <- 31
-vec.steps_2.14 <- 1:n.steps_2.14
-proj.mat_2.14 <- matrix(data = c(0, 0.7, 0, 0, 3, 0, 0.3, 0, 8, 0, 0, 0.1, 1, 0, 0, 0), nrow = 4, ncol = 4)
-N0_2.14 <- matrix(data = c(76, 86, 99, 14), ncol = 1)
-N_2.14 <- matrix(data = NA, nrow = length(N0_2.14), ncol = n.steps_2.14)
-N_2.14[,1] <- N0_2.14
-for (i in 2:n.steps_2.14) {
-  N_2.14[,i] <- proj.mat_2.14%*%N_2.14[,(i-1)]
-}
-total.N_2.14 <- apply(X = N_2.14, MARGIN = 2, FUN = sum)
-total.N_2.14_log <- log(total.N_2.14)
-plot(x = vec.steps_2.14, y = total.N_2.14_log, xlab = "Time step", ylab = "Density (log)", pch = 16)
-  lines(x = vec.steps_2.14, y = total.N_2.14_log)
-# estimate line and compare
-lm.out_2.14 <- lm(formula = total.N_2.14_log[21:31] ~ vec.steps_2.14[21:31]) #taking the last 11 values because that's a better estimate because the population is closer to reaching a stable age distirbution
-slope_2.14 <- lm.out_2.14$coefficients[2]
-# calculate eigenvalue
-eigenvals <- eigen(proj.mat_2.14)
-dom.eig_2.14 <- eigenvals$value[1]
-message(paste0("Your slope is ", round(slope_2.14, digits = 5), ". Raising e to that power, that gives you ", round(exp(slope_2.14), digits = 5),". Compare that with the calculated eigenvalue,",round(dom.eig_2.14, digits = 5),"."))
-```
-
-I printed out the values using `message()` above. The log-transformed slope and eigenvalue are equal.
 
 ### 2.15
 In a population of insects we find that there are, at a particular point in time, 1000 larvae, 50 pupae, and 5 adults. We find that after another census one month later we are able to estimate the probability of survival of a larva (assuming it remains a larva) as 0.7, the probability that the larva will turn into a pupa as 0.2, the probability that a pupa will survive as 0.1, the probability that the pupa will turn into an adult as 0.4, and the probability that an adult will survive as 0.5. Furthermore, an average adult produces 100 eggs, 50% of which appear (within that month) as larvae while the rest die. Construct the population matrix that takes into account all of these probabilities, and project the population one time unit (remember that the time unit is one month).

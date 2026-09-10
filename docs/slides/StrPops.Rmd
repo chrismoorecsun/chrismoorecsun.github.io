@@ -22,7 +22,6 @@ knitr::opts_chunk$set(echo = TRUE, collapse = T)
 * Age-structured populations
   * A diversion on matrix math
 * Stage-structured populations
-* Sensitivity and elasticity
 
 ---
 background-image: url(https://i.imgflip.com/25i7oj.jpg)
@@ -41,7 +40,7 @@ class: inverse
 
 --
 
-* For simplifaction, we are working with discrete-time, discrete-age models
+* For simplifiction, we are working with discrete-time, discrete-age models
 
 ---
 # The simplest case: two age classes
@@ -201,7 +200,7 @@ x_1(t)
 
 --
 
-Symbolically, this is (what would be) equation (1c) in V&G:
+Symbolically with parameters rather than numbers we can write:
 $$\begin{gather}\begin{bmatrix}
 x_0(t+1) \\
 x_1(t+1)
