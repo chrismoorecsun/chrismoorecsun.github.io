@@ -19,106 +19,15 @@ $$\begin{bmatrix}
 1.2. Plot each age class over time on the same graph. Like always, make sure you're plotting all of the data so that none of it is outside of the plot ranges.  
 1.3. Plot the total population over time on top of the same graph you made for 1.2. First, you will need add the individuals across classes because all individuals are counted to plot the total population size. You can do this at least two ways: (1) `apply(X = , MARGIN = 2, FUN = sum)` or (2) using `colSums(x = )`. The first is preferable because you can give it  Second, make the plot.
 
-***
-> 1.1
-
-```{r}
-# Create the projection matrix, initial pop sizes, and test
-   proj.mat <- matrix(data = c(0, 0.7, 0, 1, 0, 0.2, 4, 0, 0), nrow = 3, ncol = 3)
-   N0 <- matrix(data = c(10, 0, 0), ncol = 1)
-   proj.mat%*%N0 # see that it works once; also, use of matrix multiplier (inner product)
-
-# Set simulation parameters
-   n.steps <- 15
-   vec.steps <- 1:n.steps
-   N <- matrix(data = NA, nrow = length(N0), ncol = n.steps) # 11 to run 10 times after N0
-   N[,1] <- N0
-
-# Run loop
-   for (i in 2:n.steps) {
-      N[,i] <- proj.mat%*%N[,i-1]  
-   }
-```
-
-> 1.2
-
-```{r}
-# Plot class 1 and add lines for classes 2 and 3 (note I add points to better 
-# show the steps in time and that `pch = 16` makes points solid)
-   plot(x = vec.steps, y = N[1,], type = "l", las = 1, xlab = "Time step", ylab = "Total population", col = "orange")
-    points(x = vec.steps, y = N[1,], pch = 16, col = "orange")
-   lines(x = vec.steps, y = N[2,], col = "red")
-    points(x = vec.steps, y = N[2,], col = "red", pch = 16)
-   lines(x = vec.steps, y = N[3,], col = "blue")
-    points(x = vec.steps, y = N[3,], col = "blue", pch = 16)
-```
-
-> 1.3
-
-```{r}
-# Function to sum columns to give total population size (dimension 2)
-  totalN <- apply(X = N, MARGIN = 2, FUN = sum)
-  # alternatively, you could write: totalN <- colSums(N)
-
-# Plot points at each step and connect them with a line (note I made the points
-# a little bit bigger by making `cex` > 1 of the total population so we could
-# see it below the other points)
-   plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population", ylim = c(0, 30))
-   points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
-   lines(x = vec.steps, y = N[1,], col = "orange")
-    points(x = vec.steps, y = N[1,], pch = 16, col = "orange")
-   lines(x = vec.steps, y = N[2,], col = "red")
-    points(x = vec.steps, y = N[2,], col = "red", pch = 16)
-   lines(x = vec.steps, y = N[3,], col = "blue")
-    points(x = vec.steps, y = N[3,], col = "blue", pch = 16)
-```
-
-
 # 2. The logrithmic property of density-independent change
 2.1. From the data in exercise 1., plot the logarithm of the total population density over time.
 2.2. Next, plot the logarithm of the total population density over time, but for the last 5 time steps.
 2.3. Plot the data from only the last time time periods (times 11-15). What equation would best fit these data? Estimate the slope manually by dividing the rise over the run.
 2.4. 
 
-***
-```{r}
-log_totalN <- log(totalN)
-plot(x = vec.steps, y = log_totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population (log)")
-points(x = vec.steps, y = log_totalN, pch = 16, cex = 1.5)
-```
-
-```{r}
-log_totalN <- log(totalN)
-last.five <- (length(vec.steps)-4):length(vec.steps)
-plot(x = vec.steps[last.five], y = log_totalN[last.five], type = "l", las = 1, xlab = "Time step", ylab = "Total population (log)")
-points(x = vec.steps[last.five], y = log_totalN[last.five], pch = 16, cex = 1.5)
-```
-
-Plotting the last 5 time steps, you can see that there is log-linear growth through time, just like with density-independent growth.
-
-```{r}
-# The slope is rise over run, or (y1 - y0)/(x1 - x0)
-  rise <- (log_totalN[last.five][5] - log_totalN[last.five][1])
-  run <- 15 - 11
-  slope <- rise/run
-  lm(log_totalN[last.five] ~ vec.steps[last.five])
-  
-  N_vec <- rep(x = NA, times = 15)
-  N_vec[1] <- 10
-  for (i in 2:15) {
-    Nt <- N_vec[i - 1]
-    N_vec[i] <- exp(0.09438)*Nt
-  }
-
-  plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population")
-   points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
-  lines(x = 1:15, y = N_vec, col = "hotpink")
-  points(x = 1:15, y = N_vec, col = "hotpink", pch = 16)
-
-```
 
 
-### 2.4
+### 3.
 Given the projection matrix
 $$\begin{bmatrix}
 0   & 3   & 8   & 1 \\
@@ -128,24 +37,7 @@ $$\begin{bmatrix}
 \end{bmatrix}$$
 supopose the population is introduced onto an island with 10 of the oldest individuals. Project the population 20 times, and graph the total number over time.
 
-***
-```{r}
-n.steps <- 21
-vec.steps <- 1:n.steps
-proj.mat4 <- matrix(c(0, 0.7, 0, 0, 3, 0, 0.3, 0, 8, 0, 0, 0.1, 1, 0, 0, 0), nrow = 4, ncol = 4)
-N0 <- matrix(data = c(0, 0, 0, 10), ncol = 1)
-N <- matrix(data = NA, nrow = length(N0), ncol = n.steps)
-N[,1] <- N0
-for (i in 2:n.steps) {
-  N[,i] <- proj.mat4%*%N[,i-1]
-}
-total.N <- apply(X = N, MARGIN = 2, FUN = sum)/10000
-plot(x = vec.steps, y = total.N, type = "l", las = 1, xlab = "Timestep", ylab = "Total population (x 10,000)")
-  points(x = vec.steps, y = total.N, pch = 16, cex = 1.5)
-```
-
-
-### 2.15
+### 4. Writing matrices in $\LaTeX$
 In a population of insects we find that there are, at a particular point in time, 1000 larvae, 50 pupae, and 5 adults. We find that after another census one month later we are able to estimate the probability of survival of a larva (assuming it remains a larva) as 0.7, the probability that the larva will turn into a pupa as 0.2, the probability that a pupa will survive as 0.1, the probability that the pupa will turn into an adult as 0.4, and the probability that an adult will survive as 0.5. Furthermore, an average adult produces 100 eggs, 50% of which appear (within that month) as larvae while the rest die. Construct the population matrix that takes into account all of these probabilities, and project the population one time unit (remember that the time unit is one month).
 
 > In markdown, here is how you create a vector:  
@@ -156,28 +48,6 @@ That looks like this: $$\Biggl[ \begin{smallmatrix} x \\ y \\ z \end{smallmatrix
 `$$\Biggl[ \begin{smallmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{smallmatrix}\Biggr]$$`.  
 That looks like this: $$\Biggl[ \begin{smallmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{smallmatrix}\Biggr]$$.
 
-***
-First, our vector for population size would be $$\Biggl[ \begin{smallmatrix} 1000 \\ 50 \\ 5 \end{smallmatrix}\Biggr]$$. The projection matrix would be $$\Biggl[ \begin{smallmatrix} 0.7 & 0 & 50 \\ 0.2 & 0.1 & 0 \\ 0 & 0.4 & 0.5   \end{smallmatrix}\Biggr]$$
-```{r}
-N0_2.15 <- matrix(data = c(1000, 50, 5), ncol = 1)
-proj.mat_2.15 <- matrix(data = c(0.7, 0, 50, 0.2, 0.1, 0, 0, 0.4, 0.5), nrow = 3, ncol = 3, byrow = T)
-Nt1 <- proj.mat_2.15%*%N0_2.15
-Nt1
-```
-In the next time step, there will be 1200 larvae, 205 pupae, and 22.5 adults.
+4.1. In a population of plants, we categorized individuals as small seedlings, large seedlings, small saplings, large saplings, and adults. Presuming that the plants in each stage either move to the next stage or stay in their own category during population growth, write the popualtion projection matrix in general terms. (That is, fill out a matrix with values that would be 0 and which would not.)
 
-
-### 2.18
-In a population of plants, we categorized individuals as small seedlings, large seedlings, small saplings, large saplings, and adults. Presuming that the plants in each stage either move to the next stage or stay in their own category during population growth, write the state projection matrix in general terms. (That is, fill out a matrix with values that would be 0 and which would not.)
-
-***
-
-$$\left[ \begin{matrix}p_{00} & 0 & 0 & 0 & f_1 \\ p_{10}& p_{11} & 0 & 0 & 0 \\ 0 & p_{21} & p_{22} & 0 & 0 \\ 0 & 0 & p_{32} & p_{33} & 0 \\ 0 & 0 & 0 & p_{43} & p_{44} \end{matrix}\right]$$
-
-
-### 2.19
-At another site this same population has slightly different growth patterns and the variability of its growth is very large, such that occasionall the small seedlings grow all the way to small saplings during a single time unit. Furthermore, because of the severe weather, occasionally a large sapling has its top damaged and actual reverts to the small sapling stage. Modify the matrix of exercise 2.18 to account for these probabilities.
-
-***
-
-$$\left[ \begin{matrix}p_{00} & 0 & 0 & 0 & f_1 \\ p_{10}& p_{11} & 0 & 0 & 0 \\ p_{20} & p_{21} & p_{22} & p_{23} & 0 \\ 0 & 0 & p_{32} & p_{33} & 0 \\ 0 & 0 & 0 & p_{43} & p_{44} \end{matrix}\right]$$
+4.2. At another site this same population has slightly different growth patterns and the variability of its growth is very large, such that occasional the small seedlings grow all the way to small saplings during a single time unit. Furthermore, because of the severe weather, occasionally a large sapling has its top damaged and actual reverts to the small sapling stage. Modify the matrix of exercise 2.18 to account for these probabilities.
