@@ -372,29 +372,51 @@ because all individuals are counted to plot the total population size.
 You can do this at least two ways: (1)
 <code>apply(X = , MARGIN = 2, FUN = sum)</code> or (2) using
 <code>colSums(x = )</code>. The first is preferable because you can give
-it Second, make the plot.</p>
+<em>any</em> function (not just sum) and you can apply it over rows
+(<code>margin = 1</code>), columns (<code>margin = 2</code>), or any
+other dimension. Second, make the plot.</p>
 </div>
 <div id="the-logrithmic-property-of-density-independent-change" class="section level1">
 <h1>2. The logrithmic property of density-independent change</h1>
 <p>2.1. From the data in exercise 1., plot the logarithm of the total
-population density over time. 2.2. Next, plot the logarithm of the total
-population density over time, but for the last 5 time steps. 2.3. Plot
-the data from only the last time time periods (times 11-15). What
-equation would best fit these data? Estimate the slope manually by
-dividing the rise over the run. 2.4.</p>
-<div id="section" class="section level3">
-<h3>3.</h3>
+population density over time. You should notice that the rate of change
+becomes less variable over time. Cool. This is the stable age
+distribution.<br />
+2.2. Next, plot the logarithm of the total population density over time,
+but <em>only</em> for the last 5 time steps, times 11–15. You should
+notice that this looks like a linear relationship.<br />
+2.3. Find the slope from the last 5 time steps. Yeah, you can
+statistically estimate the slope, but that’s overkill for this exercise.
+Just estimate the slope the ol’ fashioned way you learned in your youth:
+manually by dividing the rise over the run.<br />
+2.4. Use that slope as <span class="math inline">\(\lambda\)</span> to
+solve for the discrete-time density-independent growth equation, <span class="math inline">\(N_{t+1} = \lambda N_t\)</span>, using
+<code>ode()</code>, with the same initial density over the same time.
+Once you do that, plot the logged solution you just found along with
+time series of the structured population (i.e., log densities of 2.1).
+What do you notice?</p>
+</div>
+<div id="do-initial-densities-matter" class="section level1">
+<h1>3. Do initial densities matter?</h1>
 <p>Given the projection matrix <span class="math display">\[\begin{bmatrix}
-0   &amp; 3   &amp; 8   &amp; 1 \\
+0   &amp; 3   &amp; 4   &amp; 1 \\
 0.7 &amp; 0   &amp; 0   &amp; 0 \\
 0   &amp; 0.3 &amp; 0   &amp; 0 \\
 0   &amp; 0   &amp; 0.1 &amp; 0
-\end{bmatrix}\]</span> supopose the population is introduced onto an
-island with 10 of the oldest individuals. Project the population 20
-times, and graph the total number over time.</p>
+\end{bmatrix}\]</span></p>
+<p>suppose that two populations are introduced onto two islands. The
+populations are the same size (<span class="math inline">\(N =
+19\)</span>), but their initial ages are different. Island A has 1, 3,
+5, and 10 individuals in the respective first–fourth age classes;
+whereas island B has 10, 5, 3, and 1 individuals in the respective
+first–fourth age classes.</p>
+<p>3.1. Project the total population of each island 11 time steps into
+the future.<br />
+3.2. What do you notice? Which population has more after 11 time steps?
+Why?</p>
 </div>
-<div id="writing-matrices-in-latex" class="section level3">
-<h3>4. Writing matrices in <span class="math inline">\(\LaTeX\)</span></h3>
+<div id="writing-matrices-in-latex" class="section level1">
+<h1>4. Writing matrices in <span class="math inline">\(\LaTeX\)</span></h1>
 <p>In a population of insects we find that there are, at a particular
 point in time, 1000 larvae, 50 pupae, and 5 adults. We find that after
 another census one month later we are able to estimate the probability
@@ -433,7 +455,6 @@ during a single time unit. Furthermore, because of the severe weather,
 occasionally a large sapling has its top damaged and actual reverts to
 the small sapling stage. Modify the matrix of exercise 2.18 to account
 for these probabilities.</p>
-</div>
 </div>
 
 

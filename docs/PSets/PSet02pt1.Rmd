@@ -1,0 +1,56 @@
+---
+title: "Problem set 2, part I: Stevens, Ch. 5"
+output: html_document
+---
+
+```{r setup, include=FALSE, collapse = T}
+knitr::opts_chunk$set(echo = TRUE, collapse = T)
+```
+
+# 1. Projecting an age-structured population and reconciling classes with total population
+Consider the following population projection matrix:
+$$\begin{bmatrix}
+0 & 1 & 4 \\
+0.7 & 0 & 0 \\
+0 & 0.2 & 0
+\end{bmatrix}$$
+
+1.1. Begin with just 10 individuals in the first age class and project the population 15 times in R.  
+1.2. Plot each age class over time on the same graph. Like always, make sure you're plotting all of the data so that none of it is outside of the plot ranges.  
+1.3. Plot the total population over time on top of the same graph you made for 1.2. First, you will need add the individuals across classes because all individuals are counted to plot the total population size. You can do this at least two ways: (1) `apply(X = , MARGIN = 2, FUN = sum)` or (2) using `colSums(x = )`. The first is preferable because you can give *any* function (not just sum) and you can apply it over rows (`margin = 1`), columns (`margin = 2`), or any other dimension. Second, make the plot.
+
+# 2. The logrithmic property of density-independent change
+
+2.1. From the data in exercise 1., plot the logarithm of the total population density over time. You should notice that the rate of change becomes less variable over time. Cool. This is the stable age distribution.  
+2.2. Next, plot the logarithm of the total population density over time, but *only* for the last 5 time steps, times 11--15. You should notice that this looks like a linear relationship.  
+2.3. Find the slope from the last 5 time steps. Yeah, you can statistically estimate the slope, but that's overkill for this exercise. Just estimate the slope the ol' fashioned way you learned in your youth: manually by dividing the rise over the run.  
+2.4. Use that slope as $\lambda$ to solve for the discrete-time density-independent growth equation, $N_{t+1} = \lambda N_t$, using `ode()`, with the same initial density over the same time. Once you do that, plot the logged solution you just found along with time series of the structured population (i.e., log densities of 2.1). What do you notice?
+
+# 3. Do initial densities matter?
+Given the projection matrix
+$$\begin{bmatrix}
+0   & 3   & 4   & 1 \\
+0.7 & 0   & 0   & 0 \\
+0   & 0.3 & 0   & 0 \\
+0   & 0   & 0.1 & 0
+\end{bmatrix}$$
+
+suppose that two populations are introduced onto two islands. The populations are the same size ($N = 19$), but their initial ages are different. Island A has 1, 3, 5, and 10 individuals in the respective first--fourth age classes; whereas island B has 10, 5, 3, and 1 individuals in the respective first--fourth age classes.
+
+3.1. Project the total population of each island 11 time steps into the future.  
+3.2. What do you notice? Which population has more after 11 time steps? Why?
+
+# 4. Writing matrices in $\LaTeX$
+In a population of insects we find that there are, at a particular point in time, 1000 larvae, 50 pupae, and 5 adults. We find that after another census one month later we are able to estimate the probability of survival of a larva (assuming it remains a larva) as 0.7, the probability that the larva will turn into a pupa as 0.2, the probability that a pupa will survive as 0.1, the probability that the pupa will turn into an adult as 0.4, and the probability that an adult will survive as 0.5. Furthermore, an average adult produces 100 eggs, 50% of which appear (within that month) as larvae while the rest die. Write the structured population model in $\LaTeX$, with the population vector at the next time step being a function of the population projection matrix time the population vector at the current times step.
+
+> In markdown, here is how you create a vector:  
+`$$\Biggl[ \begin{smallmatrix} x \\ y \\ z \end{smallmatrix}\Biggr]$$`  
+That looks like this: $$\Biggl[ \begin{smallmatrix} x \\ y \\ z \end{smallmatrix}\Biggr]$$.
+
+> In markdown, here is how you create a matrix:  
+`$$\Biggl[ \begin{smallmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{smallmatrix}\Biggr]$$`.  
+That looks like this: $$\Biggl[ \begin{smallmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{smallmatrix}\Biggr]$$.
+
+4.1. In a population of plants, we categorized individuals as small seedlings, large seedlings, small saplings, large saplings, and adults. Presuming that the plants in each stage either move to the next stage or stay in their own category during population growth, write the popualtion projection matrix in general terms. (That is, fill out a matrix with values that would be 0 and which would not.)
+
+4.2. At another site this same population has slightly different growth patterns and the variability of its growth is very large, such that occasional the small seedlings grow all the way to small saplings during a single time unit. Furthermore, because of the severe weather, occasionally a large sapling has its top damaged and actual reverts to the small sapling stage. Modify the matrix of exercise 2.18 to account for these probabilities.
