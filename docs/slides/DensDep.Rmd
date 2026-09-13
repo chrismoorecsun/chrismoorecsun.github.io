@@ -69,6 +69,11 @@ $$\frac{\mathrm{d}N}{\mathrm{d}t} = rN - \frac{r}{K}N^2 = rN - \alpha N^2,$$
 where $\alpha = \frac{r}{K}$. Although these models are mathematically equivalent, they are *not* biologically equivalent for reasons I will complain about later, including that the growth parameter is in the growth term *and* the crowding term. *C'est n'est pas bon*.
 
 ---
+
+# Deriving the logistic model (from first principles)
+Done in class, but to see it written with more detail, see Chris' .pdf notes under the miscellaneous column on the course schedule. [Here's a link to the .pdf.](https://chrismoorecsun.github.io/misc/Notes/Note2_LogisticUnits.pdf)
+
+---
 class: inverse, center, middle
 <a href="https://imgflip.com/i/25ds0b"><img src="https://i.imgflip.com/25ds0b.jpg" title="made at imgflip.com"/></a>
 
@@ -137,7 +142,10 @@ $$N(t) = \frac{KN(0)e^{rt}}{K + N(0)\left(e^{rt} - 1\right)}$$
 ---
 #Analyze it!: finding equlibria
 
-The continuous logistic
+Let's find when the model doesn't change as the equilibrium, as a way to determine long-term behavior. If the rate of change is 0, then our non-stochastic models will stat at that value forever. All we gotta do is set the rate of change (derivative, on the LHS of the equation) to 0, then solve for our variable, $N$. Try it with the continuous logistic:
+
+(As a hint, notice that the variable for which we are trying to solve, $N$ is squared, meaning, just like all those quadratic equations in algebra, there will be 2 solutions. Note you can reason this out without the quadratic/just followin' your gut.)
+--
 $$\begin{align}\frac{\mathrm{d}N}{\mathrm{d}t} &= rN - \alpha N^2 \\
 0 &= rN - \alpha N^2 \\
 0 &= N\left(r - \alpha N\right) \\
