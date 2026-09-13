@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Density dependent change</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christopher Moore" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Density dependent change
+]
+.author[
+### Christopher Moore
+]
+
+---
+
+
+
+# Creating a density-dependent model, au Français
+![VerhulstImage](DensDep_files/Verhulst.png)
+---
+# Creating a density-dependent model, translated
+
+
+*If `\(p\)` is the population, then `\(dp\)` is an infinitesimally small increase that is received in a very short period of time `\(dt\)`. If the population increase by geometric progression, we would have the equations `\(\frac{dp}{dt} = mp\)`. However, as the rate of population growth is slowed by the very increase in the number of inhabitants, we must subtract from `\(mp\)` an unknown function of `\(p\)`, so that the formula to be integrated can be written as*
+`$$\frac{dp}{dt} = mp - \varphi (p)$$`
+*The simplest hypothesis that can be made on the form of the function `\(\varphi\)` is to suppose that `\(\varphi (p) = np^2\)`.*
+---
+# The logistic model: a balance of forces
+Most generally, we wish model population growth with two functions that capture two biological phenomena, growth and crowding.
+--
+`$$\frac{\Delta N}{\Delta t} = f(N),$$` 
+with `\(f(N)\)` describing growth and crowding:
+
+--
+
+`$$f(N) = \text{growth} - \text{crowding}.$$`
+--
+
+Let growth be `\(rN\)` and crowding be `\(\alpha N^2\)`, to give us
+`$$\frac{\Delta N}{\Delta t} = rN - \alpha N^2$$`
+--
+In continuous and discrete time the logistic equations are respectively:  
+`$$\begin{align}
+\frac{\mathrm{d}N}{\mathrm{d}t} &amp;= rN - \alpha N^2 \\
+N_{t+1} &amp;= \lambda N_t - \alpha N_t^2
+\end{align}$$`
+
+---
+# Births and deaths in the logistic model
+(I'm only describing continuous time, but it's analagous in discrete time) A generalized way of writing a more mechanistic model of births and deaths into the logisitc model is respectively by the use of functions of `\(N\)`, `\(B(N)\)` and `\(D(N)\)`:
+--
+`$$\frac{\mathrm{d}N}{\mathrm{d}t} = B(N) - D(N)$$`
+--
+Let's say that both per-capita births and death rates linearly decrease as a function of density, `\(N\)`. So, we can write:
+--
+`$$\frac{\mathrm{d}N}{\mathrm{d}t} = (bN - \mu N^2) - (dN - \nu N^2)$$`
+--
+Linearity becomes clear when we write this as *per-capita* by dividing both sides by `\(N\)`:
+`$$\frac{1}{N}\frac{\mathrm{d}N}{\mathrm{d}t} = (b - \mu N) - (d - \nu N)$$`
+
+---
+# The `\(K\)`-logistic model
+Another common representation of density-dependent change---i.e., a logistic model---is the `\(r-K\)` model. This model incorporates a "maximum" population size, `\(K\)`, below which the rate of change increases and above witch the population decreases. Here, it reads:
+`$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN\left(\frac{K - N}{K}\right)$$`
+--
+If we multiply the factors, we have:
+`$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN - \frac{r}{K}N^2$$`
+--
+We now see the equivalence to the `\(r-\alpha\)` model:
+`$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN - \frac{r}{K}N^2 = rN - \alpha N^2,$$`
+where `\(\alpha = \frac{r}{K}\)`. Although these models are mathematically equivalent, they are *not* biologically equivalent for reasons I will complain about later, including that the growth parameter is in the growth term *and* the crowding term. *C'est n'est pas bon*.
+
+
+
+---
+class: inverse, center, middle
+&lt;a href="https://imgflip.com/i/25ds0b"&gt;&lt;img src="https://i.imgflip.com/25ds0b.jpg" title="made at imgflip.com"/&gt;&lt;/a&gt;
+
+---
+# We have (a) model(s)—let's do all of the things!
+* Analyze it!
+  * Simulate it
+  * Solve it
+  * Find equilibria (long-term behavior)
+  * Determine stability (behavior if perturbed)
+* Visualize it!
+  * Plot a time series
+  * Plot population size `\((N)\)` and population growth `\(\left(\frac{dN}{dt}\right)\)`
+  * Plot population size `\((N)\)` and per-capita growth `\(\left(\frac{1}{N}\frac{dN}{dt}\right)\)`
+  
+---
+# Analyze it!: simulation
+.pull-left[
+Exactly what you did yesterday:
+![](DensDep_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+]
+
+--
+.pull-right[
+But also vary parameters (here, `\(r\)`):
+![](DensDep_files/figure-html/many.log-1.png)&lt;!-- --&gt;
+]
+
+---
+#Analyze it!: solve it
+For the `\(r\text{-}\alpha\)` logistic equation:
+`$$N(t) = \frac{rN(0)e^{rt}}{r + \alpha N(0)\left(e^{rt} - 1\right)}$$`
+
+--
+
+For the `\(K\)` logistic equation:
+`$$N(t) = \frac{KN(0)e^{rt}}{K + N(0)\left(e^{rt} - 1\right)}$$`
+--
+
+** This will be the final analytical solution in this class 😥 **
+
+---
+#Analyze it!: finding equlibria
+
+The continuous logistic
+`$$\begin{align}\frac{\mathrm{d}N}{\mathrm{d}t} &amp;= rN - \alpha N^2 \\
+0 &amp;= rN - \alpha N^2 \\
+0 &amp;= N\left(r - \alpha N\right) \\
+N^* &amp;= 0 \\
+0 &amp;= r - \alpha N\\
+\alpha N &amp;= r \\
+N^* &amp;= \frac{r}{\alpha}
+\end{align}$$`
+
+---
+#Analyze it!: finding equlibria
+
+The discrete logistic
+`$$\begin{align}
+N_{t+1} &amp;= \lambda N_t - \alpha N_t^2 \\
+N_t &amp;= \lambda N_t - \alpha N_t^2 \\
+0 &amp;= \lambda N_t - \alpha N_t^2 - N_t \\
+0 &amp;= N_t \left(\lambda - \alpha N_t - 1 \right) \\
+N^* &amp;= 0 \\
+0 &amp;= N_t \left(\lambda - \alpha N_t - 1 \right) \\
+0 &amp;= \lambda - \alpha N_t - 1 \\
+\alpha N_t &amp;= \lambda - 1 \\
+N^* &amp;= \frac{\lambda - 1}{\alpha}
+\end{align}$$`
+
+---
+# Analyze it!: perturbation
+Perturb the equilibira! Actually, we'll cover more of this in Ch. 4, *Dynamics.*
+
+
+---
+# Visualize it!: time series
+
+
+``` r
+logistic &lt;- function(t, y, p) {
+  N &lt;- 1.5*y - 0.15*y^2
+  return(list(N))
+}
+out &lt;- ode(y = 0.01, times = seq(0, 10, 0.01), parms = NA, func = logistic)
+par(mar = c(4, 4, 0.1, 0.1), oma = c(0, 0, 0, 0))
+plot(x = out[,1], y = out[,2], las = 1, xlab = "Time", ylab = "Density (N)", type = "l", lwd = 2)
+```
+
+![](DensDep_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+# Visualize it!: population growth and density
+
+
+``` r
+logistic &lt;- function(t, y, p) {
+  N &lt;- 1.5*y - 0.15*y^2
+  return(list(N))
+}
+out &lt;- ode(y = 0.01, times = seq(0, 10, 0.01), parms = NA, func = logistic)
+par(mar = c(4, 4, 0.1, 0.1), oma = c(0, 0, 0, 0))
+len.out &lt;- nrow(out)
+plot(x = out[1:(len.out-1),2], y = (out[2:len.out,2] - out[1:(len.out-1),2]), las = 1, xlab = "Density (N)", ylab = "Population growth (dN/dt)", type = "l", lwd = 2)
+```
+
+![](DensDep_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+# Visualize it!: per-capita growth and density
+
+``` r
+logistic &lt;- function(t, y, p) {
+  N &lt;- 1.5*y - 0.15*y^2
+  return(list(N))
+}
+out &lt;- ode(y = 0.01, times = seq(0, 10, 0.01), parms = NA, func = logistic)
+par(mar = c(4, 4, 0.1, 0.1), oma = c(0, 0, 0, 0))
+len.out &lt;- nrow(out)
+plot(x = out[1:(len.out-1),2], y = (out[2:len.out,2] - out[1:(len.out-1),2])/out[1:(len.out-1),2], las = 1, xlab = "Density (N)", ylab = "Per calita growth (dN/dt/N)", type = "l", lwd = 2)
+```
+
+![](DensDep_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+# Discrete-time density dependence
+
+--
+Hassel (also Bleasdale and Nedler) model:
+`$$N_{t+1} = \frac{\lambda N_t}{\left(1 + \alpha N_t\right)^b}$$`
+
+--
+Beverton and Holt (same as Hassel when `\(b = 1\)`):
+`$$N_{t+1} = \frac{\lambda N_t}{\left(1 + \alpha N_t\right)}$$`
+--
+The Ricker equation:
+`$$N_{t+1} = N_t \exp\left(r\left(1 - bN_t\right)\right)$$`
+
+---
+# Analyze it!: simulation
+
+.pull-left[
+Choosing the Hassell model:
+![](DensDep_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+
+--
+.pull-right[
+But also vary parameters (here, `\(b\)`):
+![](DensDep_files/figure-html/many.disc.log-1.png)&lt;!-- --&gt;
+]
+
+---
+# Analyze it!: solve it and find equilibria
+
+1. No analytical solutions
+2. We can find equilibira for some!
+   - For discrete-time equations, set `\(N_{t + 1} = N^*\)` and `\(N_t = N^*\)`, and solve for `\(N^*\)`
+   - E.g., 
+
+`$$\begin{align}
+N_{t+1} &amp;= \frac{\lambda N_t}{1 + \alpha N_t} =  \\
+N^* &amp;=\frac{\lambda N^*}{1 + \alpha N^*} \\
+N^* &amp;= 0,~\text{Equilibrium 1} \\
+1 &amp;= \frac{\lambda}{1 + \alpha N^*} \\
+1 + \alpha N^* &amp;= \lambda \\
+\alpha N^* &amp;= \lambda - 1 \\
+N^* &amp;= \frac{\lambda - 1}{\alpha},~\text{Equilibrium 2}\\
+\end{align}$$`
+
+---
+# Analyze it!: perturb equilibira
+Again, more on this in a few weeks.
+
+---
+# Visualize it!: time series
+
+``` r
+Hassell &lt;- function(t, y, p) {
+  Nt &lt;- y
+  lambda &lt;- p["lambda"]
+  alpha &lt;- p["alpha"]
+  b &lt;- p["b"]
+  Nt1 &lt;- lambda*Nt/((1 + alpha*Nt)^b)
+  return(list(Nt1))
+}
+Hassell.parms &lt;- c(lambda = 1.5, alpha = 2, b = 0.5)
+out &lt;- ode(y = 0.01, times = seq(0, 25, 1), parms = Hassell.parms, func = Hassell, method = "iteration")
+par(mar = c(4, 4, 0.1, 0.1), oma = c(0, 0, 0, 0))
+plot(x = out[,1], y = out[,2], las = 1, xlab = "Time", ylab = "Density (N)", type = "p", lwd = 2, pch = 16)
+  segments(x0 = out[,1][-nrow(out)], y0 = out[,2][-nrow(out)], x1 = out[,1][-1], y1 = out[,2][-nrow(out)], lwd = 2)
+```
+
+---
+# Visualize it!: time series
+![](DensDep_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+# Visualize it!: population growth and density
+
+
+``` r
+Hassell &lt;- function(t, y, p) {
+  Nt &lt;- y
+  lambda &lt;- p["lambda"]
+  alpha &lt;- p["alpha"]
+  b &lt;- p["b"]
+  Nt1 &lt;- lambda*Nt/((1 + alpha*Nt)^b)
+  return(list(Nt1))
+}
+Hassell.parms &lt;- c(lambda = 1.5, alpha = 2, b = 0.5)
+out &lt;- ode(y = 0.001, times = seq(0, 40, 1), parms = Hassell.parms, func = Hassell, method = "iteration")
+Hassell.out &lt;- out[-1,2] - out[-nrow(out),2]
+plot(x = out[1:(nrow(out)-1),2], y = Hassell.out, las = 1, xlab = "Density (N)", ylab = bquote("Population growth N"[t+1]-"N"[t]), type = "l", lwd = 2)
+```
+
+---
+# Visualize it!: population growth and density
+
+![](DensDep_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+# Visualize it!: per-capita growth and density
+
+
+``` r
+Hassell &lt;- function(t, y, p) {
+  Nt &lt;- y
+  lambda &lt;- p["lambda"]
+  alpha &lt;- p["alpha"]
+  b &lt;- p["b"]
+  Nt1 &lt;- lambda*Nt/((1 + alpha*Nt)^b)
+  return(list(Nt1))
+}
+Hassell.parms &lt;- c(lambda = 1.5, alpha = 2, b = 0.5)
+out &lt;- ode(y = 0.001, times = seq(0, 40, 1), parms = Hassell.parms, func = Hassell, method = "iteration")
+Hassell.out &lt;- (out[-1,2] - out[-nrow(out),2])/out[-1,2]
+plot(x = out[1:(nrow(out)-1),2], y = Hassell.out, las = 1, xlab = "Density (N)", ylab = bquote("Population growth N"[t+1]-"N"[t]/"N"[t]), type = "l", lwd = 2)
+```
+
+---
+# Visualize it!: per-capita growth and density
+
+![](DensDep_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
