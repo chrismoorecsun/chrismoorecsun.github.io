@@ -23,7 +23,7 @@ class: center, middle, inverse, title-slide
 
 
 
-# Creating a density-dependent model, au Français
+# Creating a density-dependent model, en Français
 ![VerhulstImage](DensDep_files/Verhulst.png)
 ---
 # Creating a density-dependent model, translated
@@ -67,18 +67,13 @@ Linearity becomes clear when we write this as *per-capita* by dividing both side
 `$$\frac{1}{N}\frac{\mathrm{d}N}{\mathrm{d}t} = (b - \mu N) - (d - \nu N)$$`
 
 ---
-# The `\(K\)`-logistic model
-Another common representation of density-dependent change---i.e., a logistic model---is the `\(r-K\)` model. This model incorporates a "maximum" population size, `\(K\)`, below which the rate of change increases and above witch the population decreases. Here, it reads:
-`$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN\left(\frac{K - N}{K}\right)$$`
+# The `\(r\textit{-}K\)`-logistic model
+Another common representation of density-dependent change---i.e., a logistic model---is the `\(r\textit{-}K\)` model. This model incorporates a "maximum" population size, `\(K\)`, below which the rate of change increases and above witch the population decreases. Here, it reads (the equation, the multiplied through):
+`$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN\left(\frac{K - N}{K}\right) = rN - \frac{r}{K}N^2$$`
 --
-If we multiply the factors, we have:
-`$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN - \frac{r}{K}N^2$$`
---
-We now see the equivalence to the `\(r-\alpha\)` model:
+We now see the equivalence to the `\(r\textit{-}\alpha\)` model:
 `$$\frac{\mathrm{d}N}{\mathrm{d}t} = rN - \frac{r}{K}N^2 = rN - \alpha N^2,$$`
 where `\(\alpha = \frac{r}{K}\)`. Although these models are mathematically equivalent, they are *not* biologically equivalent for reasons I will complain about later, including that the growth parameter is in the growth term *and* the crowding term. *C'est n'est pas bon*.
-
-
 
 ---
 class: inverse, center, middle
@@ -89,7 +84,7 @@ class: inverse, center, middle
 * Analyze it!
   * Simulate it
   * Solve it
-  * Find equilibria (long-term behavior)
+  * Find equilibrium (long-term behavior)
   * Determine stability (behavior if perturbed)
 * Visualize it!
   * Plot a time series
@@ -99,7 +94,7 @@ class: inverse, center, middle
 ---
 # Analyze it!: simulation
 .pull-left[
-Exactly what you did yesterday:
+This is just stickin' it in `ode()`:
 ![](DensDep_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
 ]
 

@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, total={5.5in, 10in}]{geometry}
+\usepackage{hyperref} % for url link
+\setlength{\parskip}{0.25cm}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{natbib}
+\setlength{\parindent}{0in}
+\setlength{\bibsep}{0.0pt}
+\usepackage{pdfpages}
+%\renewcommand{\arraystretch}{1.7}
+
+\begin{document}
+\section{Rates of change and dynamic models}
+As ecologists we are centrally focused on understanding how organismal abundance changes in time (and space). To make a mathematical model of the change in abundance we can either write an equation the determines the abundance after some amount of time or we can write an equation that determines the rate of change. Using $\Delta t$ to mean change in time, an equation the determines the abundance after some amount of time would take the form of
+    \begin{equation}
+    N_{t + \Delta t} = N_t + \textrm{some ecological processes}
+    \end{equation}
+An equation that determines the rate of change would take the form of
+    \begin{equation}
+    N_{t + \Delta t} - N_t = \Delta N = \textrm{some ecological processes}.
+    \end{equation}
+Why two forms? Well, because it turns out that although we may more intuitively understand the first form of equation, the second form opens a new type of math and mathematic concepts like calculus and stability (i.e., $\Delta N = 0$) that allow us to understand the dynamics in much greater depth. Note that models expressed as rates of change are referred to as \emph{dynamic models}.
+
+\subsection{Discrete and continuous time}
+Our dynamic models can treat time either of two ways: as discrete steps or continuous change. Explicitly including time into the rate of change, we need to express it with $\Delta N$ as:
+    \begin{equation}
+    \Delta N = \frac{\Delta N}{1} = \frac{\Delta N}{\Delta t} = \frac{N_{t + \Delta t} - N_t}{(t + \Delta t) - t}.
+    \label{eqn:ratechange}
+    \end{equation}
+
+Discrete-time dynamic models, for all practical purposes assume a `step' or change of time as 1. Setting $\Delta t = 1$ from eqn.~\ref{eqn:ratechange}, our discrete-time dynamic models take the form of
+    \begin{equation}
+    N_{t + 1} - N_t = \textrm{some ecological processes}.
+    \end{equation}
+
+Continuous time means that populations are changing smoothly or, in other words, instantaneously. What this means is that we take the limit of $\Delta t$  from eqn.~\ref{eqn:ratechange} as it goes to 0:
+    \begin{equation}
+    \lim_{\Delta t \to 0} \frac{N(t + \Delta t) - N(t)}{(t + \Delta t) - (t)} = \frac{\mathrm{d}N(t)}{\mathrm{d}t} = \textrm{some ecological processes}.
+    \end{equation}
+
+
+
+\subsection{Units}
+The units for populations are individuals or individuals $\times$ area$^{-1}$. Individuals $\times$ area$^{-1}$ is technically what we always measure (when do we measure individuals that take up no space?!).  But for this sake of this class since we are not making or analyzing spatial models (too advanced of a topic), then we can ignore the units of area, and I will more simply use density, [D], as the unit for populations.
+
+
+\begin{tabular}{l l l}
+\hline
+Symbol & Units & Dimension \\
+\hline
+$t$ & [T] & time \\
+$N$ & [D] & density \\
+\hline
+\end{tabular}
+
+
+    \end{document}

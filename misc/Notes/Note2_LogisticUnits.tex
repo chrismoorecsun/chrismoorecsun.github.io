@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, total={5.5in, 10in}]{geometry}
+\usepackage{hyperref} % for url link
+\setlength{\parskip}{0.25cm}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{natbib}
+\setlength{\parindent}{0in}
+\setlength{\bibsep}{0.0pt}
+\usepackage{pdfpages}
+%\renewcommand{\arraystretch}{1.7}
+
+\begin{document}
+\section{Units for density-independent and density-dependence population dynamics}
+Dynamic population models generally take the form
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = f(N(t)).
+    \end{equation}
+This ordinary differential equation is autonomous because the state variable, population density ($N$), does not explicitly depend on time, $t$; it explicitly depends on density. The entire system changes as a function of the population's own density, $f(N(t))$. Expanding the equation:
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = \lim_{\Delta t \to 0} \frac{N(t + \Delta t) - N(t)}{(t + \Delta t) - (t)} = f(N(t))
+    \end{equation}
+
+we can see the unit of eqn.~1: the numerator is density (units [D]) and the denominator is per unit time (units [T$^{-1}$]).\par
+
+Given constant conditions and resources population will grow constantly. We can write this as
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = rN(t).
+    \end{equation}
+Here, $r$, is the intrinsic rate of growth and has units [T$^{-1}$]. To explicitly make the growth proportional to resource availability, we can assume a closed system with $F_T$ total resources (units [R]). Within the system some resources will be unavailable, $F$ (units [R]), and some that will be occupied, $cN$. $N$ is again the density, and $c$ is the resource use per unit density (units [R][D$^{-1}$]). We can express the resources as:
+    \begin{equation}
+    F_T = F + cN.
+    \end{equation}
+We can then make the assumption that $r$ changes linearly proportionally to the amount of available resources. Specifically:
+    \begin{equation}
+    r = bF.
+    \end{equation}
+The parameter $b$ is the rate of capture per units of resource, with units [T$^{-1}$][R$^{-1}$]. Rearranging and substituting eqn.~4 into eqn.~3, we arrive at:
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = b(F_T - cN(t))N(t) =  bF_TN(t) - bcN(t)^2.
+    \end{equation}
+If we define $r = bF_T$ and $\alpha = bc$, then we arrive at the $r\textrm{-}\alpha$ logistic equation,
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = rN(t) - \alpha N(t)^2.
+    \end{equation}
+The units for $\alpha$ are [D$^{-1}]$, which is commonly referred to as the `crowding coefficient' because per-density (synonymous with per-capita) effect of density on the population growth rate.
+
+If we wish to derive the $r\textrm{-}K$ logistic equation, we want to set an \emph{a priori} equilibrium point for the maximum density sustained by the ration of the total amount of resources to the resource use per-unit density; e.g., $F_Tc^{-1}$. Factoring out $bF_Tc^{-1}$ from eqn.~6, we arrive at:
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = bF_TN(t) \left(\frac{\frac{F_T}{c} - N(t)}{\frac{F_T}{c}}\right).
+    \end{equation}
+Substituting $K$ (units [D][T$^{-1}$]) for $F_Tc^{-1}$ and again $r = bF_T$ yields the $r\textrm{-}K$ logistic equation:
+    \begin{equation}
+    \frac{\mathrm{d}N(t)}{\mathrm{d}t} = rN(t) \left(\frac{K- N(t)}{K}\right).
+    \end{equation}
+
+\section{Table with parameters, units, and dimensions}
+\begin{tabular}{l l l}
+\hline
+Parameter & Units & Dimension \\
+\hline
+$t$ & [T] & time \\
+$N$ & [D] & density \\
+$r$ & [T$^{-1}$] & intrinsic rate of growth\\
+$b$ & [T$^{-1}$][R$^{-1}$] & per-resource rate of capture\\
+$F_T$& [R] & total system resources \\
+$F$ & [R] & available resources \\
+$c$ & [R][D$^{-1}$] & captured resource per individual\\
+$\alpha$ & [D$^{-1}$] & per-capita effect of density \\
+$K$ & [D] & density \\
+\hline
+\end{tabular}
+
+
+    \end{document}
