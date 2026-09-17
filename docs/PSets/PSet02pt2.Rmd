@@ -1,0 +1,31 @@
+---
+layout: assignment
+title: "Problem set 2, part II: Stevens, Ch. 5"
+---
+
+# 1. Writing display and multiple lines of math in RMarkdown and $\LaTeX$
+There are two ways of writing math in R, either inline or displayed. In-line is used when you want to write math that is simple and short, like if I wanted to write, $C = \tau r$, as the circumference of a circle in relation to its radius. ([See the Tau Manifesto](https://tauday.com/tau-manifesto).) ; For example, `$C = \tau r$` gives you what I just typed. This is what you did on last week's problem set. To write displayed, use two dollar signs and write the math in the middle. Displayed math create a line break, which you use for more complex or important math; e.g., 
+$$a^2 + b^2 = c^2.$$
+To write math in display mode, you use two dollar signs; e.g., `$$a^2 + b^2 = c^2$$`. For different symbols, letters, etc. see the [Resources](resources.html) page on the course website and follow the link to $\LaTeX$.
+
+1.1 Using the $\LaTeX$ guide as a reference, take the solution from the continuous-time density-independent growth mode, $N_t = N_0e^{rt}$, and algebraically solve for $t$. For every algebraic step, please use a new line within $\LaTeX$ display mode, like if I wanted to express $E = mc^2$ in terms of the speed of light, $c$. Separate lines using `\\` and, to align the equations, use `\begin{aligned}` after the first pair of dollar signed and `\end{aligned}` before the second pair of dollar signed and put an `&` before each equals sign to align them, so they look something like this:
+$$
+\begin{aligned}
+E &= mc^2 \\
+\frac{E}{m} &= c^2 \\
+c^2 &= \frac{E}{m} \\
+c &= \sqrt[2]{\frac{E}{m}}.
+\end{aligned}
+$$
+
+1.2. We'll cover the concept of equilibrium later in the semester in greater detail next week. But it's when the system (e.g., population) is not changing; i.e., where the rate of change is 0, or $0 = dN/dt$. For the logistic equation, $dN/dt = rN(K - N)/K$, turn it into a per-capita rate of change by dividing both sides by $N$, then find the equilibrium; i.e., set the per-capita rate of change to 0 and solve for $N$. For every algebraic step, please use a new line within $\LaTeX$ display mode, like above. 
+
+
+# 2. Using `ode()` and some density-dependent models
+In lab in week 3 I showed you the numerical solver you will be using for just about everything in the class. It is the function called `ode()` in the `deSolve` package.  
+
+2.1. For a logistic equation, $dN/dt = rN - \alpha N^2$, give $r$ and $\alpha$ whatever values you want, but include the values in your answer. Start at some low value of $N$, say 0.1 Please plot the time series. Then, again numerically ingrate across a few different initial population sizes, say where $N$ starts at 1/2 of equilibrium you chose,where $N$ starts just slightly about the equilibrium you chose, and where $N$ starts at a value that's 25% higher than the equilibrium you chose. Plot these curves all on the same graph.  
+
+2.2. Last, recreate parts of the figure in [6.4.1](https://hankstevens.github.io/Primer-of-Ecology/05-DDgrowth.html#sec-discrete-logistic-growth) from Stevens. Choose a value of $r_d$ that gives you asymptotic stability (panel), oscillations (damped or perpetual; all the of panels burt the first and last), and chaos (the last panel). Use the logistic equation he uses that is found 3 chunks above the plots where he creates `dlogistic`.  Use the numerical solver like in 3.2, but in the `ode()` function, write the argument `method = "iteration"`. Use the logistic equation he uses in `dlogistic`, give the initial abundance a value of 10, set alpha to 0.01, and create a time sequence from 0 to 20.
+
+Please create your own plots using base `plot()`. To make a 2-row-by-3-column figure, in a line above `plot()` add a line for a function that adjusts plotting parameters, `par()`. If you use the argument `mfrow` (stands for **m**atrix of **f**igures by **row**s; there's also an `mfcol`) equal to the rows and columns, `c(2, 3)`, then the next 6 plots you make will be loaded in with the first 3 in the top row and the last 3 in the bottom row.
