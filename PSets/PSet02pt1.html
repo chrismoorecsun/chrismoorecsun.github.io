@@ -390,12 +390,15 @@ notice that this looks like a linear relationship.<br />
 statistically estimate the slope, but that’s overkill for this exercise.
 Just estimate the slope the ol’ fashioned way you learned in your youth:
 manually by dividing the rise over the run.<br />
-2.4. Use that slope as <span class="math inline">\(\lambda\)</span> to
-solve for the discrete-time density-independent growth equation, <span class="math inline">\(N_{t+1} = \lambda N_t\)</span>, using
-<code>ode()</code>, with the same initial density over the same time.
-Once you do that, plot the logged solution you just found along with
-time series of the structured population (i.e., log densities of 2.1).
-What do you notice?</p>
+2.4. Use that to find <span class="math inline">\(\lambda =
+e^{\text{slope}}\)</span> to solve for the discrete-time
+density-independent growth equation, <span class="math inline">\(N_{t+1}
+= \lambda N_t\)</span>, using <code>ode()</code>, with the same initial
+density over the same time. To call base <span class="math inline">\(e\)</span> in R, just use the function
+<code>exp()</code>; e.g., <span class="math inline">\(e^9\)</span> in R
+would be <code>exp(9)</code>. Once you do that, plot the logged solution
+you just found along with time series of the structured population
+(i.e., log densities of 2.1). What do you notice?</p>
 </div>
 <div id="do-initial-densities-matter" class="section level1">
 <h1>3. Do initial densities matter?</h1>

@@ -25,7 +25,7 @@ $$\begin{bmatrix}
 2.1. From the data in exercise 1., plot the logarithm of the total population density over time. You should notice that the rate of change becomes less variable over time. Cool. This is the stable age distribution.  
 2.2. Next, plot the logarithm of the total population density over time, but *only* for the last 5 time steps, times 11--15. You should notice that this looks like a linear relationship.  
 2.3. Find the slope from the last 5 time steps. Yeah, you can statistically estimate the slope, but that's overkill for this exercise. Just estimate the slope the ol' fashioned way you learned in your youth: manually by dividing the rise over the run.  
-2.4. Use that slope as $\lambda$ to solve for the discrete-time density-independent growth equation, $N_{t+1} = \lambda N_t$, using `ode()`, with the same initial density over the same time. Once you do that, plot the logged solution you just found along with time series of the structured population (i.e., log densities of 2.1). What do you notice?
+2.4. Use that to find $\lambda = e^{\text{slope}}$ to solve for the discrete-time density-independent growth equation, $N_{t+1} = \lambda N_t$, using `ode()`, with the same initial density over the same time. To call base $e$ in R, just use the function `exp()`; e.g., $e^9$ in R would be `exp(9)`. Once you do that, plot the logged solution you just found along with time series of the structured population (i.e., log densities of 2.1). What do you notice?
 
 # 3. Do initial densities matter?
 Given the projection matrix
