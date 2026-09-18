@@ -40,7 +40,7 @@ The timeline will follow:
 | September 08         | Introduction to the project and assigned literature search                        |
 | September 15         | Present Chris with *up to* 7 potential papers                                     |
 | September 15—22      | Meet with Chris to choose a the original research you wish to recreate            |
-| September 29         | Proposal presentation (essentially the paper with a light version of the methods) |
+| October 01         | Proposal presentation (essentially the paper with a light version of the methods) |
 | October 13           | Methods presentation                                                              |
 | November 05          | Preliminary results presentation                                                  |
 | November labs        | Remodeling project analysis in lab                                                |
