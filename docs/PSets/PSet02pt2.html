@@ -414,14 +414,13 @@ these curves all on the same graph.</p>
 <p>2.2. Last, recreate parts of the figure in <a href="https://hankstevens.github.io/Primer-of-Ecology/05-DDgrowth.html#sec-discrete-logistic-growth">6.4.1</a>
 from Stevens. Choose a value of <span class="math inline">\(r_d\)</span>
 that gives you asymptotic stability (panel), oscillations (damped or
-perpetual; all the of panels burt the first and last), and chaos (the
+perpetual; all the of panels but the first and last), and chaos (the
 last panel). Use the logistic equation he uses that is found 3 chunks
 above the plots where he creates <code>dlogistic</code>. Use the
-numerical solver like in 3.2, but in the <code>ode()</code> function,
-write the argument <code>method = &quot;iteration&quot;</code>. Use the logistic
-equation he uses in <code>dlogistic</code>, give the initial abundance a
-value of 10, set alpha to 0.01, and create a time sequence from 0 to
-20.</p>
+numerical solver, but in the <code>ode()</code> function, write the
+argument <code>method = &quot;iteration&quot;</code>. Use the logistic equation he
+uses in <code>dlogistic</code>, give the initial abundance a value of
+10, set alpha to 0.01, and create a time sequence from 0 to 20.</p>
 <p>Please create your own plots using base <code>plot()</code>. To make
 a 2-row-by-3-column figure, in a line above <code>plot()</code> add a
 line for a function that adjusts plotting parameters,
