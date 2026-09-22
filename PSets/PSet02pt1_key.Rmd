@@ -1,0 +1,233 @@
+---
+title: "Problem set 2, part I: Stevens, Ch. 5"
+output: html_document
+---
+
+```{r setup, include=FALSE, collapse = T}
+knitr::opts_chunk$set(echo = TRUE, collapse = T)
+
+# I load all the packages I use at the top of my scripts
+  library(package = "deSolve")
+```
+
+# 1. Projecting an age-structured population and reconciling classes with total population
+Consider the following population projection matrix:
+$$\begin{bmatrix}
+0 & 1 & 4 \\
+0.7 & 0 & 0 \\
+0 & 0.2 & 0
+\end{bmatrix}$$
+
+1.1. Begin with just 10 individuals in the first age class and project the population 15 times in R.  
+1.2. Plot each age class over time on the same graph. Like always, make sure you're plotting all of the data so that none of it is outside of the plot ranges.  
+1.3. Plot the total population over time on top of the same graph you made for 1.2. First, you will need add the individuals across classes because all individuals are counted to plot the total population size. You can do this at least two ways: (1) `apply(X = , MARGIN = 2, FUN = sum)` or (2) using `colSums(x = )`. The first is preferable because you can give *any* function (not just sum) and you can apply it over rows (`margin = 1`), columns (`margin = 2`), or any other dimension. Second, make the plot.
+
+***
+> 1.1
+
+```{r}
+# Create the projection matrix, initial pop sizes, and test
+   proj.mat <- matrix(data = c(0, 0.7, 0, 1, 0, 0.2, 4, 0, 0), nrow = 3, ncol = 3)
+   N0 <- matrix(data = c(10, 0, 0), ncol = 1)
+   proj.mat%*%N0 # see that it works once; also shows use of matrix multiplier (inner product)
+
+# Set simulation parameters
+   n.steps <- 15
+   vec.steps <- 1:n.steps
+   N <- matrix(data = NA, nrow = length(N0), ncol = n.steps) # 11 to run 10 times after N0
+   N[,1] <- N0
+
+# Run loop
+   for (i in 2:n.steps) {
+      N[,i] <- proj.mat%*%N[,i-1]  
+   }
+```
+
+> 1.2
+
+```{r}
+# Plot class 1 and add lines for classes 2 and 3 (note I add points to better 
+# show the steps in time and that `pch = 16` makes points solid)
+   plot(x = vec.steps, y = N[1,], type = "l", las = 1, xlab = "Time step", ylab = "Total population", col = "orange")
+    points(x = vec.steps, y = N[1,], pch = 16, col = "orange")
+   lines(x = vec.steps, y = N[2,], col = "red")
+    points(x = vec.steps, y = N[2,], col = "red", pch = 16)
+   lines(x = vec.steps, y = N[3,], col = "blue")
+    points(x = vec.steps, y = N[3,], col = "blue", pch = 16)
+```
+
+> 1.3
+
+```{r}
+# Function to sum columns to give total population size (dimension 2)
+  totalN <- apply(X = N, MARGIN = 2, FUN = sum)
+  # alternatively, you could write: totalN <- colSums(N)
+
+# Plot points at each step and connect them with a line (note I made the points
+# a little bit bigger by making `cex` > 1 of the total population so we could
+# see it below the other points)
+   plot(x = vec.steps, y = totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population", ylim = c(0, 30))
+   points(x = vec.steps, y = totalN, pch = 16, cex = 1.5)
+   lines(x = vec.steps, y = N[1,], col = "orange")
+    points(x = vec.steps, y = N[1,], pch = 16, col = "orange")
+   lines(x = vec.steps, y = N[2,], col = "red")
+    points(x = vec.steps, y = N[2,], col = "red", pch = 16)
+   lines(x = vec.steps, y = N[3,], col = "blue")
+    points(x = vec.steps, y = N[3,], col = "blue", pch = 16)
+```
+
+
+# 2. The logrithmic property of density-independent change
+
+2.1. From the data in exercise 1., plot the logarithm of the total population density over time. You should notice that the rate of change becomes less variable over time. Cool. This is the stable age distribution.  
+2.2. Next, plot the logarithm of the total population density over time, but *only* for the last 5 time steps, times 11--15. You should notice that this looks like a linear relationship.  
+2.3. Find the slope from the last 5 time steps. Yeah, you can statistically estimate the slope, but that's overkill for this exercise. Just estimate the slope the ol' fashioned way you learned in your youth: manually by dividing the rise over the run.  
+2.4. Use that slope as $\lambda$ to solve for the discrete-time density-independent growth equation, $N_{t+1} = \lambda N_t$, using `ode()`, with the same initial density over the same time. Once you do that, plot the logged solution you just found along with time series of the structured population (i.e., log densities of 2.1). What do you notice?
+
+***
+> 2.1
+
+```{r}
+# You can do any arithmetic operation over most data structures, including logarithmic transform, adding, dividing, etc. Here, `log()`'s default is the natural log (base e), but you can take the log of any base, incluing the commonly-used base 10 if you want
+  log_totalN <- log(totalN, base = exp(1))
+
+  plot(x = vec.steps, y = log_totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population (log)")
+    points(x = vec.steps, y = log_totalN, pch = 16, cex = 1.5)
+```
+
+> 2.2
+
+```{r}
+lastFive_steps <- 11:15
+lastFive_dens <- log_totalN[lastFive_steps]
+
+  plot(x = lastFive_steps, y = lastFive_dens, type = "l", las = 1, xlab = "Time step", ylab = "Total population (log)")
+    points(x = lastFive_steps, y = lastFive_dens, pch = 16, cex = 1.5)
+```
+
+> 2.3
+
+```{r}
+# Indexing the fifth and first elements (yes, I could have just written 5 and 1, but this is a better practice)
+  rise <- lastFive_dens[5] - lastFive_dens[1]
+  run <- lastFive_steps[5] - lastFive_steps[1]
+
+  slope <- rise/run
+  print(slope)
+```
+
+> 2.4
+
+```{r}
+# Use `ode()` to solve
+  densIndDisc <- function(Time, State, Pars) {
+    with(as.list(c(State, Pars)), {
+      Nt1 <- lambda*Nt
+      return(list(c(Nt1)))
+    })
+  }
+  
+  N0 <- c(Nt = 10)
+  parm_vec <- c(lambda = exp(slope))
+  # Remember we created a vector of times in 1.1. called `vec.steps`
+
+  ode_2.4 <- ode(y = N0, times = vec.steps, func = densIndDisc, parms = parm_vec, method = "iteration")
+
+# Make a regular ol' plot of 2.1 & add our logged numerical solution we just got
+  plot(x = vec.steps, y = log_totalN, type = "l", las = 1, xlab = "Time step", ylab = "Total population", ylim = c(2, 3.75))
+    points(x = vec.steps, y = log_totalN, pch = 16, cex = 1.5)
+  lines(x = 1:15, y = log(ode_2.4[,2]), col = "hotpink")
+    points(x = 1:15, y = log(ode_2.4[,2]), col = "hotpink", pch = 16, cex = 1.5)
+```
+
+> They are parallel! So, that effectively means that we have estimated a single value of the growth of the total popluation from all the values that make up the population projection matrix (i.e., survival and reproduction of each class). This nubmer is important because we can learn about and pridict population dynamics.  
+Yes, they are slightly off, but that's beccause we coarsely estimated the growth rate of the growth of the structured popluation. If we would have run it for longer and statistically estimated it, it would have been more precise. And if you want a computational approximation, log the largest (eigen)value of the output of `eigen` of the population projection matrix. It'd be like this:
+
+```{r}
+# Sort the absolute (eigen)values of the population projection matrix
+  mat_vals <- sort(abs(eigen(proj.mat)$values), decreasing = T)
+  gr <- log(mat_vals)[1]
+  print(paste0("The growth rate is calculated as: ", sprintf(x = gr, fmt = "%0.7f"), "; compared with our estimate of: ", sprintf(x = slope, fmt = "%0.7f"), "."))
+```
+
+
+# 3. Do initial densities matter?
+Given the projection matrix
+$$\begin{bmatrix}
+0   & 3   & 4   & 1 \\
+0.7 & 0   & 0   & 0 \\
+0   & 0.3 & 0   & 0 \\
+0   & 0   & 0.1 & 0
+\end{bmatrix}$$
+
+suppose that two populations are introduced onto two islands. The populations are the same size ($N = 19$), but their initial ages are different. Island A has 1, 3, 5, and 10 individuals in the respective first--fourth age classes; whereas island B has 10, 5, 3, and 1 individuals in the respective first--fourth age classes.
+
+3.1. Project the total population of each island 11 time steps into the future.  
+3.2. What do you notice? Which population has more after 11 time steps? Why?
+
+***
+> 3.1
+
+```{r}
+# Project each population 11 steps into the future
+  n.steps <- 11
+  vec.steps <- 1:n.steps
+  projMat <- matrix(c(0, 0.7, 0, 0, 3, 0, 0.3, 0, 4, 0, 0, 0.1, 1, 0, 0, 0), nrow = 4, ncol = 4)
+
+  # Set up population A
+  N0_A <- matrix(data = c(1, 3, 5, 10), ncol = 1)
+  N_A <- matrix(data = NA, nrow = length(N0_A), ncol = n.steps)
+  N_A[,1] <- N0_A
+
+  # Set up population B
+  N0_B <- matrix(data = c(10, 5, 3, 1), ncol = 1)
+  N_B <- matrix(data = NA, nrow = length(N0_B), ncol = n.steps)
+  N_B[,1] <- N0_B
+  
+  # Project and sum individuals of each
+    for (i in 2:n.steps) {
+      N_A[,i] <- projMat%*%N_A[,i-1]
+    }
+
+    for (i in 2:n.steps) {
+      N_B[,i] <- projMat%*%N_B[,i-1]
+    }
+
+    totalN_A <- apply(X = N_A, MARGIN = 2, FUN = sum)
+    totalN_B <- apply(X = N_B, MARGIN = 2, FUN = sum)
+  
+  # If you got'em, plot'em
+    plot(x = vec.steps, y = log(totalN_A), type = "l", las = 1, xlab = "Timestep", ylab = "Total population (A: red, B: blue)", col = "tomato", ylim = c(3, 8))
+      points(x = vec.steps, y = log(totalN_A), pch = 16, cex = 1.5, col = "tomato")
+    points(x = vec.steps, y = log(totalN_B), pch = 16, cex = 1.5, col = "skyblue")
+      lines(x = vec.steps, y = log(totalN_B), col = "skyblue")
+  
+
+```
+
+> 3.2
+The lines deviate from each other. Population B is effectively straight, and popaultion A varies. After 11 time steps, population B has `r round(totalN_B[11], digits = 0)` individuals, which is more than popaultion A with  `r round(totalN_A[11], digits = 0)` individuals. Why? Because even though the populations started off with the same numbers of individuals, the distribution of those individuals among the reproductive and non-reproductive classes were different. Population B had more individuals that were reproducing at time step 1, while most of the indidivuals in popluation A began in the first, non-reproductive class. So, individual densities matter for population change.
+
+# 4. Writing matrices in $\LaTeX$
+In a population of insects we find that there are, at a particular point in time, 1000 larvae, 50 pupae, and 5 adults. We find that after another census one month later we are able to estimate the probability of survival of a larva (assuming it remains a larva) as 0.7, the probability that the larva will turn into a pupa as 0.2, the probability that a pupa will survive as 0.1, the probability that the pupa will turn into an adult as 0.4, and the probability that an adult will survive as 0.5. Furthermore, an average adult produces 100 eggs, 50% of which appear (within that month) as larvae while the rest die. Write the structured population model in $\LaTeX$, with the population vector at the next time step being a function of the population projection matrix time the population vector at the current times step.
+
+> In markdown, here is how you create a vector:  
+`$$\Biggl[ \begin{smallmatrix} x \\ y \\ z \end{smallmatrix}\Biggr]$$`  
+That looks like this: $$\Biggl[ \begin{smallmatrix} x \\ y \\ z \end{smallmatrix}\Biggr]$$.
+
+> In markdown, here is how you create a matrix:  
+`$$\Biggl[ \begin{smallmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{smallmatrix}\Biggr]$$`.  
+That looks like this: $$\Biggl[ \begin{smallmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{smallmatrix}\Biggr]$$.
+
+4.1. In a population of plants, we categorized individuals as small seedlings, large seedlings, small saplings, large saplings, and adults. Presuming that the plants in each stage either move to the next stage or stay in their own category during population growth, write the popualtion projection matrix in general terms. (That is, fill out a matrix with values that would be 0 and which would not.)
+
+4.2. At another site this same population has slightly different growth patterns and the variability of its growth is very large, such that occasional the small seedlings grow all the way to small saplings during a single time unit. Furthermore, because of the severe weather, occasionally a large sapling has its top damaged and actual reverts to the small sapling stage. Modify the matrix of exercise 4.1. to account for these probabilities.
+
+> 4.
+> $$\Biggl[ \begin{smallmatrix} n_1(t+1) \\ n_2(t+1) \\ n_3(t+1) \end{smallmatrix}\Biggr] = \Biggl[ \begin{smallmatrix} 0.7 & 0 & 50 \\ 0.2 & 0.1 & 0 \\ 0 & 0.4 & 0.5   \end{smallmatrix}\Biggr]\Biggl[ \begin{smallmatrix} 1000 \\ 50 \\ 5 \end{smallmatrix}\Biggr]$$
+
+> 4.1
+$$\left[ \begin{matrix}p_{00} & 0 & 0 & 0 & f_1 \\ p_{10}& p_{11} & 0 & 0 & 0 \\ 0 & p_{21} & p_{22} & 0 & 0 \\ 0 & 0 & p_{32} & p_{33} & 0 \\ 0 & 0 & 0 & p_{43} & p_{44} \end{matrix}\right]$$
+
+> 4.2
+$$\left[ \begin{matrix}p_{00} & 0 & 0 & 0 & f_1 \\ p_{10}& p_{11} & 0 & 0 & 0 \\ p_{20} & p_{21} & p_{22} & p_{23} & 0 \\ 0 & 0 & p_{32} & p_{33} & 0 \\ 0 & 0 & 0 & p_{43} & p_{44} \end{matrix}\right]$$

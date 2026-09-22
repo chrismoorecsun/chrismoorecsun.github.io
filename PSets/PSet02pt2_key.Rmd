@@ -1,0 +1,128 @@
+---
+layout: assignment
+title: "Problem set 2: Density dependence"
+---
+
+# 1. Writing display and multiple lines of math in RMarkdown and $\LaTeX$
+There are two ways of writing math in R, either inline or displayed. In-line is used when you want to write math that is simple and short, like if I wanted to write, $C = \tau r$, as the circumference of a circle in relation to its radius. ([See the Tau Manifesto](https://tauday.com/tau-manifesto).) ; For example, `$C = \tau r$` gives you what I just typed. This is what you did on last week's problem set. To write displayed, use two dollar signs and write the math in the middle. Displayed math create a line break, which you use for more complex or important math; e.g., 
+$$a^2 + b^2 = c^2.$$
+To write math in display mode, you use two dollar signs; e.g., `$$a^2 + b^2 = c^2$$`. For different symbols, letters, etc. see the [Resources](resources.html) page on the course website and follow the link to $\LaTeX$.
+
+1.1 Using the $\LaTeX$ guide as a reference, take the solution from the continuous-time density-independent growth mode, $N_t = N_0e^{rt}$, and algebraically solve for $t$. For every algebraic step, please use a new line within $\LaTeX$ display mode, like if I wanted to express $E = mc^2$ in terms of the speed of light, $c$. Separate lines using `\\` and, to align the equations, use `\begin{aligned}` after the first pair of dollar signed and `\end{aligned}` before the second pair of dollar signed and put an `&` before each equals sign to align them, so they look something like this:
+$$
+\begin{aligned}
+E &= mc^2 \\
+\frac{E}{m} &= c^2 \\
+c^2 &= \frac{E}{m} \\
+c &= \sqrt[2]{\frac{E}{m}}.
+\end{aligned}
+$$
+
+1.2. We'll cover the concept of equilibrium later in the semester in greater detail next week. But it's when the system (e.g., population) is not changing; i.e., where the rate of change is 0, or $0 = dN/dt$. For the logistic equation, $dN/dt = rN(K - N)/K$, turn it into a per-capita rate of change by dividing both sides by $N$, then find the equilibrium; i.e., set the per-capita rate of change to 0 and solve for $N$. For every algebraic step, please use a new line within $\LaTeX$ display mode, like above.
+
+***
+### Answers
+> 1.1. $$
+\begin{aligned}
+N_t &= N_0e^{rt} \\
+\frac{N_t}{N_0} &= e^{rt} \\
+\log _e \left(\frac{N_t}{N_0}\right) &= rt \\
+\frac{\log _e \left(\frac{N_t}{N_0}\right)}{r} &= t \\
+t &= \frac{\log _e \left(\frac{N_t}{N_0}\right)}{r} \\
+\end{aligned}$$
+
+> 1.2. $$
+\begin{aligned}
+\frac{dN}{dt} &= rN\left(\frac{K - N}{K}\right) \\
+\frac{1}{N}\frac{dN}{dt} &= r\left(\frac{K - N}{K}\right) \\
+0 &= r\left(\frac{K - N}{K}\right) \\
+0 &= r - \frac{r}{K}N \\
+\frac{r}{K}N &= r \\
+rN &= rK \\
+N^\ast = K
+\end{aligned}$$
+
+# 2. Using `ode()` and some density-dependent models
+In lab in week 3 I showed you the numerical solver you will be using for just about everything in the class. It is the function called `ode()` in the `deSolve` package.  
+
+2.1. For a logistic equation, $dN/dt = rN - \alpha N^2$, give $r$ and $\alpha$ whatever values you want, but include the values in your answer. Start at some low value of $N$, say 0.1 Please plot the time series. Then, again numerically ingrate across a few different initial population sizes, say where $N$ starts at 1/2 of equilibrium you chose,where $N$ starts just slightly about the equilibrium you chose, and where $N$ starts at a value that's 25% higher than the equilibrium you chose. Plot these curves all on the same graph.  
+
+2.2. Last, recreate parts of the figure in [6.4.1](https://hankstevens.github.io/Primer-of-Ecology/05-DDgrowth.html#sec-discrete-logistic-growth) from Stevens. Choose a value of $r_d$ that gives you asymptotic stability (panel), oscillations (damped or perpetual; all the of panels but the first and last), and chaos (the last panel). Use the logistic equation he uses that is found 3 chunks above the plots where he creates `dlogistic`.  Use the numerical solver, but in the `ode()` function, write the argument `method = "iteration"`. Use the logistic equation he uses in `dlogistic`, give the initial abundance a value of 10, set alpha to 0.01, and create a time sequence from 0 to 20.
+
+Please create your own plots using base `plot()`. To make a 2-row-by-3-column figure, in a line above `plot()` add a line for a function that adjusts plotting parameters, `par()`. If you use the argument `mfrow` (stands for **m**atrix of **f**igures by **row**s; there's also an `mfcol`) equal to the rows and columns, `c(2, 3)`, then the next 6 plots you make will be loaded in with the first 3 in the top row and the last 3 in the bottom row.
+
+***
+> 2.1.
+```{r warning = F}
+# Load our pacakge deSolve
+  library(package = "deSolve")
+
+# Create the 4 objects we need to numerically solve our problem, but with four
+# initial densities for the 4 initial conditions
+  logistic <- function(time, state, pars) {
+    with(as.list(c(state, pars)), {
+      dN <- r*N - alpha*N^2
+      return(list(c(dN)))
+    })
+  }
+  
+  yini1  <- c(N = 0.1)
+  yini2  <- c(N = 5)
+  yini3  <- c(N = 9)
+  yini4  <- c(N = 12.5)
+  
+  pars  <- c(r = 0.5, alpha = 0.05)
+  times <- seq(from = 0, to = 25, by = 0.1)
+
+# Run our numerical solver 4 times, each with a different initial density
+  out1   <- ode(y = yini1, times = times, func = logistic, parms = pars)
+  out2   <- ode(y = yini2, times = times, func = logistic, parms = pars)
+  out3   <- ode(y = yini3, times = times, func = logistic, parms = pars)
+  out4   <- ode(y = yini4, times = times, func = logistic, parms = pars)
+
+# Plot and ad lines
+plot(x = out1[,1], y = out1[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 14), col = "grey66", lwd = 2)
+  lines(x = out2[,1], y = out2[,2], col = "gold", lwd = 2)
+  lines(x = out3[,1], y = out3[,2], col = "skyblue", lwd = 2)
+  lines(x = out4[,1], y = out4[,2], col = "tomato", lwd = 2)
+  
+  # Sometimes I add points for funzies
+  points(x = rep(x = 0, times = 4), y = c(yini1, yini2, yini3, yini4), col = c("grey66", "gold", "skyblue", "tomato"), pch = 16)
+```
+
+
+> 2.2.
+```{r}
+dlogistic <- function(time, state, pars) {
+  with(as.list(c(state, pars)), {
+    dN <- N + rd*N*(1 - alpha*N) # Sorry, using "iteration" means you need to put a + N in your model
+    return(list(c(dN)))
+  })
+}
+
+yini  <- c(N = 10)
+times <- 0:20
+
+rd_vec <- seq(from = 1.3, to = 2.8, by = 0.3)
+pars1  <- c(rd = rd_vec[1], alpha = 0.01)
+pars2  <- c(rd = rd_vec[2], alpha = 0.01)
+pars3  <- c(rd = rd_vec[3], alpha = 0.01)
+pars4  <- c(rd = rd_vec[4], alpha = 0.01)
+pars5  <- c(rd = rd_vec[5], alpha = 0.01)
+pars6  <- c(rd = rd_vec[6], alpha = 0.01)
+
+out1   <- ode(y = yini, times = times, func = dlogistic, parms = pars1, method = "iteration")
+out2   <- ode(y = yini, times = times, func = dlogistic, parms = pars2, method = "iteration")
+out3   <- ode(y = yini, times = times, func = dlogistic, parms = pars3, method = "iteration")
+out4   <- ode(y = yini, times = times, func = dlogistic, parms = pars4, method = "iteration")
+out5   <- ode(y = yini, times = times, func = dlogistic, parms = pars5, method = "iteration")
+out6   <- ode(y = yini, times = times, func = dlogistic, parms = pars6, method = "iteration")
+
+par(mfrow = c(2, 3), mar = c(4.5, 4, 1, 0.5)) # mar changes the amount of space below, left, top, and right of each plot
+plot(x = out1[,1], y = out1[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 125), lwd = 1.5)
+plot(x = out2[,1], y = out2[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 125), lwd = 1.5)
+plot(x = out3[,1], y = out3[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 125), lwd = 1.5)
+plot(x = out4[,1], y = out4[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 125), lwd = 1.5)
+plot(x = out5[,1], y = out5[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 125), lwd = 1.5)
+plot(x = out6[,1], y = out6[,2], xlab = "Time", ylab = "Density", type = "l", las = 1, ylim = c(0, 125), lwd = 1.5)
+```
