@@ -513,7 +513,7 @@ $$\frac{\mathrm{d}\frac{\mathrm{d}N}{\mathrm{d}t}}{\mathrm{d}N}\Bigg|_{N^*=K} = 
 --
 
 The solution:
-$$r\left(\frac{K-A}{K}\right)$$
+$$-r\left(\frac{K-A}{A}\right)$$
 If $<0$, then the point is stable; if $>0\text{, then the point it unstable}$.
 
 ---
@@ -531,7 +531,7 @@ $$\frac{\mathrm{d}\frac{\mathrm{d}N}{\mathrm{d}t}}{\mathrm{d}N}\Bigg|_{N^*=A} = 
 --
 
 The solution:
-$$-r\left(\frac{K-A}{A}\right)$$
+$$r\left(\frac{K-A}{K}\right)$$
 If $<0$, then the point is stable; if $>0\text{, then the point it unstable}$.
 
 ---
