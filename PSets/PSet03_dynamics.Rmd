@@ -1,0 +1,279 @@
+---
+layout: assignment
+title: "Problem set 3: Dynamics"
+output:
+  html_document:
+    toc: true
+---
+
+```{r warning = F, message = F}
+library(package = "deSolve")
+library(package = "viridis")
+```
+
+# Part I: Simulating numerical solutions
+## 1. Comparing and entering the numerical and analytic solutions to differential equations
+Now that you are getting used to R's numerical solver, I want you to be able to see its solutions compared to the analytic one that is found by integration. First, take the integrated logistic equation Vandermeer and Goldberg (2012) exercise 4.1. Use their parameter values and plot the two curves. Note if you want to plot $y = mx + b$ in R, you create a vector of $x$ values, then multiply that vector by value $m$ and add value $b$. But remember that the integrated logistic equation is time against density. Next, using `ode()` and the $r\mathrm{-}K$ logistic equation, superimpose (plot over) the numerical solutions on the same graph. In `lines()` make the **l**ine **ty**pe dotted by setting the argument `lty` to 3, change the `col`or from black, and make the **l**ine **w**i**d**th thicker by setting the argument `lwd` to 3.
+
+## 2. Parameter analysis
+
+In this course we are studying general population models. You have seen various models used to represent different types of biological scenarios, like populations that change in a density-independent manner, populations that change in a density-dependent manner, populations that change in steps, populations that change continuously, etc. But once we have a model, what then?
+
+We've analyzed our models in several ways already:  
+
+1. First, you've done graphical analysis of our models. You have taken the dynamic models and their solutions and graphed them. Time series are a form of analysis, which many of you presumably saw since many of your potential remodeling projects had time series figures.  
+2. Second, you've taken your dynamic models and plotted them as functions of density. That is a form of analysis, as important population biology is revealed (e.g., $r$ is the maximum per-capita growth rate, population growth rate and per-capita growth rate both intercept the horizontal axis as the same point [$K$, $r/\alpha$, etc.], etc.).  
+3. Third, you've done equilibrium analysis by finding $N$ for which the rate of change is 0; i.e., where the population is not changing.  
+4.  Fourth, you *just* learned another type of analysis this week where we evaluate a model's behavior around equilibria graphically by looking at the slope of the rate of change and density and doing the same thing mathematically by finding the slope and finding it it's positive or negative at each equilibirum. This is what we call stability analysis.  
+5. Fifth and last, you've taken dynamic models and their solutions, and you have varied parameter values to see how that changes the model behavior/output. In the last problem set, for instance, you took the logistic model from Stevens text and found that by modifying $r_d$ that the population may approach a single value, that it may oscillate around a value before settling on it, that it may oscillate around the value forever, or it may change chaotically/aperiodically. So, pat yourselves on your backs for learning all these ways of analyzing dynamic models just by messing around and finding out. #MessAroundAndFindOut #MAAFO.
+
+For this problem, I will ask you to a more extensive and more formal analysis of model parameters. This is, essentially, the most significant type of analysis that you can do to learn from most population models because mathematical analysis is often limited and not useful. An example of a mathematical analysis that is not useful might be when you find an equilibrium value for a model, but it has a dozen+ terms that are difficult to make sense of mathematically or biologically. You will find that *all* of the papers that you and your classmates choose will numerically vary parameters to examine changes in the model behaviour.
+
+2.1. Let's first pick a model to analyze: we'll use the $r$-$\alpha$ logistic equation: $$ \frac{\mathrm{d}N}{\mathrm{d}t} = N(r - \alpha N).$$ Imagine that this is your first time seeing this model and you don't know anything about it. If you were trying to understand the model, an important and primary question might be: how do the parameters, $r$ and $\alpha$ affect the model behavior? Well, let's see. First, take any 3 values of $r$ and plot the three numerical solutions on the same time series. Use whatever $N_0$, $\alpha$, and length of time you desire/is useful for observing the model's behavior. Second, make a plot with the 3 values of $r$ on the horizontal axis and the **final density** from the 3 numerical solutions on the vertical axis. As a suggestion for a better practice, try not just copying and pasting the final value, but index the last value by taking the second column of the last row. So for instance, if you saved your numerical solution as `ralpha_1`, I would index the value like this: `ralpha_1[nrow(ralpha_1), 2]`. How does $r$ affect density?
+
+2.2. Now, do the same thing with $\alpha$. First, take any 3 values of $\alpha$ and plot the three numerical solutions on the same time series. Use whatever $N(0)$, $r$, and length of time you desire/is useful for observing the model's behavior. Second, make a plot with the 3 values of $\alpha$ on the horizontal axis and the **final density** from the 3 numerical solutions on the vertical axis. Now, how does $\alpha$ affect density?
+
+2.3. You're going to be annoyed with me for this, for which I apologize in advance `r emo::ji("grimace")`. For the 3 values of $r$ and 3 values of $\alpha$ above, I want you to first plot all 9 combinations. Second, I want you to save all nine **final density** values in a matrix. To do this, first, make a matrix. I'll do this for you: `ralpha_mat <- matrix(data = NA, nrow = 3, ncol = 3)`. Now, just for the sake of helping you know where to save the **final densities**, let's label the rows and columns like this: `rownames(ralpha_mat) <- paste0("r", 1:3)` and `colnames(ralpha_mat) <- paste0("alpha", 1:3)`. Now, when you look at `ralpha_mat`, you see:
+
+```{r echo = F}
+ralpha_mat <- matrix(data = NA, nrow = 3, ncol = 3)
+rownames(ralpha_mat) <- paste0("r", 1:3)
+colnames(ralpha_mat) <- paste0("alpha", 1:3)
+ralpha_mat
+```
+
+You know how to index rows and columns, but as a reminder, if I had a matrix called `le_matrix`, I could save a value in its third row and fourth column like `le_matrix[3, 4] <- a_value`. Third and last, once you have the matrix filled, I want you to plot the final densities of $r$ against $\alpha$ using a [heat map](https://en.wikipedia.org/wiki/Heat_map). Do this by using the function `image()` that comes in R's base graphics. If you just throw in your matrix, you'll notice the axes are flipped: that's annoying but I have no control over this. So, a necessary step you'll need to take is to first rotate the matrix using (called a transposition in matrix-speak): `le_matrix1 <- t(le_matrix1)`. Then, inside of `image()`, give the following arguments:
+
+1.  `y =`: put a vector of your $\alpha$ values in; e.g., `image(y = c(0.1, 1, 10))`
+2.  `x =`: put a vector of your $r$ values in
+3.  `z =`: this is where you enter your matrix
+4.  `col = heat.colors(n = 100)`: this sets the color palette such that large values are white and small values are red; I can show you how to make your own color palettes easily, later, if you'd like
+5.  `las =`: because we always do this for the sake of people's necks
+
+After you make your beautiful heat map, take a moment to revel and reflect. Write a sentence or few on it.
+
+## 3. Harnessing the power of computational iteration
+
+So, hopefully you're seeing the point of what we're trying to do with parameter analysis. But, you might be thinking: *Chris, this is amazing, but WTH am I going to do with more than a handful a parameters? It seems like it'd be a huge pain in the neck! And with all of your preaching about `las = 1`, you are against pains in the neck!* It is true, I am against pains in the neck. So, let's scale this `r emo::ji("poop")` up! (Yes, I've been drinking a lot of `r emo::ji("coffee")`: how can you tell?)
+
+Our computers can be our friends; especially when we harness their power to do work for us! We're going to do this below using a type of [iterative](https://en.wikipedia.org/wiki/Iteration#Implementations) iterative process called a [loop](https://en.wikipedia.org/wiki/Control_flow#Loops). Loops are your friends: you give them a condition, like *Hey loop, go fetch me the final densities of a million values of* $r$ using my numerical solver, and they just do it. They're really good friends.
+
+This is a bit of a refresher, but loops come in a variety of forms, but we are essentially just going to be using what we call **for loop**s to repeat a calculations over a set of values, like in a vector. You basically tell R to perform some set of actions and over how many times. A simple loop to, say, calculate the area of a rectangle if we have a length of 2 and 5 lengths would be:
+
+```{r fig.dim=c(4,4)}
+# One length and 5 width values
+length_rec <- 2
+width_rec <- 2:6
+
+# I have the number of iterations I want to do, which is the length of the width vector
+n_widths <- length(width_rec)
+
+# Create a data structure to save the area values
+area_vec <- rep(x = NA, times = n_widths)
+
+# The for loop
+for (i in 1:n_widths) {
+  width_i <- width_rec[i]
+  area_i <- length_rec*width_i
+  area_vec[i] <- area_i
+}
+
+# Let's plot and look at what we just did
+# (Note I make the axes 1:1 to better observe how a 1 unit change in width corresponds to change in area)
+plot(x = width_rec, y = area_vec, las = 1, xlab = "Width", ylab = "Area", pch = 19, xlim = c(2, 12), ylim = c(2, 12))
+  lines(x = width_rec, y = area_vec)
+```
+
+Cool, huh! I'll first say that for this very simple problem, the simplest way to *actually* do this is just `length_rec*width_rec`: that will give you the same result as the for loop. But, this example was supposed to be illustrative or what you could *potentially* do. Second, study the code. Several things should pop out:
+
+-   Before the loop, I calculated `n_widths` that tells us how many iterations we want to run.
+-   I created an empty data structure called `area_vec` to save the output from each time the loop ran.
+-   The `i` in the parentheses of the for loop is essentially an object that takes on the values of the vector, in this case `1:n_widths`, at each iteration.
+-   An advantage of having `i` taking on the values of each iteration is that we can extract the first, second, third, etc. values of the width vectors, `width_rec[i]`, AND we can save the areas in the first, second, third, etc. places in our empty area vector, `area_vec[i]`, to fill it up.
+-   All the processes that you want to be repeated go within the curly braces.
+-   Unlike functions, what happens in the loop does *not* stay in the loop. So, for instance, if you were to run the above, then run `i` in the console, it should take on the value it was last assigned, which, in this case, is `r i`.
+
+3.1. Hopefully when reading the example loop above you were thinking about how you might do this with the parameter values from question 2. Well, that's what I want you to do. For this problem, do the same thing that you did in 2.1, but instead of choosing 3 arbitrary $r$ values, create a vector of 100 values. Start and end at some arbitrary value of $r$ and create a sequence of 100. If I arbitrarily started at -1 and ended at 10, I would create my sequence as: `r_seq <- seq(from = -1, to = 10, length.out = 100)`.
+
+3.2. Similar to the previous problem, recreate 2.2, but with $\alpha$. Choose arbitrary values to start and stop, and analyze 100 values. Please use $\alpha >0$, because, unlike $r$, switching the sign of $\alpha$ to be $>0$ doesn't make biological sense for the logistic model.
+
+3.3. I imagine that it took a bit of effort to complete 3.1. and 3.2. Pat yourself on the back for a job well done: you deserve it. For this final problem, as you guessed, I want you to do the same thing as 2.3. To do this, we need to do a just few things differently. First, you need to write a loop within a loop—this is what we call a *nested loop*. It looks like this:
+
+```{r eval = F}
+for (i in 1:10) {
+  # Here is where i is being indexed
+  for (j in 1:10) {
+    # Here's where j is being indexed
+    # Here's where you put your calculations
+  }
+}
+```
+
+You can see that the first difference compared with above is that there is now a loop nested in another. Another thing that we need to do differently is to give the nested loop variable a different value; here, we use `j`. What happens here is that `i` takes the value 1, then `j` is looped over to take 1, 2, ... 10. Then, `i` takes the value 2, then `j` is looped over to take 1, 2, ... 10. This happens until `i` takes on the value 10, then `j` is looped over to take 1, 2, ... 10. The last thing that we need to do differently is create a data structure that can take all the combinations of `i` and `j`: you probably guessed it, a matrix.
+
+Here is an example again using nested loops to find the area of a rectangle, where I loop over length and width:
+
+```{r fig.dim=c(4,4)}
+# I create a named value for the number of length and width values I want to use
+n_vals <- 100
+
+# Create vectors for the lengths and widths
+length_vec <- seq(from = 0, to = 20, length.out = n_vals)
+width_vec <- seq(from = 0, to = 20, length.out = n_vals)
+
+# Create a matrix to save the values in
+area_mat <- matrix(data = NA, nrow = n_vals, ncol = n_vals)
+  rownames(area_mat) <- paste0("l", 1:n_vals)
+  colnames(area_mat) <- paste0("w", 1:n_vals)
+  # Uncomment to check out the first 5 rows and columns and see that we want lengths in rows, widths in columns
+  # area_mat[1:5, 1:5]
+
+# The loop
+for (i in 1:n_vals) {
+  # Here is where length i is being indexed
+  l_i <- length_vec[i]
+  for (j in 1:n_vals) {
+    # Here's where width j is being indexed
+    w_j <- length_vec[j]
+    # Here's where you put your calculations
+    area <- l_i*w_j
+    # Here is where we save the ith row for length and jth column for width
+    area_mat[i, j] <- area
+  }
+}
+
+# Transpose the matricx and plot
+area_mat1 <- t(area_mat)
+image(x = width_vec, y = length_vec, z = area_mat1, las = 1, col = heat.colors(n = 100), xlab = "Width", ylab = "Length")
+
+# Note there are different functions that allow you to plot 3D data like these, including contour() and filled.contour(). Uncomment to see what they look like:
+# contour(x = width_vec, y = length_vec, z = area_mat1, las = 1, xlab = "Width", ylab = "Length")
+#filled.contour(x = width_vec, y = length_vec, z = area_mat1, las = 1, xlab = "Width", ylab = "Length")
+```
+
+Isn't that just sooooo coooooool `r emo::ji("sunglasses")`. So, do this with the $r$-$\alpha$ logistic equation. I'm eager to see your heat maps!
+
+# Part II: Bifurcation Diagrams
+## 1. 1D Bifurcation Diagram
+
+This problem set is going to be a bit shorter given that you will be giving your remodeling paper presentation this week. I really only want you to make 2 graphs—2 bifurcation plots; 1 in each of #1 and #2. You'll be doing problem 1 with a different equation this week in class. But for problem 2, you can do with what you know now.
+
+For the first bifurcation plot, I would like for you to recreate the figure from the [Ricker model Wikipedia page](https://en.wikipedia.org/wiki/Ricker_model). You'll notice this is exactly the equation you learned in chapter 1, but we used $b$ and they use $1/K$ as the crowding/density-dependence parameter.
+
+We're going to cover this for the discrete-time logistic equation, so you should at least have an example to follow by Tuesday. In short, a **bifurcation diagram** is one that shows a **qualitative change in dynamics**. "Qualitative" here, meaning the point of the graph isn't supposed to show a quantitative change (e.g., the equilibrium increasing), but rather that there are differences in the types of dynamics.
+
+We can see at small values of $r < 2$, in this instance, that the populations reach \~1,000 (what we set as $K$) and that's it. This is what you see what you for the behavior of our "normal" logistic equation, where populations change and approach $K$, and just stay there.
+
+But at slightly larger values of $r$, $\sim 2.5 > r > 2$, you can see, reading upwards from any point of $r$, that there are **two** points. This is because the population is cycling! It's effectively overshooting, undershooting, overshooting, etc. $K$ and is always returning to the same two values.
+
+At slightly larger values of $r$, $\sim 2.6 > r > \sim 2.5$, you can see that the population is cycling but between **four** points!
+
+And finally, $r > \sim 2.6$, you can see that there are some regular cycles, but the points otherwise appear to be random: this is chaotic dynamics.
+
+So, this is called a 1-dimensional bifurcation because we are showing the qualitative change in dynamics—asymptotic stability, 2-point cycles, 4-point cycles, chaos, etc.—by changing a single variable, $r$.
+
+To run this analysis, it's analogous to what you did in the last problem set where you create a bunch of $r$ values, and loop over them to numerically solve them. There are two important differences, however:
+
+1.  It's discrete-time, so for `ode()`, you want to set the argument `method = "iteration"`.
+2.  For the logistic model you analyzed above, we just saved the final value of our time series since we solved over "a long period of time" and we know that, for the $r-\alpha$ logistic equation, that it asymptotically approaches $r/\alpha$. If we just looked at the last value for this Ricker model, the figure below is what we'd get! Notice that we miss so much! For 2-point cycles, for instance, we just see 1/2 of the cycle! This is why, for this bifurcation diagram, we want to save more than 1 final value. For me, I usually use at least the last 10 values. What this means, is that instead of saving one value of final densities per $r$ in a vector, we need to save the last, say, 10 values for each $r$. A matrix is ideal for this, where you create one with, say, the number of rows being the number of $r$ values, and the number of columns being the number of final densities you are saving.
+3.  For regular plots, you plot a vector of x values and a vector of y values. Here, it's a bit different; here, you want to plot several y values (like 10) per $r$. To do this, you still need to give `plot()` vectors of the same length, but you want to repeat the same $r$ value for every final density (e.g., 10).
+4.  Last, aesthetics. I like to make the points smaller using the **c**haracter **ex**pansion argument `cex =` to some value less than 1 (\>1 makes them bigger!). Since many points overlap, I like to make them translucent. We can use [hex colors](https://htmlcolorcodes.com/) for this, and add how much transparency we want at the end from 00 (fully transparent) to FF (fully opaque) at the end. If I wanted, for instance, red in hex code, I would write `col = "#FF00000"`. And if I wanted to make it medium transparent, I would write `col = "#FF0000077"`.
+
+Remember that this is a bifurcation plot because its purpose is to show a qualitative change in dynamics.
+
+Again, we will go over this on Tuesday, so you'll be able to do this problem after then.
+
+## 2. 2D Bifurcation Diagram
+
+Second, and last for this week, I want you to extent the idea of a bifurcation diagram from 1 to 2 dimensions. We aren't going to really going to look at qualitatively different type of dynamics, but we are going to look at the output of our model qualitatively. This means that we aren't going to identify cycles, extinction, chaos, etc., but rather just take our 2D heat maps where we change two parameters, and qualify/bin the values. You'd do the same with dynamics, but that'll be learned later.
+
+So, for this question, I want you to take the analysis that you did for part 1, question 3.3. From there, arbitrarily choose an value within the range of your matrix of densities, assign it to a group (e.g., an arbitrary value) and the rest to another group (e.g., an arbitrary value).
+
+For my question 3.3. in the key, for instance, I am going choose 10. We can pretend that we curious about the sets of parameter values that give us an equilibrium of 10. Here's what the beat made and 2D bifurcation diagram would look like side-by-side:
+
+```{r ansralpha, cache = T, echo = F}
+# r-alpha function
+  ralpha <- function(time, state, pars) {
+    with(as.list(c(state, pars)), {
+      dN <- N*(r - alpha*N)
+      return(list(c(dN)))
+    })
+  }
+
+# Time sequence and N0 for ode()
+length_times <- 1000
+  time_vec <- seq(from = 0, to = 100, length.out = length_times)
+  N0 <- c(N = 0.05)
+
+# Create a vector for parameters
+  parm_vec <- c(alpha = 0.01, r = 0.01)
+
+# Time series
+  length_rs <- 100
+  r_vec <- seq(from = 0.1, to = 5.1, length.out = length_rs)
+  
+  length_alphas <- 100
+  alpha_vec <- seq(from = 0.1, to = 0.6, length.out = length_alphas)
+
+# Heat map
+  # Create matrix into which we will save
+  ralpha_mat <- matrix(data = NA, nrow = length_rs, ncol = length_alphas)
+  rownames(ralpha_mat) <- paste0("r", 1:length_rs)
+  colnames(ralpha_mat) <- paste0("c", 1:length_alphas)
+  
+  for (i in 1:length_rs) {
+    r_i <- r_vec[i]
+    parm_vec["r"] <- r_i
+    for (j in 1:length_alphas) {
+      alpha_j <- alpha_vec[j]
+      parm_vec["alpha"] <- alpha_j
+    
+      ode_out <- ode(y = N0, times = time_vec, func = ralpha, parms = parm_vec)
+      ralpha_mat[i, j] <- ode_out[length_times, 2]
+    }
+  }
+
+  # Qualitative
+  ralpha_matQual <- ralpha_mat
+  threshold <- 10
+  ralpha_matQual[ralpha_matQual < threshold] <- 0
+  ralpha_matQual[ralpha_matQual >= threshold] <- 1
+  
+  par(mfrow = c(1, 2), mar = c(4.5, 4.5, 4.5, 1))
+  image(x = r_vec, y = alpha_vec, z = ralpha_mat, las = 1, xlab = "Intrinsic rate of grwoth (r)", ylab = "Crowding coefficient (alpha)", col = viridis(n = 100))
+  image(x = r_vec, y = alpha_vec, z = ralpha_matQual, las = 1, xlab = "Intrinsic rate of grwoth (r)", ylab = "Crowding coefficient (alpha)", col = c("#552583", "#FDB927"))
+```
+
+Let's see how to do this on an example matrix. First, let's create a matrix with some values. I'm going to do pair-wise multiplication between 1:3 and 5:8. (You don't need to do this, I'm just making a toy example to, if you will, f(around + find out),)
+
+```{r}
+vec1 <- 1:3
+vec2 <- 5:8
+toy_mat <- outer(X = vec1, Y = vec2, FUN = "*")
+toy_mat
+```
+
+Now, if we wanted, say, to make of graph of which values are \< 13: how would we do this? First, let's try just using [logical operators](https://bookdown.org/rwnahhas/IntroToR/logical.html) like \<, \>, ==, !=, etc. If we run `toy_mat < 13`, we'll see:
+
+```{r echo = F}
+  toy_mat < 13
+```
+
+You can correspond that to the matrix above for values that are less than \< 13—i'n'it cool!?
+
+So, now we want to assign all of those that are \> 13 as something: let's do the number 1. To do so, you **index your matrix with the output of the logical operators and assign it 0**. This is what `toy_mat[toy_mat < 13] <- 0` would like:
+
+```{r echo = F}
+  toy_mat[toy_mat < 13] <- 0
+  toy_mat
+```
+
+Now, do this for values ≥ 13 and assign them to 1. Your toy example should look like this when plotted with `image()`:
+
+```{r echo = F}
+  toy_mat[toy_mat >= 13] <- 1
+  toy_mat
+  image(x = vec1, y = vec2, z = toy_mat, las = 1, xlab = "vec1", ylab = "vec2", col = c("#ef3b24", "#007ac1"))
+```
+
+So, do this over your $r$-$\alpha$ matrix you made in 3.3 for last week's problem set with some arbitrary threshold.
