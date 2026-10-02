@@ -21,7 +21,7 @@ Models are, among other things, tools that help us better understand the univers
 
 To gain a first-hand experience of modeling in ecology (or evolution, if you're so inclined), I am assigning that you find a study that makes use of a model, and recreate it. There is a great deal to be learned from being in the weeds of a study with an ecologist that is trying to understanding an aspect of the natural world, attempting to create a model that will capture its essential elements, and trying to gain deeper understanding that would otherwise been unknown without the model. Don't get me wrong, there is a lot to learn from the broad kinds of modeling that we are studying from the text (mostly population-level, theoretical models), but there is also a lot to learn from trying to recreate a newer, (perhaps) messier, real scientific model. In doing so I'm hoping that you'll grow and learn through learning idiosyncratic approaches the authors used and see how models are created, analyzed, and used in practice—it's very different from the nice, clean models we read about in the textbook that have been studied for *many decades*! This might include discovering implicit or explicit assumptions of the model, approaches to parameterizing of the model, learning different quantitative techniques for analysis, seeing new types of visualizations, and lots of other possibilities!
 
-But perhaps most importantly, after creating and analyzing a *real* scientific model, I am hoping that this project will empower you by revealing to you (and me, of course) that you have the ability to model at a professional, scientific level. Most of you are preparing to graduate within the next 1–2 years, and these types of activities will certainly benefit you in many expected and unexpected ways.
+But perhaps most importantly, after creating and analyzing a *real* scientific model, I am hoping that this project will empower you by revealing to you (and me, of course) that you have the ability to model at a professional, scientific level. Most of you are preparing to graduate within the next year or just starting graduate school, and these types of activities will certainly benefit you in many expected and unexpected ways.
 
 The Remodeling Project will have 6 parts:
 
@@ -36,24 +36,24 @@ The timeline will follow:
 
 | Date                 | Task                                                                              |
 |----------------------|-----------------------------------------------------------------------------------|
-| February 13          | Introduction to the project and assigned literature search                        |
-| February 20          | Present Chris with *up to* 7 potential papers                                     |
-| February 20—27       | Meet with Chris to choose a the original research you wish to recreate            |
-| March 06             | Proposal presentation (essentially the paper with a light version of the methods) |
-| March 20             | Methods presentation                                                              |
-| April 10             | Preliminary results presentation                                                  |
-| April 03, 24; May 01 | Remodeling project analysis in lab                                                |
-| May 08               | Results presentations                                                             |
-| May XX               | Final research paper due (will announce time when final schedule is released)     |
+| September 08         | Introduction to the project and assigned literature search                        |
+| September 15         | Present Chris with *up to* 7 potential papers                                     |
+| September 15—22      | Meet with Chris to choose a the original research you wish to recreate            |
+| September 29         | Proposal presentation (essentially the paper with a light version of the methods) |
+| October 13           | Methods presentation                                                              |
+| November 05          | Preliminary results presentation                                                  |
+| November labs        | Remodeling project analysis in lab                                                |
+| December 08          | Results presentations                                                             |
+| December 15          | Final research paper due (will announce time when final schedule is released)     |
 
 > “Remember, always, that everything you know, and everything everyone knows, is only a model. Get your model out there where it can be viewed. Invite others to challenge your assumptions and add their own.” ([Thinking in Systems: A Primer](https://www.chelseagreen.com/product/thinking-in-systems/), by Donella Meadows)
 
 # Part I: Finding a paper
-The first part of the Remodeling Project will be to find a model that you wish to recreate. To do so, you will first search broadly, then narrow your choices down on your own and with my help. I highly recommend you use an *actual database* to search for articles. Perhaps the most useful tool available to you is through the library, called [SCOPUS](https://www.scopus.com/search/form.uri?display=basic). Opposed to unmanipulatable blackboxes like Google and Google Scholar (don't get me wrong, even those can have their time and place), SCOPUS allows you to search all sorts of criteria (keywords, author, article type, etc.), and further sort and filter (e.g., filter specific journals, sort by relevance or date).
+The first part of the Remodeling Project will be to find a model that you wish to recreate. To do so, you will first search broadly, then narrow your choices down on your own and with my help. I highly recommend you use an *actual database* to search for articles. Perhaps the most useful tool available to you is through the library, called [SCOPUS](hhttps://libguides.csun.edu/scopus). Opposed to unmanipulatable blackboxes like Google and Google Scholar (don't get me wrong, even those can have their time and place), SCOPUS allows you to search all sorts of criteria (keywords, author, article type, etc.), and further sort and filter (e.g., filter specific journals, sort by relevance or date).
 
 Before you take to the interwebs, take some moments to reflect on aspects of ecology (or evolution) that you find most interesting. I would suggest searching for what you find interesting in addition to some of the keywords I suggest below.
 
-In terms of your search criteria, there are several journals that I would recommend you search:
+In terms of your search criteria, there are several journals that I would recommend you search *if* you want to recreate a model in organismal biology. I don't know the areas of microbiology, cellular biology, and molecular biology, but journals with general titles like the Journal of Theoretical Biology tend to have mode papers in those areas:
 
 * Ecology
 * Evolution
@@ -84,7 +84,7 @@ In terms of the age of the paper, I think that either new (within the past 10 ye
 
 Last bit on criteria. I would like for you to avoid two types of model: (1) individual-based models (AKA agent-based models, IBMs, ABMs) and (2) species distribution models (AKA ecological niche models, ENMs, SDMs). IBMs require a totally different type of programming, which I would like you to steer away from. If you have experience or want to learn these methods I'd of course support you, but I cannot give you the support that you may need to complete a successful project. SDMs require external data, and these data aren't always accessible. Like with the IBMs, if you have experience or want to learn these methods I'd of course support you, but I cannot give you the support that you may need to complete a successful project.
 
-For this first set of up-to-7 papers, I would like for you to create a folder in `Private/RemodelingProject/` called `PotentialPapers`. In here, save .pdf copies of papers that capture your interests that have a modeling component. Have all of the papers there by **Monday, February 20**. I will look over them and we will arrange to meet to discuss your interests and capabilities to recreate the model.
+For this first set of up-to-7 articles, I would like for you email me up to 7 links to articles with the subject line as `RM_papers`. In here, save .pdf copies of papers that capture your interests that have a modeling component. Have all of the papers there by **Tuesday, September 15**. I will look over them and we will arrange to meet to discuss your interests and capabilities to recreate the model.
 
 An important note is that I would like for you to look for papers without concern for the "difficulty." Each project will likely have differing degrees of difficulty, and I will do my best to standardize them all by making lighter models more substantive and more difficult models lighter. Really, I want the subject to be important and interesting to you, because that will bring out your drive and best work!
 
@@ -98,18 +98,18 @@ As mentioned above in Part I, the next step in this project will be to deeply fa
 3. It will be gratifying and there will be solidarity seeing each other's projects develop
 
 ## The paper proposal presentation details
-I ask that this first presentation, that will take place **March 06** in lab, be 7 minutes long. There will be a few minutes for questions following each presentation. The format of the presentation should be that of the scientific paper itself, with a conceptual background, motivation (e.g., hypotheses, goals, aims), methods, results, and discussion. If I had to suggest a ratio of time for each of the sections in for the presentations (excluding motivation), I would suggest a 2:1:2:2. That's mostly because I want you to present on the ecology of the paper, why a model was warranted, what the model yielded, and what the model output means for the ecological question. Your next presentation on March 20 will be *strictly* on  methodology, so please just summarize it briefly here. (The methods presentation will be around 1:2 of (what they did):(what you are doing).)
+I ask that this first presentation, that will take place **October 01** in lab, be 8 minutes long. There will be a few minutes for questions following each presentation. The format of the presentation should be that of the scientific paper itself, with a conceptual background, motivation (e.g., hypotheses, goals, aims), methods, results, and discussion. If I had to suggest a ratio of time for each of the sections in for the presentations (excluding motivation), I would suggest a 2:1:2:2. That's mostly because I want you to present on the ecology of the paper, why a model was warranted, what the model yielded, and what the model output means for the ecological question. Your next presentation on October 13 will be *strictly* on  methodology, so please just summarize it briefly here. (The methods presentation will be around 1:2 of (what they did):(what you are doing).)
 
 Aside from that, I don't have any strict guidelines. Generally presentations have little text on slide, a goal of around 1 slide per minute works well, and remember that slides are enhancements for talks, not crutches.
 
-**Please send me a link to your slides via email before lab on Thursday, March 06.**
+**Please send me a link to your slides via email before class on Thursday, October 01.**
 
 I'm looking forward to learning about these papers in more depth next week!
 
 # Part III: The paper methods presentation
-The next milestone in the Remodeling Project is the a presentation on core of the Project, the methodology. For the past few weeks you have been studying this paper, which includes figuring out the authors' methods and how you are going to recreate the project. For the sake of sharing your Project with your classmates and because people learn by teaching, I ask that you present the methods in lab in 2 weeks, on **March 20**.
+The next milestone in the Remodeling Project is the a presentation on core of the Project, the methodology. For the past few weeks you have been studying this paper, which includes figuring out the authors' methods and how you are going to recreate the project. For the sake of sharing your Project with your classmates and because people learn by teaching, I ask that you present the methods in lab in 2 weeks, on **October 13**.
 
-In terms of this presentation, I ask for the sake of time that it is only 7 minutes. For the content, I think that a balance of 2:3:1 on:  
+In terms of this presentation, I ask for the sake of time that it is only 7 minutes. Please rehearse and note you will be kept to those 7 minutes this time. For the content, I think that a balance of 2:4:1 on:  
 
 1. what we have learned in class/the text as it relates to the methods of your paper,  
 2. what they actually did methodologically, and  
@@ -117,6 +117,6 @@ In terms of this presentation, I ask for the sake of time that it is only 7 minu
 
 would make for an informative and useful presentation.
 
-To present their methods, do your best to be clear, concise, and synthetic. Keep in mind for this presentation that we want your peers to be able to understand what they did. That means defining terms that they may not know and organizing the presentation of their methods in a way that is succinct, which is unfortunately not always the case. You know your audience and what they know, so please aim for that level.
+To present their methods, do your best to be clear, concise, and synthetic. Keep in mind for this presentation that we want your peers to be able to understand what the authors did. That means defining terms that they may not know and organizing the presentation of their methods in a way that is succinct, which is unfortunately not always the case. You know your audience and what they know, so please aim for that level.
 
 Ultimately, I want this to be a fun and engaging experience, so please feel free to be as creative as you desire.
