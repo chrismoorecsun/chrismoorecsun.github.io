@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Competition</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christopher Moore" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Competition
+]
+.author[
+### Christopher Moore
+]
+
+---
+
+
+
+
+
+
+
+class: inverse, center, bottom
+background-image: url(Competition_files/figure-html/gausePlot-1.png)
+background-size: 75%
+
+# Interspecific competition
+
+---
+# Interspecific competition: comp. coefficient
+
+We aim to create a model where two species are in competition with one another.
+
+Both species grow logistically. I.e., at low densities they grow exponentially and at higher densities their growth is reduced by crowding.
+
+We also add linear competition terms, `\(\gamma _iN_j\)`. This means that the density of the other speceis, `\(N_j\)`, reduces the growth of `\(N_i\)` proportional to `\(\gamma _i\)`. If `\(\gamma _i = 1\)`, in the `\(K\)` logistic euqation of competition, then we could write:
+`$$\frac{\mathrm{d}N_i}{\mathrm{d}t} = r_i N_i\left(\frac{K_i - N_i - \gamma _iN_j}{K_i}\right).$$`
+That's where the effect of `\(N_j\)` on `\(N_i\)` is equivalent to `\(N_j\)`. If they aren't perfectly equivalent, then we can use `\(\gamma _i\)` to represent the porportion of `\(N_j\)`s is equivalent to `\(N_i\)`. E.g., a `\(\gamma _i\)` of 0.5 means that the reduction of growth of `\(N_i\)` by `\(N_j\)` is one half of and `\(N_i\)`.
+
+---
+# Interspecific competition: sys. of eqns.
+Version I: `\(K\)` logistic:
+`$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1\left(\frac{K_1 - N_1 - \gamma _1N_2}{K_1}\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2\left(\frac{K_2 - N_2 - \gamma _2N_1}{K_2}\right)$$`
+
+***
+
+Version II: `\(r\text{-}\alpha\)` logistic:
+`$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1 - \alpha _{11}N_1^2 - \alpha _{12} N_1N_2\\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2 - \alpha _{22}N_2^2 - \alpha _{21} N_2N_1$$`
+
+---
+
+# Interspecific competition: sys. of eqns.
+Version III: Stevens logistic:
+`$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1\left(1 - \alpha _{11}N_1 - \alpha _{12}N_2\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2\left(1 - \alpha _{22}N_2 - \alpha _{21}N_1\right)$$`
+
+---
+# Interspecific competition: finding equilibria
+When we analyze our 2-dimensional models, we can do similar things to what we did to our 1-dimensional models. If we set each equation to 0—i.e., where one species doesn't change—that can tell us something about the system, like if it's changing or how the system is changing around the equilibrium (e.g., it it attracting or repelling). But knowing where one species is not changing is only part of understanding the system, because we want to know where **both** species are not changing.
+
+For 1D models we get an equilibrium point. For 2D models we get lines. And, as you may extrapolate, 3D models get surfaces, 4D get 3D volumes, etc. But the lines we get show a range of densities across which a species is not changing. We call these zero-growth **isoclines** or **nullclines**. Stevens and others sometimes call them zero-net growth isoclines, because they then can be called ZINGIs ("*ziNG'ees*"). I will call them isoclines or nullclines interchangeably.
+
+
+---
+# Interspecific competition: sys. of eqns.
+Nullclines of `\(K\)` logistic.
+
+`$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1\left(\frac{K_1 - N_1 - \gamma _1N_2}{K_1}\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2\left(\frac{K_2 - N_2 - \gamma _2N_1}{K_2}\right)$$`
+
+--
+
+For `\(N_i\)`
+.pull-left[
+`$$\begin{aligned}
+0 &amp;= r_i N_i\left(\frac{K_i - N_i - \gamma _iN_j}{K_i}\right) \\
+N^* &amp;= 0
+\end{aligned}$$`
+]
+
+.pull-right[
+`$$\begin{aligned}
+0 &amp;= r_i \left(\frac{K_i - N_i - \gamma _iN_j}{K_i}\right) \\
+0 &amp;= r_1 - \frac{r_iN_i}{K_i} - \frac{r_i\gamma _iN_j}{K_i} \\
+\frac{r_iN_i}{K_i} &amp;= r_1 - \frac{r_i\gamma _iN_j}{K_i} \\
+N_i^* &amp;= K_i - \gamma _iN_j
+\end{aligned}$$`
+]
+
+---
+# Interspecific competition: sys. of eqns.
+Nullclines of `\(r\text{-}\alpha\)` logistic.
+
+`$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1 - \alpha _{11}N_1^2 - \alpha {12} N_1N_2\\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2 - \alpha _{22}N_2^2 - \alpha {21} N_2N_1$$`
+
+--
+
+For `\(N_i\)`
+`$$\begin{aligned}
+0 &amp;= r_i N_i - \alpha _{ii} N_i^2 - \alpha _{ij} N_iN_j \\
+N^*_i &amp;= 0 \\
+0 &amp;= r_i - \alpha _{ii}N_i - \alpha _{ij} N_j \\
+\alpha _{ii}N_i &amp;= r_i - \alpha _{ij} N_j \\
+N^*_i &amp;= \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}
+\end{aligned}$$`
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of `\(K\)` logistic: (1) `\(N^*_i = 0\)` and (2) `\(N^*_i = K_i - \gamma _iN_j\)`
+
+.pull-left[
+For `\(N^*_2 = 0\)`
+![](Competition_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+]
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of `\(K\)` logistic: (1) `\(N^*_i = 0\)` and (2) `\(N^*_i = K_i - \gamma _iN_j\)`
+
+.pull-left[
+For `\(N^*_2 = 0\)`, `\(N^*_2 = K_2 - \gamma _2N_1\)`
+![](Competition_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+For `\(N^*_1 = 0\)`
+![](Competition_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of `\(K\)` logistic: (1) `\(N^*_i = 0\)` and (2) `\(N^*_i = K_i - \gamma _iN_j\)`
+
+.pull-left[
+For `\(N^*_2 = 0\)`, `\(N^*_2 = K_2 - \gamma _2N_1\)`
+![](Competition_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+For `\(N^*_1 = 0\)`, `\(N^*_1 = K_1 - \gamma _1N_2\)`  
+(i.e., `\(N_2 = \frac{K_1 - N_1^*}{\gamma _1}\)`)
+![](Competition_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of `\(r\text{-}\alpha\)` logistic: (1) `\(N^*_i = 0\)` and (2) `\(N^*_i = \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}\)`
+
+.pull-left[
+For `\(N^*_2 = 0\)`
+![](Competition_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+]
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of `\(r\text{-}\alpha\)` logistic: (1) `\(N^*_i = 0\)` and (2) `\(N^*_i = \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}\)`
+
+.pull-left[
+For `\(N^*_2 = 0\)`, `\(N^*_2 = \frac{r_2 - \alpha _{21}N_1}{\alpha _{22}}\)`
+![](Competition_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+]
+
+--
+
+.pull-right[
+For `\(N^*_1 = 0\)`
+![](Competition_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+]
+
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of `\(r\text{-}\alpha\)` logistic: (1) `\(N^*_i = 0\)` and (2) `\(N^*_i = \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}\)`
+
+.pull-left[
+For `\(N^*_2 = 0\)`, `\(N^*_2 = \frac{r_2 - \alpha _{21}N_1}{\alpha _{22}}\)`
+![](Competition_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+For `\(N^*_1 = 0\)`, `\(N^*_1 = \frac{r_1 - \alpha _{12}N_2}{\alpha _{11}}\)`  
+(i.e., `\(N_2 = \frac{r_1 - \alpha _{11}N_1^*}{\alpha _{12}}\)`)
+![](Competition_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

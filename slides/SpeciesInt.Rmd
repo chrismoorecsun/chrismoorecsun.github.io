@@ -1,0 +1,709 @@
+---
+title: "Species interactions"
+author: "Christopher Moore"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = T)
+library(package = "deSolve")
+library(package = "phaseR")
+library(package = "animation")
+library(package = "plot3D")
+```
+
+class: inverse, center, bottom
+background-image: url(https://www.nature.com/scitable/content/ne0000/ne0000/ne0000/ne0000/15673908/f2_moon.jpg)
+background-size: 50%
+# Species interaction compass
+
+---
+# Neutralism
+The case where two species do not affect one another.
+
+--
+
+Let's write down the coupled equations for two species, but without interaction, behaving as single species do (logistically). Write each species as $N_1$ and $N_2$.
+
+--
+
+$$\begin{aligned}
+\frac{dN_1}{dt} &= r_1N_1 - \alpha _1N_1^2 \\
+\frac{dN_2}{dt} &= r_2N_2 - \alpha _2 N_2^2
+\end{aligned}$$
+
+or
+
+$$\begin{aligned}
+\frac{dN_1}{dt} &= r_1N_1\left(\frac{K_1 - N_1}{K_1}\right) \\
+\frac{dN_2}{dt} &= r_2N_2\left(\frac{K_2 - N_2}{K_2}\right)
+\end{aligned}$$
+
+---
+# Neutralism time series: code
+```{r}
+neutralism <- function(t, y, parameters) {
+  N1 <- y[1]
+  N2 <- y[2]
+  r1 <- parameters[1]
+  r2 <- parameters[2]
+  a1 <- parameters[3]
+  a2 <- parameters[4]
+  dN1 <- r1*N1 - a1*N1^2
+  dN2 <- r2*N2 - a2*N2^2
+  return(list(c(dN1, dN2)))
+}
+
+n.parms <- c(r1 = 0.55, r2 = 0.5, a1 = 0.02, a2 = 0.01)
+
+times <- seq(from = 0, to = 20, by = 0.1)
+init <- c(N1 = 2, N2 = 0.5)
+neut.out <- ode(y = init, times = times, parms = n.parms, func = neutralism)
+```
+
+---
+# Neutralism time series: plot
+```{r, fig.width = 5, fig.height = 5}
+plot(x = neut.out[,1], y= neut.out[,2], lwd = 2, las = 1, xlab = "Time", ylab = "Density", type = "l", ylim = c(0, max(neut.out)), col = "#0000FFFF")
+lines(x = neut.out[,1], y= neut.out[,3], lwd = 2, col = "red")
+```
+
+---
+# Neutralism in state space
+```{r, echo = F}
+cp <- viridis::viridis(n = length(times), option = "B", alpha = 1/2)
+```
+
+```{r, fig.width = 5, fig.height = 5}
+plot(x = neut.out[,2], y= neut.out[,3], lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "p", ylim = c(0, max(neut.out)), xlim = c(0, max(neut.out)), col = cp, pch = 16)
+```
+
+*dark and light colors respectively correspond to early and later points in time*
+
+---
+# Neutralism: animated
+I. Both $N_1$ and $N_2$ below equilibirum
+```{r Neutralism, echo = F, message = FALSE, eval = F}
+saveVideo({
+  time.seq <- times
+  n.frames <- length(time.seq)
+  total.time = 15
+  ani.options(interval = total.time/n.frames, nmax = n.frames)
+
+  for (i in 1:n.frames) {
+  par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4), mfrow = c(1, 2))
+  plot(x = neut.out[1:i,1], y = neut.out[1:i,2], lwd = 2, las = 1, xlab = "Time", ylab = "Density", type = "l", ylim = c(0, max(neut.out)), xlim = c(0, max(neut.out[,1])), col = "#0000FFFF")
+  lines(x = neut.out[1:i,1], y= neut.out[1:i,3], lwd = 2, col = "red")
+  plot(x = neut.out[1:i,2], y= neut.out[1:i,3], lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "l", ylim = c(0, max(neut.out[,2:3])), xlim = c(0, max(neut.out[,2:3])))
+  segments(x0 = neut.out[i,2], x1 = neut.out[i,2], y0 = 0, y1 = neut.out[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out[i,2], y0 = neut.out[i,3], y1 = neut.out[i,3], col = "#FF0000FF", lwd = 1)
+  points(x = neut.out[i,2], y = neut.out[i,3], pch = 16)
+  }
+
+  }, video.name = "SpeciesInt_files/Neutralism.mp4", ani.width = 800, ani.height = 400, ani.dev = function(...){png(res=100,...)}
+)
+```
+
+<video width="800" height="400" controls loop>
+  <source src="SpeciesInt_files/Neutralism.mp4" type="video/mp4">
+</video>
+
+
+---
+# Neutralism: animated
+II. $N_1$ below and $N_2$ above their equilibiria
+```{r, echo = F}
+init <- c(N1 = 2, N2 = 70)
+neut.out.II <- ode(y = init, times = times, parms = n.parms, func = neutralism)
+
+init <- c(N1 = 70, N2 = 0.5)
+neut.out.III <- ode(y = init, times = times, parms = n.parms, func = neutralism)
+
+init <- c(N1 = 60, N2 = 70)
+neut.out.IV <- ode(y = init, times = times, parms = n.parms, func = neutralism)
+```
+
+```{r NeutralismII, echo = F, message = FALSE, eval = F}
+saveVideo({
+  time.seq <- times
+  n.frames <- length(time.seq)
+  total.time = 15
+  ani.options(interval = total.time/n.frames, nmax = n.frames)
+
+  for (i in 1:n.frames) {
+  par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4), mfrow = c(1, 2))
+  plot(x = neut.out.II[1:i,1], y = neut.out.II[1:i,2], lwd = 2, las = 1, xlab = "Time", ylab = "Density", type = "l", ylim = c(0, max(neut.out.II)), xlim = c(0, max(neut.out.II[,1])), col = "#0000FFFF")
+  lines(x = neut.out.II[1:i,1], y= neut.out.II[1:i,3], lwd = 2, col = "red")
+  plot(x = neut.out.II[1:i,2], y= neut.out.II[1:i,3], lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "l", ylim = c(0, max(neut.out.II[,2:3])), xlim = c(0, max(neut.out.II[,2:3])))
+  segments(x0 = neut.out.II[i,2], x1 = neut.out.II[i,2], y0 = 0, y1 = neut.out.II[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out.II[i,2], y0 = neut.out.II[i,3], y1 = neut.out.II[i,3], col = "#FF0000FF", lwd = 1)
+  points(x = neut.out.II[i,2], y = neut.out.II[i,3], pch = 16)
+  }
+
+  }, video.name = "SpeciesInt_files/NeutralismII.mp4", ani.width = 800, ani.height = 400, ani.dev = function(...){png(res=100,...)}
+)
+```
+
+<video width="800" height="400" controls loop>
+  <source src="SpeciesInt_files/NeutralismII.mp4" type="video/mp4">
+</video>
+
+---
+# Neutralism: animated
+III. $N_1$ above and $N_2$ below their equilibiria
+```{r NeutralismIII, echo = F, message = FALSE, eval = F}
+saveVideo({
+  time.seq <- times
+  n.frames <- length(time.seq)
+  total.time = 15
+  ani.options(interval = total.time/n.frames, nmax = n.frames)
+
+  for (i in 1:n.frames) {
+  par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4), mfrow = c(1, 2))
+  plot(x = neut.out.III[1:i,1], y = neut.out.III[1:i,2], lwd = 2, las = 1, xlab = "Time", ylab = "Density", type = "l", ylim = c(0, max(neut.out.III)), xlim = c(0, max(neut.out.III[,1])), col = "#0000FFFF")
+  lines(x = neut.out.III[1:i,1], y= neut.out.III[1:i,3], lwd = 2, col = "red")
+  plot(x = neut.out.III[1:i,2], y= neut.out.III[1:i,3], lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "l", ylim = c(0, max(neut.out.III[,2:3])), xlim = c(0, max(neut.out.III[,2:3])))
+  segments(x0 = neut.out.III[i,2], x1 = neut.out.III[i,2], y0 = 0, y1 = neut.out.III[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out.III[i,2], y0 = neut.out.III[i,3], y1 = neut.out.III[i,3], col = "#FF0000FF", lwd = 1)
+  points(x = neut.out.III[i,2], y = neut.out.III[i,3], pch = 16)
+  }
+
+  }, video.name = "SpeciesInt_files/NeutralismIII.mp4", ani.width = 800, ani.height = 400, ani.dev = function(...){png(res=100,...)}
+)
+```
+
+<video width="800" height="400" controls loop>
+  <source src="SpeciesInt_files/NeutralismIII.mp4" type="video/mp4">
+</video>
+
+---
+# Neutralism: animated
+IV. $N_1$ and $N_2$ above their equilibiria
+```{r NeutralismIV, echo = F, message = FALSE, eval = F}
+saveVideo({
+  time.seq <- times
+  n.frames <- length(time.seq)
+  total.time = 15
+  ani.options(interval = total.time/n.frames, nmax = n.frames)
+
+  for (i in 1:n.frames) {
+  par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4), mfrow = c(1, 2))
+  plot(x = neut.out.IV[1:i,1], y = neut.out.IV[1:i,2], lwd = 2, las = 1, xlab = "Time", ylab = "Density", type = "l", ylim = c(0, max(neut.out.IV)), xlim = c(0, max(neut.out.IV[,1])), col = "#0000FFFF")
+  lines(x = neut.out.IV[1:i,1], y= neut.out.IV[1:i,3], lwd = 2, col = "red")
+  plot(x = neut.out.IV[1:i,2], y= neut.out.IV[1:i,3], lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "l", ylim = c(0, max(neut.out.IV[,2:3])), xlim = c(0, max(neut.out.IV[,2:3])))
+  segments(x0 = neut.out.IV[i,2], x1 = neut.out.IV[i,2], y0 = 0, y1 = neut.out.IV[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out.IV[i,2], y0 = neut.out.IV[i,3], y1 = neut.out.IV[i,3], col = "#FF0000FF", lwd = 1)
+  points(x = neut.out.IV[i,2], y = neut.out.IV[i,3], pch = 16)
+  }
+
+  }, video.name = "SpeciesInt_files/NeutralismIV.mp4", ani.width = 800, ani.height = 400, ani.dev = function(...){png(res=100,...)}
+)
+```
+
+<video width="800" height="400" controls loop>
+  <source src="SpeciesInt_files/NeutralismIV.mp4" type="video/mp4">
+</video>
+
+---
+# Neutralism: animated
+All four starting points (initial conditions) showing different behaviours
+```{r NeutralismALL, echo = F, message = FALSE, eval = F}
+
+saveVideo({
+  time.seq <- times
+  n.frames <- length(time.seq)
+  total.time = 15
+  ani.options(interval = total.time/n.frames, nmax = n.frames)
+
+  for (i in 1:n.frames) {
+  par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4), mfrow = c(1, 1))
+  plot(x = NA, lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "n", ylim = c(0, max(neut.out[,2:3], neut.out.II[,2:3], neut.out.III[,2:3], neut.out.IV[,2:3])), xlim = c(0, max(neut.out[,2:3], neut.out.II[,2:3], neut.out.III[,2:3], neut.out.IV[,2:3])))
+  segments(x0 = neut.out[i,2], x1 = neut.out[i,2], y0 = 0, y1 = neut.out[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out[i,2], y0 = neut.out[i,3], y1 = neut.out[i,3], col = "#FF0000FF", lwd = 1)
+
+  segments(x0 = neut.out.II[i,2], x1 = neut.out.II[i,2], y0 = 0, y1 = neut.out.II[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out.II[i,2], y0 = neut.out.II[i,3], y1 = neut.out.II[i,3], col = "#FF0000FF", lwd = 1)
+
+  segments(x0 = neut.out.III[i,2], x1 = neut.out.III[i,2], y0 = 0, y1 = neut.out.III[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out.III[i,2], y0 = neut.out.III[i,3], y1 = neut.out.III[i,3], col = "#FF0000FF", lwd = 1)
+
+  segments(x0 = neut.out.IV[i,2], x1 = neut.out.IV[i,2], y0 = 0, y1 = neut.out.IV[i,3], col = "#0000FFFF", lwd = 1)
+  segments(x0 = 0, x1 = neut.out.IV[i,2], y0 = neut.out.IV[i,3], y1 = neut.out.IV[i,3], col = "#FF0000FF", lwd = 1)
+
+  lines(x = neut.out[1:i,2], y= neut.out[1:i,3], lwd = 2)
+  lines(x = neut.out.II[1:i,2], y= neut.out.II[1:i,3], lwd = 2)
+  lines(x = neut.out.III[1:i,2], y= neut.out.III[1:i,3], lwd = 2)
+  lines(x = neut.out.IV[1:i,2], y= neut.out.IV[1:i,3], lwd = 2)
+
+  points(x = neut.out[i,2], y = neut.out[i,3], pch = 16)
+  points(x = neut.out.II[i,2], y = neut.out.II[i,3], pch = 16)
+  points(x = neut.out.III[i,2], y = neut.out.III[i,3], pch = 16)
+  points(x = neut.out.IV[i,2], y = neut.out.IV[i,3], pch = 16)
+
+    }
+
+  }, video.name = "SpeciesInt_files/NeutralismALL.mp4", ani.width = 600, ani.height = 600, ani.dev = function(...){png(res=150,...)}
+)
+```
+
+<video width="400" height="400" controls loop>
+  <source src="SpeciesInt_files/NeutralismALL.mp4" type="video/mp4">
+</video>
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+--
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this:
+
+--
+
+```{r echo = F, fig.width = 4, fig.height = 4}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, xlab = "Density of N_1", ylab = "Density of Angels on pin head")
+```
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this:
+
+```{r echo = F, fig.width = 4, fig.height = 4}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, xlab = "Density of N_1", ylab = "Density of Angels on pin head")
+segments(x0 = 2/3, x1 = 2/3, y0 = -1, y1 = 2, lty = 2)
+```
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this:
+
+```{r echo = F, fig.width = 4, fig.height = 4}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, xlab = "Density of N_1", ylab = "Density of Angels on pin head")
+segments(x0 = 2/3, x1 = 2/3, y0 = -1, y1 = 2, lty = 2)
+y.arrows <- seq(from = 0, to = 1, by = 0.1)
+n.arrows <- length(y.arrows)
+arrows(x0 = rep(0.4, n.arrows), x1 = rep(0.6, n.arrows), y0 = y.arrows, y1 = y.arrows, length = 0.05)
+arrows(x1 = rep(0.72, n.arrows), x0 = rep(0.92, n.arrows), y0 = y.arrows, y1 = y.arrows, length = 0.05)
+```
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this, **or like this**:
+
+```{r echo = F, fig.width = 4, fig.height = 4}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, ylab = "Density of N_1", xlab = "Density of Angels on pin head")
+segments(y0 = 2/3, y1 = 2/3, x0 = -1, x1 = 2, lty = 2)
+x.arrows <- seq(from = 0, to = 1, by = 0.1)
+n.arrows <- length(x.arrows)
+arrows(y0 = rep(0.4, n.arrows), y1 = rep(0.6, n.arrows), x0 = x.arrows, x1 = x.arrows, length = 0.05)
+arrows(y1 = rep(0.72, n.arrows), y0 = rep(0.92, n.arrows), x0 = x.arrows, x1 = x.arrows, length = 0.05)
+```
+
+---
+# Nullclines: the trajectory separators
+Now, if we had **two** populations/variables (say, $N_1$ and $N_2$), neither of which are interacting with one another, what would we expect to see?
+
+--
+
+```{r echo = F, fig.width = 4, fig.height = 4, dpi = 100}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, xlab = "Density of N_1", ylab = "Density of N_2")
+segments(y0 = 2/3, y1 = 2/3, x0 = -1, x1 = 2, lty = 2)
+segments(x0 = 2/3, x1 = 2/3, y0 = -1, y1 = 2, lty = 2)
+x.arrows <- seq(from = 0, to = 1, by = 0.1)
+n.arrows <- length(x.arrows)
+arrows(y0 = rep(0.4, n.arrows), y1 = rep(0.6, n.arrows), x0 = x.arrows, x1 = x.arrows, length = 0.05, col = "red")
+arrows(y1 = rep(0.72, n.arrows), y0 = rep(0.92, n.arrows), x0 = x.arrows, x1 = x.arrows, length = 0.05, col = "red")
+y.arrows <- seq(from = 0, to = 1, by = 0.1)
+n.arrows <- length(y.arrows)
+arrows(x0 = rep(0.4, n.arrows), x1 = rep(0.6, n.arrows), y0 = y.arrows, y1 = y.arrows, length = 0.05, col = "blue")
+arrows(x1 = rep(0.72, n.arrows), x0 = rep(0.92, n.arrows), y0 = y.arrows, y1 = y.arrows, length = 0.05, col = "blue")
+```
+
+---
+# Nullclines: the trajectory separators
+Now, if we had **two** populations/variables (say, $N_1$ and $N_2$), neither of which are interacting with one another, what would we expect to see, **more simply**?
+
+```{r echo = F, fig.width = 4, fig.height = 4, dpi = 100}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, xlab = "Density of N_1", ylab = "Density of N_2")
+segments(y0 = 2/3, y1 = 2/3, x0 = -1, x1 = 2, lty = 2)
+segments(x0 = 2/3, x1 = 2/3, y0 = -1, y1 = 2, lty = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.3, y1 = 0.1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.1, y1 = 0.3, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 0.1, y0 = 1, x1 = 0.3, y1 = 1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 0.1, y0 = 1, x1 = 0.1, y1 = 0.8, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 1, y0 = 0.1, x1 = 0.8, y1 = 0.1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 1, y0 = 0.1, x1 = 1, y1 = 0.3, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 1, y0 = 1, x1 = 0.8, y1 = 1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 1, y0 = 1, x1 = 1, y1 = 0.8, length = 0.05, col = "red", lwd = 2)
+```
+
+---
+# Nullclines: the trajectory separators
+Now, if we had **two** populations/variables (say, $N_1$ and $N_2$), neither of which are interacting with one another, what would we expect to see, **more simply**?
+
+```{r echo = F, fig.width = 4, fig.height = 4, dpi = 100}
+par(mar = c(4.5, 4.5, 0.1, 0.1), oma = rep(0, 4))
+plot(x = NA, xlim = c(0, 1), ylim = c(0, 1), las = 1, xlab = "Density of N_1", ylab = "Density of N_2")
+segments(y0 = 2/3, y1 = 2/3, x0 = -1, x1 = 2, lty = 2)
+segments(x0 = 2/3, x1 = 2/3, y0 = -1, y1 = 2, lty = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.3, y1 = 0.1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.1, y1 = 0.3, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.3, y1 = 0.3, length = 0.05, col = "black", lwd = 2)
+
+arrows(x0 = 0.1, y0 = 1, x1 = 0.3, y1 = 1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 0.1, y0 = 1, x1 = 0.1, y1 = 0.8, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 0.1, y0 = 1, x1 = 0.3, y1 = 0.8, length = 0.05, col = "black", lwd = 2)
+
+arrows(x0 = 1, y0 = 0.1, x1 = 0.8, y1 = 0.1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 1, y0 = 0.1, x1 = 1, y1 = 0.3, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 1, y0 = 0.1, x1 = 0.8, y1 = 0.3, length = 0.05, col = "black", lwd = 2)
+
+arrows(x0 = 1, y0 = 1, x1 = 0.8, y1 = 1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 1, y0 = 1, x1 = 1, y1 = 0.8, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 1, y0 = 1, x1 = 0.8, y1 = 0.8, length = 0.05, col = "black", lwd = 2)
+```
+
+---
+# Nullclines: calculation
+
+--
+
+Set $\frac{dN_i}{dt} = 0$ for each equation, put into a graphical form (isolate the variable on the vertical axis), plot, . . . and crush it.
+<img src="https://c.tenor.com/s7hjKTx1nJYAAAAC/stranger-things-el.gif" alt="Elle crushing it" width=400>
+
+--
+
+Find the nullclines for the neutralism model . . . and plot them (one for each species).
+
+---
+# Nullclines: calculation
+
+The model
+$$\begin{aligned}
+\frac{dN_1}{dt} &= r_1N_1 - \alpha _1N_1^2 \\
+\frac{dN_2}{dt} &= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$
+
+--
+
+Setting each subequation to 0
+$$\begin{aligned}
+0 &= r_1N_1 - \alpha _1N_1^2 \\
+0 &= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$
+
+--
+
+.pull-left[
+For $N_1$
+$$\begin{aligned}
+N^*_1 &= 0 \\
+N^*_1 &= \frac{r_1}{\alpha _1}
+\end{aligned}$$
+]
+
+--
+
+.pull-right[
+For $N_2$
+$$\begin{aligned}
+N^*_2 &= 0 \\
+N^*_2 &= \frac{r_2}{\alpha _2}
+\end{aligned}$$
+]
+
+---
+# Nullclines: plot your results
+```{r, fig.width = 4, fig.height = 4, echo = F, dpi = 125}
+par(mar = c(3, 3, 0.1, 0.1))
+plot(x = NA, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", xlim = c(0, 1), ylim = c(0, 1))
+segments(x0 = -1, x1 = 2, y0 = 0, y1 = 0, lwd = 0.75)
+segments(y0 = -1, y1 = 2, x0 = 0, x1 = 0, lwd = 0.75)
+segments(x0 = -1, x1 = 2, y0 = 0, y1 = 0, lwd = 2, lty = "83", col = "red")
+segments(y0 = -1, y1 = 2, x0 = 0, x1 = 0, lwd = 2, lty = "83", col = "blue")
+segments(x0 = -1, x1 = 2, y0 = 2/3, y1 = 2/3, lwd = 2, lty = "83", col = "red")
+segments(y0 = -1, y1 = 2, x0 = 2/3, x1 = 2/3, lwd = 2, lty = "83", col = "blue")
+mtext(side= 1, text = bquote(N[1]), line = 2)
+mtext(side= 2, text = bquote(N[2]), line = 2, las = 1)
+axis(1, at = c(0, 2/3), labels = c(0, "r_1/a_1"))
+axis(2, at = c(0, 2/3), labels = c(0, "r_2/a_2"))
+```
+
+---
+# Nullclines: plot your results
+```{r, fig.width = 4, fig.height = 4, echo = F, dpi = 125}
+par(mar = c(3, 3, 0.1, 0.1))
+plot(x = NA, type = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "", xlim = c(0, 1), ylim = c(0, 1))
+segments(x0 = -1, x1 = 2, y0 = 0, y1 = 0, lwd = 0.75)
+segments(y0 = -1, y1 = 2, x0 = 0, x1 = 0, lwd = 0.75)
+segments(x0 = -1, x1 = 2, y0 = 0, y1 = 0, lwd = 2, lty = "83", col = "red")
+segments(y0 = -1, y1 = 2, x0 = 0, x1 = 0, lwd = 2, lty = "83", col = "blue")
+segments(x0 = -1, x1 = 2, y0 = 2/3, y1 = 2/3, lwd = 2, lty = "83", col = "red")
+segments(y0 = -1, y1 = 2, x0 = 2/3, x1 = 2/3, lwd = 2, lty = "83", col = "blue")
+
+mtext(side= 1, text = bquote(N[1]), line = 2)
+mtext(side= 2, text = bquote(N[2]), line = 2, las = 1)
+axis(1, at = c(0, 2/3), labels = c(0, "r_1/a_1"))
+axis(2, at = c(0, 2/3), labels = c(0, "r_2/a_2"))
+
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.3, y1 = 0.1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.1, y1 = 0.3, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 0.1, y0 = 0.1, x1 = 0.3, y1 = 0.3, length = 0.05, col = "black", lwd = 2)
+
+arrows(x0 = 0.1, y0 = 1, x1 = 0.3, y1 = 1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 0.1, y0 = 1, x1 = 0.1, y1 = 0.8, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 0.1, y0 = 1, x1 = 0.3, y1 = 0.8, length = 0.05, col = "black", lwd = 2)
+
+arrows(x0 = 1, y0 = 0.1, x1 = 0.8, y1 = 0.1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 1, y0 = 0.1, x1 = 1, y1 = 0.3, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 1, y0 = 0.1, x1 = 0.8, y1 = 0.3, length = 0.05, col = "black", lwd = 2)
+
+arrows(x0 = 1, y0 = 1, x1 = 0.8, y1 = 1, length = 0.05, col = "blue", lwd = 2)
+arrows(x0 = 1, y0 = 1, x1 = 1, y1 = 0.8, length = 0.05, col = "red", lwd = 2)
+arrows(x0 = 1, y0 = 1, x1 = 0.8, y1 = 0.8, length = 0.05, col = "black", lwd = 2)
+```
+
+---
+# Neutralism: using R to graph dynamics
+We will use a package called `phaseR` that is found in the **C**omprehensive **R** **A**rchive **N**etwork (CRAN).
+
+--
+
+You can download pacakges using the function `install.packages(pkgs = )`. Let's `install.packages(pkgs = "phaseR")`.
+
+--
+
+Now that it is installed and saved to your personal R library, let's load it: `library(package = "phaseR")`.
+
+---
+# Neutralism: using R to graph dynamics
+
+We have to call (1) `parms`, `parameters` **and** (2) `state`, `y` in our function to play with `phaseR` (it's terrible, I know; I am sincerely sorry)
+
+```{r}
+neutralism <- function(t, y, parameters) {
+  N1 <- y[1]
+  N2 <- y[2]
+  r1 <- parameters[1]
+  r2 <- parameters[2]
+  a1 <- parameters[3]
+  a2 <- parameters[4]
+  dN1 <- r1*N1 - a1*N1^2
+  dN2 <- r2*N2 - a2*N2^2
+  return(list(c(dN1, dN2)))
+}
+
+init <- c(N1 = 0.1, N2 = 0.05)
+parm.vals <- c(r1 = 2/3, r2 = 2/3, a1 = 1, a2 = 1)
+```
+Then, let's plot the nullclines:
+```{r message = F, warning = F, eval = F}
+nullclines(deriv = neutralism, parameters = parm.vals, xlim = c(-0.1, 1), ylim = c(-0.1, 1), add = F)
+```
+
+---
+# Neutralism: using R to graph dynamics
+```{r echo = F, warning = F, fig.width = 4, fig.height = 4, echo = F, dpi = 125, message = F, results = 'hide'}
+par(mar = c(4, 4, 0.1, 0.1))
+nullclines(deriv = neutralism, parameters = parm.vals, xlim = c(-0.1, 1), ylim = c(-0.1, 1), add = F, lwd = 2, las = 1, col = c("red", "blue"),
+  add.legend = F)
+mtext(side = 1, text = bquote(N[1]), line = 3)
+mtext(side = 2, text = bquote(N[2]), line = 3, las = 1)
+```
+
+---
+# Neutralism: using R to graph dynamics
+```{r, eval = F}
+flowField(deriv = neutralism, xlim = c(-0.1, 1), ylim = c(-0.1, 1), parameters = parm.vals, add = F, points = 20)
+```
+
+```{r echo = F, warning = F, fig.width = 4, fig.height = 4, dpi = 100, message = F, results = 'hide'}
+par(mar = c(0, 0, 0.1, 0.1), oma = c(4, 4, 0, 0))
+flowField(deriv = neutralism, xlim = c(0, 1), ylim = c(0, 1), parameters = parm.vals, add = F, points = 20, las = 1)
+mtext(side = 1, text = bquote(N[1]), line = 3)
+mtext(side = 2, text = bquote(N[2]), line = 3, las = 1)
+```
+
+---
+# Neutralism: using R to graph dynamics
+Plotting nullclines and direction field together
+```{r echo = F, warning = F, fig.width = 4, fig.height = 4, dpi = 125, message = F, results = 'hide'}
+par(mar = c(0, 0, 0.1, 0.1), oma = c(4, 4, 0, 0))
+flowField(deriv = neutralism, xlim = c(-0.01, 1), ylim = c(-0.01, 1), parameters = parm.vals, y = init, add = F, points = 20, las = 1, xaxs = "i", yaxs = "i")
+nullclines(deriv = neutralism, parameters = parm.vals, xlim = c(-0.01, 1), ylim = c(-0.01, 1), add = T, lwd = 2, col = c("red", "blue"), add.legend = F)
+mtext(side = 1, text = bquote(N[1]), line = 2.5)
+mtext(side = 2, text = bquote(N[2]), line = 2.5, las = 1)
+```
+
+---
+# Neutralism: using R to graph dynamics
+And if you want, you can add trajectories:
+```{r, eval = F}
+trajectory(deriv = neutralism, y0 = init, t.start = 0, t.end = 25, pch = 16)
+```
+
+```{r echo = F, warning = F, fig.width = 4, fig.height = 4, dpi = 100, message = F, results = 'hide'}
+par(mar = c(0, 0, 0.1, 0.1), oma = c(4, 4, 0, 0))
+flowField(deriv = neutralism, xlim = c(-0.01, 1), ylim = c(-0.01, 1), parameters = parm.vals, y = init, add = F, points = 20, las = 1, xaxs = "i", yaxs = "i")
+nullclines(deriv = neutralism, parameters = parm.vals, xlim = c(-0.01, 1), ylim = c(-0.01, 1), add = T, lwd = 2, col = c("red", "blue"), add.legend = F)
+trajectory(deriv = neutralism, parameters = parm.vals, y0 = init, tlim = c(0, 25), pch = 16)
+
+mtext(side = 1, text = bquote(N[1]), line = 2.5)
+mtext(side = 2, text = bquote(N[2]), line = 2.5, las = 1)
+```
+
+---
+# A new model: amensalism
+**Amensalism**: when one species has a negative effect on another, but that other has no effect on it. A couple biological examples include allelopathy or strong competition.
+
+What might the model look like?
+
+--
+
+The model
+$$\begin{aligned}
+\frac{dN_1}{dt} &= r_1N_1 - \alpha _1N_1^2 - \beta _1N_1N_2\\
+\frac{dN_2}{dt} &= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$
+
+--
+
+Create a phase plane for an amensal relationship between two species.
+
+---
+# Amensalism
+The model, initial densities, and parameter values
+```{r}
+amensalism <- function(t, y, parameters) {
+  N1 <- y[1]
+  N2 <- y[2]
+  r1 <- parameters[1]
+  r2 <- parameters[2]
+  a1 <- parameters[3]
+  a2 <- parameters[4]
+  b1 <- parameters[5]
+  dN1 <- r1*N1 - a1*N1^2 - b1*N1*N2
+  dN2 <- r2*N2 - a2*N2^2
+  return(list(c(dN1, dN2)))
+}
+
+init <- c(N1 = 0.1, N2 = 0.05)
+parm.vals <- c(r1 = 2/3, r2 = 2/3, a1 = 1, a2 = 1, b1 = 0.2)
+```
+
+---
+# Amensalism
+The phase plane
+
+```{r echo = F, warning = F, fig.width = 4, fig.height = 4, dpi = 110, message = F, results = 'hide'}
+par(mar = c(0, 0, 0.1, 0.1), oma = c(4, 4, 0, 0))
+flowField(deriv = amensalism, xlim = c(-0.01, 1), ylim = c(-0.01, 1), parameters = parm.vals, y = init, add = F, points = 20, las = 1, xaxs = "i", yaxs = "i")
+nullclines(deriv = amensalism, parameters = parm.vals, xlim = c(-0.01, 1), ylim = c(-0.01, 1), add = T, lwd = 2, col = c("red", "blue"), add.legend = F)
+mtext(side = 1, text = bquote(N[1]), line = 2.5)
+mtext(side = 2, text = bquote(N[2]), line = 2.5, las = 1)
+```
+
+---
+# Amensalism
+The phase plane
+
+.pull-left[
+```{r echo = F, warning = F, fig.width = 4, fig.height = 4, dpi = 110, message = F, results = 'hide'}
+par(mar = c(0, 0, 0.1, 0.1), oma = c(4, 4, 0, 0))
+flowField(deriv = amensalism, xlim = c(-0.01, 1), ylim = c(-0.01, 1), parameters = parm.vals, add = F, points = 20, las = 1, xaxs = "i", yaxs = "i")
+nullclines(deriv = amensalism, parameters = parm.vals, xlim = c(-0.01, 1), ylim = c(-0.01, 1), add = T, lwd = 2, col = c("red", "blue"), add.legend = F)
+mtext(side = 1, text = bquote(N[1]), line = 2.5)
+mtext(side = 2, text = bquote(N[2]), line = 2.5, las = 1)
+```
+]
+
+.pull.right[
+Does this make sense?
+
+What are the equations for the nullclines?
+
+]
+
+---
+# Amensalism
+The model
+$$\begin{aligned}
+\frac{dN_1}{dt} &= r_1N_1 - \alpha _1N_1^2 - \beta _1N_1N_2\\
+\frac{dN_2}{dt} &= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$
+
+--
+
+Setting each subequation to 0
+$$\begin{aligned}
+0 &= r_1N_1 - \alpha _1N_1^2 - \beta _1N_1N_2 \\
+0 &= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$
+
+--
+
+.pull-left[
+For $N_1$
+$$\begin{aligned}
+N^*_1 &= 0 \\
+N^*_1 &= \frac{r_1 - \beta _1N_2}{\alpha _1}
+\end{aligned}$$
+]
+
+--
+
+.pull-right[
+For $N_2$
+$$\begin{aligned}
+N^*_2 &= 0 \\
+N^*_2 &= \frac{r_2}{\alpha _2}
+\end{aligned}$$
+]
+
+---
+# Amensalism: varying $\beta$
+
+```{r, echo = F, message = FALSE, eval = F}
+beta.seq <- seq(from = 0, to = 1.5, by = 0.01)
+beta.parms <- parm.vals
+
+saveVideo({
+  n.frames <- length(beta.seq)
+  total.time = 15
+  ani.options(interval = total.time/n.frames, nmax = n.frames)
+
+  for (i in 1:n.frames) {
+    beta.parms[which(names(beta.parms) == "b1")] <- beta.seq[i]
+    par(mar = c(0, 0, 1, 1), oma = c(4, 4, 0, 0))
+    flowField(deriv = amensalism, xlim = c(-0.01, 1), ylim = c(-0.01, 1), parameters = beta.parms, add = F, points = 20, las = 1, xaxs = "i", yaxs = "i", main = bquote(beta==.(sprintf("%0.2f", beta.seq[i]))), xlab = "", ylab = "")
+    nullclines(deriv = amensalism, parameters = beta.parms, xlim = c(-0.01, 1), ylim = c(-0.01, 1), add = T, lwd = 2, col = c("red", "blue"), add.legend = F)
+    mtext(side = 1, text = bquote(N[1]), line = 2.5)
+    mtext(side = 2, text = bquote(N[2]), line = 2.5, las = 1)
+
+    }
+  }, video.name = "SpeciesInt_files/Amensalism.mp4", ani.width = 600, ani.height = 600, ani.dev = function(...){png(res=150,...)}
+)
+```
+
+
+<video width="500" height="500" controls loop>
+  <source src="SpeciesInt_files/Amensalism.mp4" type="video/mp4">
+</video>

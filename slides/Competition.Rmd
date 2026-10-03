@@ -1,0 +1,260 @@
+---
+title: "Competition"
+author: "Christopher Moore"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = T)
+library(package = "deSolve")
+library(package = "phaseR")
+library(package = "animation")
+library(package = "plot3D")
+library(package = "gauseR")
+```
+
+```{r gausePlot, include = F, fig.dim = c(8,4), fig.retina=3}
+data("gause_1934_science_f02_03")
+mixturedat <- gause_1934_science_f02_03[gause_1934_science_f02_03$Treatment == "Mixture", ]
+time <- mixturedat$Day
+species <- data.frame(mixturedat$Volume_Species1, mixturedat$Volume_Species2)
+colnames(species) <- c("P_caudatum", "P_aurelia")
+gause_out <- gause_wrapper(time = time, species = species, doplot = F)
+
+par(mar = c(4.5, 4.5, 0.5, 0.5))
+plot(x = time, y = species[, 1], pch = 17, cex = 2, col = "#000000AA",las = 1, xlab = "Time", ylab = "Density", ylim = c(0, 160))
+  points(x = time, y = species[, 2], pch = 16, cex = 2, col = "#FF0000AA")
+  lines(x = gause_out$out[,1], y = gause_out$out[,2], lwd = 2, col = "#000000AA")
+  lines(x = gause_out$out[,1], y = gause_out$out[,3], lwd = 2, col = "#FF0000AA")
+  legend(x = "topleft", legend = c("P. caudatum", "P. aurelia"), col = c("#000000AA", "#FF0000AA"), pch = c(17, 16), cex = 1, bty = "n", lty = 1, lwd = 2, pt.cex = 2)
+```
+
+
+class: inverse, center, bottom
+background-image: url(Competition_files/figure-html/gausePlot-1.png)
+background-size: 75%
+
+# Interspecific competition
+
+---
+# Interspecific competition: comp. coefficient
+
+We aim to create a model where two species are in competition with one another.
+
+Both species grow logistically. I.e., at low densities they grow exponentially and at higher densities their growth is reduced by crowding.
+
+We also add linear competition terms, $\gamma _iN_j$. This means that the density of the other speceis, $N_j$, reduces the growth of $N_i$ proportional to $\gamma _i$. If $\gamma _i = 1$, in the $K$ logistic euqation of competition, then we could write:
+$$\frac{\mathrm{d}N_i}{\mathrm{d}t} = r_i N_i\left(\frac{K_i - N_i - \gamma _iN_j}{K_i}\right).$$
+That's where the effect of $N_j$ on $N_i$ is equivalent to $N_j$. If they aren't perfectly equivalent, then we can use $\gamma _i$ to represent the porportion of $N_j$s is equivalent to $N_i$. E.g., a $\gamma _i$ of 0.5 means that the reduction of growth of $N_i$ by $N_j$ is one half of and $N_i$.
+
+---
+# Interspecific competition: sys. of eqns.
+Version I: $K$ logistic:
+$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1\left(\frac{K_1 - N_1 - \gamma _1N_2}{K_1}\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2\left(\frac{K_2 - N_2 - \gamma _2N_1}{K_2}\right)$$
+
+***
+
+Version II: $r\text{-}\alpha$ logistic:
+$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1 - \alpha _{11}N_1^2 - \alpha _{12} N_1N_2\\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2 - \alpha _{22}N_2^2 - \alpha _{21} N_2N_1$$
+
+---
+
+# Interspecific competition: sys. of eqns.
+Version III: Stevens logistic:
+$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1\left(1 - \alpha _{11}N_1 - \alpha _{12}N_2\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2\left(1 - \alpha _{22}N_2 - \alpha _{21}N_1\right)$$
+
+---
+# Interspecific competition: finding equilibria
+When we analyze our 2-dimensional models, we can do similar things to what we did to our 1-dimensional models. If we set each equation to 0—i.e., where one species doesn't change—that can tell us something about the system, like if it's changing or how the system is changing around the equilibrium (e.g., it it attracting or repelling). But knowing where one species is not changing is only part of understanding the system, because we want to know where **both** species are not changing.
+
+For 1D models we get an equilibrium point. For 2D models we get lines. And, as you may extrapolate, 3D models get surfaces, 4D get 3D volumes, etc. But the lines we get show a range of densities across which a species is not changing. We call these zero-growth **isoclines** or **nullclines**. Stevens and others sometimes call them zero-net growth isoclines, because they then can be called ZINGIs ("*ziNG'ees*"). I will call them isoclines or nullclines interchangeably.
+
+
+---
+# Interspecific competition: sys. of eqns.
+Nullclines of $K$ logistic.
+
+$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1\left(\frac{K_1 - N_1 - \gamma _1N_2}{K_1}\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2\left(\frac{K_2 - N_2 - \gamma _2N_1}{K_2}\right)$$
+
+--
+
+For $N_i$
+.pull-left[
+$$\begin{aligned}
+0 &= r_i N_i\left(\frac{K_i - N_i - \gamma _iN_j}{K_i}\right) \\
+N^* &= 0
+\end{aligned}$$
+]
+
+.pull-right[
+$$\begin{aligned}
+0 &= r_i \left(\frac{K_i - N_i - \gamma _iN_j}{K_i}\right) \\
+0 &= r_1 - \frac{r_iN_i}{K_i} - \frac{r_i\gamma _iN_j}{K_i} \\
+\frac{r_iN_i}{K_i} &= r_1 - \frac{r_i\gamma _iN_j}{K_i} \\
+N_i^* &= K_i - \gamma _iN_j
+\end{aligned}$$
+]
+
+---
+# Interspecific competition: sys. of eqns.
+Nullclines of $r\text{-}\alpha$ logistic.
+
+$$\frac{\mathrm{d}N_1}{\mathrm{d}t} = r_1 N_1 - \alpha _{11}N_1^2 - \alpha {12} N_1N_2\\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} = r_2 N_2 - \alpha _{22}N_2^2 - \alpha {21} N_2N_1$$
+
+--
+
+For $N_i$
+$$\begin{aligned}
+0 &= r_i N_i - \alpha _{ii} N_i^2 - \alpha _{ij} N_iN_j \\
+N^*_i &= 0 \\
+0 &= r_i - \alpha _{ii}N_i - \alpha _{ij} N_j \\
+\alpha _{ii}N_i &= r_i - \alpha _{ij} N_j \\
+N^*_i &= \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}
+\end{aligned}$$
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of $K$ logistic: (1) $N^*_i = 0$ and (2) $N^*_i = K_i - \gamma _iN_j$
+
+.pull-left[
+For $N^*_2 = 0$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+```
+]
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of $K$ logistic: (1) $N^*_i = 0$ and (2) $N^*_i = K_i - \gamma _iN_j$
+
+.pull-left[
+For $N^*_2 = 0$, $N^*_2 = K_2 - \gamma _2N_1$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+```
+]
+
+--
+
+.pull-right[
+For $N^*_1 = 0$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+segments(y0 = 0, y1 = 1, x0 = 0, x1 = 0, col = "red", lwd = 3)
+```
+]
+
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of $K$ logistic: (1) $N^*_i = 0$ and (2) $N^*_i = K_i - \gamma _iN_j$
+
+.pull-left[
+For $N^*_2 = 0$, $N^*_2 = K_2 - \gamma _2N_1$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+```
+]
+
+.pull-right[
+For $N^*_1 = 0$, $N^*_1 = K_1 - \gamma _1N_2$  
+(i.e., $N_2 = \frac{K_1 - N_1^*}{\gamma _1}$)
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+segments(y0 = 0, y1 = 1, x0 = 0, x1 = 0, col = "red", lwd = 3)
+segments(y0 = 0.5, y1 = -0.1, x0 = 0, x1 = 1, col = "red", lwd = 3)
+```
+]
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of $r\text{-}\alpha$ logistic: (1) $N^*_i = 0$ and (2) $N^*_i = \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}$
+
+.pull-left[
+For $N^*_2 = 0$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+```
+]
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of $r\text{-}\alpha$ logistic: (1) $N^*_i = 0$ and (2) $N^*_i = \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}$
+
+.pull-left[
+For $N^*_2 = 0$, $N^*_2 = \frac{r_2 - \alpha _{21}N_1}{\alpha _{22}}$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+```
+]
+
+--
+
+.pull-right[
+For $N^*_1 = 0$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+segments(y0 = 0, y1 = 1, x0 = 0, x1 = 0, col = "red", lwd = 3)
+```
+]
+
+
+---
+# Interspecific competition: plot nullclines
+Nullclines of $r\text{-}\alpha$ logistic: (1) $N^*_i = 0$ and (2) $N^*_i = \frac{r_i - \alpha _{ij} N_j}{\alpha _{ii}}$
+
+.pull-left[
+For $N^*_2 = 0$, $N^*_2 = \frac{r_2 - \alpha _{21}N_1}{\alpha _{22}}$
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+```
+]
+
+.pull-right[
+For $N^*_1 = 0$, $N^*_1 = \frac{r_1 - \alpha _{12}N_2}{\alpha _{11}}$  
+(i.e., $N_2 = \frac{r_1 - \alpha _{11}N_1^*}{\alpha _{12}}$)
+```{r echo = F, fig.height = 4, fig.width = 4, dpi = 150}
+par(mar = c(4.5, 4.5, 0.1, 0.1))
+plot(x = NA, xlab = bquote(N[1]), ylab = bquote(N[2]), xlim = c(0, 1), ylim = c(0, 1), las = 1)
+segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, col = "blue", lwd = 3)
+segments(x0 = 0, x1 = 1, y0 = 0.75, y1 = -0.25, col = "blue", lwd = 3)
+segments(y0 = 0, y1 = 1, x0 = 0, x1 = 0, col = "red", lwd = 3)
+segments(y0 = 0.5, y1 = -0.1, x0 = 0, x1 = 1, col = "red", lwd = 3)
+```
+]

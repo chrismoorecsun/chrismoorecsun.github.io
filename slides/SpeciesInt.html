@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Species interactions</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Christopher Moore" />
+    <script src="libs/header-attrs-2.29/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Species interactions
+]
+.author[
+### Christopher Moore
+]
+
+---
+
+
+
+
+class: inverse, center, bottom
+background-image: url(https://www.nature.com/scitable/content/ne0000/ne0000/ne0000/ne0000/15673908/f2_moon.jpg)
+background-size: 50%
+# Species interaction compass
+
+---
+# Neutralism
+The case where two species do not affect one another.
+
+--
+
+Let's write down the coupled equations for two species, but without interaction, behaving as single species do (logistically). Write each species as `\(N_1\)` and `\(N_2\)`.
+
+--
+
+`$$\begin{aligned}
+\frac{dN_1}{dt} &amp;= r_1N_1 - \alpha _1N_1^2 \\
+\frac{dN_2}{dt} &amp;= r_2N_2 - \alpha _2 N_2^2
+\end{aligned}$$`
+
+or
+
+`$$\begin{aligned}
+\frac{dN_1}{dt} &amp;= r_1N_1\left(\frac{K_1 - N_1}{K_1}\right) \\
+\frac{dN_2}{dt} &amp;= r_2N_2\left(\frac{K_2 - N_2}{K_2}\right)
+\end{aligned}$$`
+
+---
+# Neutralism time series: code
+
+``` r
+neutralism &lt;- function(t, y, parameters) {
+  N1 &lt;- y[1]
+  N2 &lt;- y[2]
+  r1 &lt;- parameters[1]
+  r2 &lt;- parameters[2]
+  a1 &lt;- parameters[3]
+  a2 &lt;- parameters[4]
+  dN1 &lt;- r1*N1 - a1*N1^2
+  dN2 &lt;- r2*N2 - a2*N2^2
+  return(list(c(dN1, dN2)))
+}
+
+n.parms &lt;- c(r1 = 0.55, r2 = 0.5, a1 = 0.02, a2 = 0.01)
+
+times &lt;- seq(from = 0, to = 20, by = 0.1)
+init &lt;- c(N1 = 2, N2 = 0.5)
+neut.out &lt;- ode(y = init, times = times, parms = n.parms, func = neutralism)
+```
+
+---
+# Neutralism time series: plot
+
+``` r
+plot(x = neut.out[,1], y= neut.out[,2], lwd = 2, las = 1, xlab = "Time", ylab = "Density", type = "l", ylim = c(0, max(neut.out)), col = "#0000FFFF")
+lines(x = neut.out[,1], y= neut.out[,3], lwd = 2, col = "red")
+```
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+# Neutralism in state space
+
+
+
+``` r
+plot(x = neut.out[,2], y= neut.out[,3], lwd = 2, las = 1, xlab = bquote(N[1]), ylab = bquote(N[2]), type = "p", ylim = c(0, max(neut.out)), xlim = c(0, max(neut.out)), col = cp, pch = 16)
+```
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+*dark and light colors respectively correspond to early and later points in time*
+
+---
+# Neutralism: animated
+I. Both `\(N_1\)` and `\(N_2\)` below equilibirum
+
+
+&lt;video width="800" height="400" controls loop&gt;
+  &lt;source src="SpeciesInt_files/Neutralism.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+
+---
+# Neutralism: animated
+II. `\(N_1\)` below and `\(N_2\)` above their equilibiria
+
+
+
+
+&lt;video width="800" height="400" controls loop&gt;
+  &lt;source src="SpeciesInt_files/NeutralismII.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+# Neutralism: animated
+III. `\(N_1\)` above and `\(N_2\)` below their equilibiria
+
+
+&lt;video width="800" height="400" controls loop&gt;
+  &lt;source src="SpeciesInt_files/NeutralismIII.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+# Neutralism: animated
+IV. `\(N_1\)` and `\(N_2\)` above their equilibiria
+
+
+&lt;video width="800" height="400" controls loop&gt;
+  &lt;source src="SpeciesInt_files/NeutralismIV.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+# Neutralism: animated
+All four starting points (initial conditions) showing different behaviours
+
+
+&lt;video width="400" height="400" controls loop&gt;
+  &lt;source src="SpeciesInt_files/NeutralismALL.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+--
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this:
+
+--
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this:
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this:
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: the trajectory separators
+**Nullclines** describe the curves (including lines) on a phase plane towards or away from which a populations will grow. This is analagous to the concept of an equilibirum, but on a plane (2 dimensions) populations will grow towards or away from a line instead of a point.
+
+If we were to plot a logistic-growing population against something arbitrary, like the number of angels dancing on the head of a pin, then we could create a plane that looks something like this, **or like this**:
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: the trajectory separators
+Now, if we had **two** populations/variables (say, `\(N_1\)` and `\(N_2\)`), neither of which are interacting with one another, what would we expect to see?
+
+--
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: the trajectory separators
+Now, if we had **two** populations/variables (say, `\(N_1\)` and `\(N_2\)`), neither of which are interacting with one another, what would we expect to see, **more simply**?
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: the trajectory separators
+Now, if we had **two** populations/variables (say, `\(N_1\)` and `\(N_2\)`), neither of which are interacting with one another, what would we expect to see, **more simply**?
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: calculation
+
+--
+
+Set `\(\frac{dN_i}{dt} = 0\)` for each equation, put into a graphical form (isolate the variable on the vertical axis), plot, . . . and crush it.
+&lt;img src="https://c.tenor.com/s7hjKTx1nJYAAAAC/stranger-things-el.gif" alt="Elle crushing it" width=400&gt;
+
+--
+
+Find the nullclines for the neutralism model . . . and plot them (one for each species).
+
+---
+# Nullclines: calculation
+
+The model
+`$$\begin{aligned}
+\frac{dN_1}{dt} &amp;= r_1N_1 - \alpha _1N_1^2 \\
+\frac{dN_2}{dt} &amp;= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$`
+
+--
+
+Setting each subequation to 0
+`$$\begin{aligned}
+0 &amp;= r_1N_1 - \alpha _1N_1^2 \\
+0 &amp;= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$`
+
+--
+
+.pull-left[
+For `\(N_1\)`
+`$$\begin{aligned}
+N^*_1 &amp;= 0 \\
+N^*_1 &amp;= \frac{r_1}{\alpha _1}
+\end{aligned}$$`
+]
+
+--
+
+.pull-right[
+For `\(N_2\)`
+`$$\begin{aligned}
+N^*_2 &amp;= 0 \\
+N^*_2 &amp;= \frac{r_2}{\alpha _2}
+\end{aligned}$$`
+]
+
+---
+# Nullclines: plot your results
+![](SpeciesInt_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+# Nullclines: plot your results
+![](SpeciesInt_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+---
+# Neutralism: using R to graph dynamics
+We will use a package called `phaseR` that is found in the **C**omprehensive **R** **A**rchive **N**etwork (CRAN).
+
+--
+
+You can download pacakges using the function `install.packages(pkgs = )`. Let's `install.packages(pkgs = "phaseR")`.
+
+--
+
+Now that it is installed and saved to your personal R library, let's load it: `library(package = "phaseR")`.
+
+---
+# Neutralism: using R to graph dynamics
+
+We have to call (1) `parms`, `parameters` **and** (2) `state`, `y` in our function to play with `phaseR` (it's terrible, I know; I am sincerely sorry)
+
+
+``` r
+neutralism &lt;- function(t, y, parameters) {
+  N1 &lt;- y[1]
+  N2 &lt;- y[2]
+  r1 &lt;- parameters[1]
+  r2 &lt;- parameters[2]
+  a1 &lt;- parameters[3]
+  a2 &lt;- parameters[4]
+  dN1 &lt;- r1*N1 - a1*N1^2
+  dN2 &lt;- r2*N2 - a2*N2^2
+  return(list(c(dN1, dN2)))
+}
+
+init &lt;- c(N1 = 0.1, N2 = 0.05)
+parm.vals &lt;- c(r1 = 2/3, r2 = 2/3, a1 = 1, a2 = 1)
+```
+Then, let's plot the nullclines:
+
+``` r
+nullclines(deriv = neutralism, parameters = parm.vals, xlim = c(-0.1, 1), ylim = c(-0.1, 1), add = F)
+```
+
+---
+# Neutralism: using R to graph dynamics
+![](SpeciesInt_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+# Neutralism: using R to graph dynamics
+
+``` r
+flowField(deriv = neutralism, xlim = c(-0.1, 1), ylim = c(-0.1, 1), parameters = parm.vals, add = F, points = 20)
+```
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+# Neutralism: using R to graph dynamics
+Plotting nullclines and direction field together
+![](SpeciesInt_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+# Neutralism: using R to graph dynamics
+And if you want, you can add trajectories:
+
+``` r
+trajectory(deriv = neutralism, y0 = init, t.start = 0, t.end = 25, pch = 16)
+```
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+---
+# A new model: amensalism
+**Amensalism**: when one species has a negative effect on another, but that other has no effect on it. A couple biological examples include allelopathy or strong competition.
+
+What might the model look like?
+
+--
+
+The model
+`$$\begin{aligned}
+\frac{dN_1}{dt} &amp;= r_1N_1 - \alpha _1N_1^2 - \beta _1N_1N_2\\
+\frac{dN_2}{dt} &amp;= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$`
+
+--
+
+Create a phase plane for an amensal relationship between two species.
+
+---
+# Amensalism
+The model, initial densities, and parameter values
+
+``` r
+amensalism &lt;- function(t, y, parameters) {
+  N1 &lt;- y[1]
+  N2 &lt;- y[2]
+  r1 &lt;- parameters[1]
+  r2 &lt;- parameters[2]
+  a1 &lt;- parameters[3]
+  a2 &lt;- parameters[4]
+  b1 &lt;- parameters[5]
+  dN1 &lt;- r1*N1 - a1*N1^2 - b1*N1*N2
+  dN2 &lt;- r2*N2 - a2*N2^2
+  return(list(c(dN1, dN2)))
+}
+
+init &lt;- c(N1 = 0.1, N2 = 0.05)
+parm.vals &lt;- c(r1 = 2/3, r2 = 2/3, a1 = 1, a2 = 1, b1 = 0.2)
+```
+
+---
+# Amensalism
+The phase plane
+
+![](SpeciesInt_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
+
+---
+# Amensalism
+The phase plane
+
+.pull-left[
+![](SpeciesInt_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
+]
+
+.pull.right[
+Does this make sense?
+
+What are the equations for the nullclines?
+
+]
+
+---
+# Amensalism
+The model
+`$$\begin{aligned}
+\frac{dN_1}{dt} &amp;= r_1N_1 - \alpha _1N_1^2 - \beta _1N_1N_2\\
+\frac{dN_2}{dt} &amp;= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$`
+
+--
+
+Setting each subequation to 0
+`$$\begin{aligned}
+0 &amp;= r_1N_1 - \alpha _1N_1^2 - \beta _1N_1N_2 \\
+0 &amp;= r_2N_2 - \alpha _2N_2^2
+\end{aligned}$$`
+
+--
+
+.pull-left[
+For `\(N_1\)`
+`$$\begin{aligned}
+N^*_1 &amp;= 0 \\
+N^*_1 &amp;= \frac{r_1 - \beta _1N_2}{\alpha _1}
+\end{aligned}$$`
+]
+
+--
+
+.pull-right[
+For `\(N_2\)`
+`$$\begin{aligned}
+N^*_2 &amp;= 0 \\
+N^*_2 &amp;= \frac{r_2}{\alpha _2}
+\end{aligned}$$`
+]
+
+---
+# Amensalism: varying `\(\beta\)`
+
+
+
+
+&lt;video width="500" height="500" controls loop&gt;
+  &lt;source src="SpeciesInt_files/Amensalism.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
