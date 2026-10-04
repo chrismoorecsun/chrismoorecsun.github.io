@@ -1,0 +1,127 @@
+---
+layout: assignment
+title: "Problem set 4, part I: Competition"
+---
+```{r include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(package = "deSolve")
+library(package = "viridis")
+library(package = "phaseR")
+```
+
+
+## 1. Competition nullclines and trajectory
+Below are a version of two-species competition equations
+$$
+\begin{aligned}
+\frac{\mathrm{d}N_1}{\mathrm{d}t} &= N_1\left(r_1 - \alpha _{11}N_1 - \alpha _{12}N_2\right) \\
+\frac{\mathrm{d}N_2}{\mathrm{d}t} &= N_2\left(r_2 - \alpha _{22}N_2 - \alpha _{21}N_1\right)
+\end{aligned}
+$$
+where $N_i$ has is negatively affected by $N_j$ is $\alpha _{ij}$. The growth rates are $r_i$ and within-species (intraspecific competition) crowding effects are $\alpha _{ii}$.
+
+For the following subquestions, I'd  like for you to find the nullclines, plot them on a blank plot, and plot a few trajectories.
+
+1.1. Please solve for the nullclines for each equation. Show your steps like in previous problem sets.  
+1.2. Plot the nullclines on a blank plot. You'll need some parameter values, so let's do: $r_1 = 0.1$, $r_2 = 0.2$, $\alpha _{11} = 1.0$, $\alpha _{22} = 1.2$, $\alpha _{12} = 0.2$, and $\alpha _{21} = 0.3$. First, make a blank plot. Set the axis limits to 0 and 0.7 to better view the nullclines. Second, make sure you plot the trivial nullclines where $N_i^* = 0$. You can do this simply by adding `lines()` with arguments `x = ` and `y = ` equal to two two-element vectors of $x_0$ and $x_1$ as well as $y_0$ and $y_1$.  
+1.3. Next, plot 4 trajectories on the same plot to see the system behavior around the nullclines. First, plot the same graph as above. Second, plot a trajectory for $N_1(0) = 0.15$ and $N_2(0) = 0.05$. Do this by running those initial conditions in `ode()` with the same parameter values as 1.2. After you do this, plot $N_1$ and $N_2$ on your plot using `lines()`. To help know the initial densities, plot them with a point using `points()`.  
+1.4. Next, build on 1.3. by adding 3 more trajectories: $N_1(0) = 0.05$ and $N_2(0) = 0.04$, $N_1(0) = 0.5$ and $N_2(0) = 0.4$, and $N_1(0) = 0.01$ and $N_2(0) = 0.3$. 
+
+```{r fig.dim = c(4,4), include = F}
+# Write the parameter values up top
+  r1 <- 0.1
+  r2 <- 0.2
+  a11 <- 1.0
+  a22 <- 1.2
+  a12 <- 0.2
+  a21 <- 0.3
+
+# Blank plot with horizontal, x, and vertical, y, axes from 0 to 1
+  plot(x = NA, type = "n", las = 1, xlab = "N1", ylab = "N2", xlim = c(0, 0.7), ylim = c(0, 0.7))
+
+  # Trivial nullclines
+  lines(x = c(0, 0), y = c(0, 1), col = "#007ac1", lwd = 2)
+  lines(x = c(0, 1), y = c(0, 0), col = "#ef3b24", lwd = 2)
+
+  # Non-trivial nullclines
+  N1_vec <- seq(from = 0, to = 1)
+  N1_null <- r1/a12 - a11/a12*N1_vec
+  lines(x = N1_vec, y = N1_null, col = "#007ac1", lwd = 2)
+
+  N2_null <- r2/a22 - a21/a22*N1_vec
+  lines(x = N1_vec, y = N2_null, col = "#ef3b24", lwd = 2)
+```
+
+
+## 2. Competition nullclines and vector (flow) field
+Now that you have plotted the isoclines and a trajectory, I want to show you a more general way of visualizing how populations are going to change, instead of just showing a single trajectory.
+
+But I first want to re-introduce a phrase that we taught in ecology where we had the populations (stat variables) on the horizontal and vertical axes and we plotted the isoclines to show the population dynamics. We called these *phase planes*, and I am going to use that language over the next 6 weeks or so as we study two-dimensional systems.
+
+OK, but we are going to further make these phase planes more generally interpretable by adding a (vector) field to the background. In sum, the field shows for a given set of densities of each variable (i) the direction that the populations will change to and (ii), often, the magnitude. Here is what it would looks like for the competition model:
+
+```{r fig.dim = c(8, 4), echo = F}
+# ode() set up
+compfun <- function(times, state, pars) {
+  with(as.list(c(state, pars)), {
+    dN1 <- r1*N1 - a11*N1*N1 - a12*N1*N2
+    dN2 <- r2*N2 - a22*N2*N2 - a21*N2*N1
+    return(list(c(dN1, dN2)))
+  })
+}
+
+time_vec <- seq(from = 0, to = 100, by = 0.1)
+  r1 <- 0.1
+  r2 <- 0.2
+  a11 <- 1.0
+  a22 <- 1.2
+  a12 <- 0.2
+  a21 <- 0.3
+par_vec <- c(r1 = 0.1, r2 = 0.2, a11 = 1, a22 = 1.2, a12 = 0.2, a21 = 0.3)
+
+
+# Plot isoclines
+  par(mfrow = c(1, 2), mar = c(4.5, 4.5, 0.5, 0.5))
+  # Blank plot
+  plot(x = NA, type = "n", las = 1, xlab = "N1", ylab = "N2", xlim = c(0, 0.7), ylim = c(0, 0.7))
+  
+   # Trivial nullclines
+  lines(x = c(0, 0), y = c(0, 1), col = "#007ac1", lwd = 2)
+  lines(x = c(0, 1), y = c(0, 0), col = "#ef3b24", lwd = 2)
+
+  # Non-trivial nullclines
+  N1_vec <- seq(from = 0, to = 1)
+  N1_null <- r1/a12 - a11/a12*N1_vec
+  lines(x = N1_vec, y = N1_null, col = "#007ac1", lwd = 2)
+
+  N2_null <- r2/a22 - a21/a22*N1_vec
+  lines(x = N1_vec, y = N2_null, col = "#ef3b24", lwd = 2)
+
+# Plot isoclines + vector field
+  plot(x = NA, type = "n", las = 1, xlab = "N1", ylab = "N2", xlim = c(0, 0.7), ylim = c(0, 0.7))
+  trash <- flowField(deriv = compfun, xlim = c(0, 1), ylim = c(0, 1), parameters = par_vec, state.names = c("N1", "N2"), arrow.type = "proportional", points = 15, col = "#002D6266")
+  trash <- nullclines(deriv = compfun, xlim = c(-0.1, 1), ylim = c(-0.1, 1), parameters = par_vec, state.names = c("N1", "N2"), col = c("#007ac1", "#ef3b24"), lwd = 2, add.legend = F, points = 501)
+```
+
+Looking at these two phase planes, it's easy to see how much more information the vector field adds. Notice, too, that in some areas (e.g., where $N_1 = 0.7$ and $N_2 = 0.7$) we see arrows with long tails indicating that the rate of change is relatively high and other areas (e.g., around the positive equilibrium) the tails are so small you can't even see them. Nevertheless, we can now qualitatively see how the populations are going to change through time—such a useful and, IMO, aesthetically-pleasing tool!
+
+For this problem, I ask that you recreate what you did in problem 1, but using an R package that will plot both the isoclines and vector field for you `r emo::ji("nerd")`. You'll do this with a new package called `phaseR`, so you'll need to load it from your library just like with `deSolve`. (Phaser, BTW, is a sound effect that you hear in a lot of music, including, what is one of the best openings of any music album ever, [*Shine on your crazy diamond (parts I—V)* by Pink Floyd](https://www.youtube.com/watch?v=54W8kktFE_o) [at 4:08 you can hear the guitar with phaser]).
+
+The easiest way to make a phase plane like mine is in three steps:
+
+1. Make a blank plot
+2. Use `flowField()` to add the vector field
+3. Use `nullclines()` to add the nullclines
+
+Pretty simple, right? It is in my opinion. This package has a few things that are slightly annoying that might cause your code not to work. Here's a list of those:
+
+- For both `flowField()` and `nullclines()` you need to specify the `xlim` and `ylim`
+- In `ode()` the argument for your function is `func =` and in `flowField()` and `nullclines()` it's `deriv =`
+- In `ode()` the argument for your parameters is `parms =` and in `flowField()` and `nullclines()` it's `parameters =`
+- You **must** give `flowField()` and `nullclines()` the names of your state variables in the `state.names = ` argument; e.g., `state.names = c("Roadrunner", "Wiley E. Coyote")`
+- Each `flowField()` and `nullclines()`, when plotted, returns a bunch of data that you don't need. You can suppress the printing of the output by assigning the function to some variable. I call mine `trash` like this, for example: `trash <- flowField(...)` where the arguments are filled in where the ellipses are.
+
+And, I always recommend that you check the documentation for each of the functions `flowField()` and `nullclines()`. You'll find them helpful, as it tells you how to change, for instance, the size of the arrowheads, the number of points in the vector field, opting to not plot the legend, etc.
