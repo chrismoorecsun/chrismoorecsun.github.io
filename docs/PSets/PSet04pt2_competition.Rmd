@@ -1,0 +1,27 @@
+---
+layout: assignment
+title: "Problem set 4, part II: Competition and other 2-species interactions"
+---
+```{r include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Plot the phase planes of all 6 species interactions
+There is one question for this second part of problem set 4. Specifically, I want you to plot *each* of the different outcomes of *each* of the 6 types of 2-species interaction. The interactions and the number of outcomes are:
+
+1. Neutralism: 1 outcome
+2. Amensalism: 2 outcomes
+3. Commensalism: 1 outcome
+4. Mutualism: 2 outcomes
+5. Predator-prey (i.e., enemy-victim): 2 outcomes
+6. Competition: 3 outcomes
+
+Note that the outcomes include combinations within an interaction (e.g., there are only 3 outcomes for competition because I am treating species 1 outcompeting species 2 and vice versa as the same thing; same could be said for amensalism, etc.).
+
+For each phase plane, please:
+
+- Include a vector field
+- Show the nullclines for each species; including the trivial ones
+- Show all the same type of interaction plots of 1 row and *n*-outcome columns. Use `par(mfrow = c(1, n))` with *n* being the number of columns before each set of plots. You might want to change the space around each plot, too,by passing the `mar = ` argument to `par()`. Set `mar` to a 4-element vector for the space around the bottom, left, top, and right. The default in R is `mar = c(``r par()$mar``)`. Play around with the margin space until it looks good.
+- Label each plot with `main =` to a string with the outcome as the title
+- Label each interaction as its own heading (e.g., with # or ##)
