@@ -1,0 +1,267 @@
+---
+title: "Resource competition"
+date: "2026-10-22"
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load libraries
+```{r}
+library(package = "deSolve")
+```
+
+# Create general functions
+```{r}
+# Function for keeping values positive that we pass to ode()
+  posfun <- function(t, y, parms){
+    with(as.list(y), {
+      y[which( y <0.001)] <- 0  
+      return(y)
+    })
+  }
+```
+
+
+# One resource, one species
+```{r}
+# Create function
+  oneRoneS <- function(t, y, parms) {
+    with(as.list(c(y, parms)), {
+      dR <- r*R - alpha*R*R - beta*R*N
+      dN <- b*N*R - m*N
+      return(list(c(dR, dN)))
+    })
+  }
+
+# Define arguments that we pass to our numerical solver, ode()
+  # A time vector
+  max_time <- 100
+  time_vec <- seq(from = 0, to = max_time, length.out = 1e5)
+  # Initial values for each variable
+  init_vec <- c(R = 1, N = 0.01)
+  # Parameter values
+  parm_vec <- c(r = 0.9, alpha = 1, beta = 0.5, b = 0.5, m = 0.2)
+
+# Solve initial value problem with our numerical solver, ode
+  odeOut_1R1S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRoneS)
+
+# Look at the relationship between R and per-capita rates
+  no_Rs <- 1e4
+  R_vec <- seq(from = 0, to = 1, length.out = no_Rs)
+  birth <- parm_vec["b"]*R_vec
+  death <- parm_vec["m"]*R_vec^0
+
+# Find R*
+  Rstar <- parm_vec["m"]/parm_vec["b"]
+
+# Plot R and per-capita rates next to the time series
+  # Make 1 row and 2 columns of graphs
+  par(mfrow = c(1, 2), mar = c(4.5, 4.5, 0.1, 0.1))
+  # R and per-capita rates
+  plot(x = R_vec, y = birth, type = "l", xlab = "Resource (R)", ylab = "Per-capita rate", las = 1, lwd = 2, col = "seagreen1")
+  lines(x = R_vec, y = death, lwd = 2, col = "tomato")
+  abline(v = Rstar)
+  legend(x = "bottomright", legend = c("R*", "PC birth", "PC death"), col = c("black", "seagreen1", "tomato"), lwd = 2, bty = "n")
+# Plot time series
+  max_y <- max(odeOut_1R1S[,-1])
+  plot(x = NA, xlim = c(0, max_time), xlab = "Time", ylab = "Density", las = 1, ylim = c(0, max_y))
+  lines(x = odeOut_1R1S[,1], y = odeOut_1R1S[,2], lwd = 2, col = "black")
+  lines(x = odeOut_1R1S[,1], y = odeOut_1R1S[,3], lwd = 2, col = "blue")
+  abline(h = Rstar)
+  legend(x = "right", legend = c("R", "N"), col = c("black", "blue"), lwd = 2, bty = "n")
+```
+
+
+
+
+
+
+# One resource, two species
+```{r message=FALSE}
+# Create function
+  oneRtwoS <- function(t, y, parms) {
+    with(as.list(c(y, parms)), {
+      dR <- r*R - alpha*R*R - beta1*R*N1 - beta2*R*N2
+      dN1 <- b1*N1*R - m1*N1
+      dN2 <- b2*N2*R - m2*N2
+      return(list(c(dR, dN1, dN2)))
+    })
+  }
+
+# Define arguments that we pass to our numerical solver, ode()
+  # A time vector
+  max_time <- 100
+  time_vec <- seq(from = 0, to = max_time, length.out = 1e5)
+  # Initial values for each variable
+  init_vec <- c(R = 1, N1 = 0.01, N2 = 0.02)
+  # Parameter values
+  parm_vec <- c(r = 0.9, alpha = 1, beta1 = 0.5, beta2 = 0.5, b1 = 0.55, m1 = 0.15, b2 = 0.5, m2 = 0.2)
+
+# Solve initial value problem with our numerical solver, ode
+  odeOut_1R2S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRtwoS, events=list(func = posfun, time = c(0:max_time)))
+
+# Look at the relationship between R and per-capita rates
+  no_Rs <- 1e4
+  R_vec <- seq(from = 0, to = 1, length.out = no_Rs)
+  birth_1 <- parm_vec["b1"]*R_vec
+  death_1 <- parm_vec["m1"]*R_vec^0
+  birth_2 <- parm_vec["b2"]*R_vec
+  death_2 <- parm_vec["m2"]*R_vec^0
+
+# Find R*
+  Rstar_1 <- parm_vec["m1"]/parm_vec["b1"]
+  Rstar_2 <- parm_vec["m2"]/parm_vec["b2"]
+
+# Plot R and per-capita rates next to the time series
+  # Make 1 row and 2 columns of graphs
+  par(mfrow = c(1, 2), mar = c(4.5, 4.5, 0.1, 0.1))
+  # R and per-capita rates
+  plot(x = R_vec, y = birth_1, type = "l", xlab = "Resource (R)", ylab = "Per-capita rate", las = 1, lwd = 2, col = "seagreen1")
+  lines(x = R_vec, y = death_1, lwd = 2, col = "tomato")
+  lines(x = R_vec, y = birth_2, lwd = 2, col = "seagreen")
+  lines(x = R_vec, y = death_2, lwd = 2, col = "tomato3")
+  abline(v = c(Rstar_1, Rstar_2))
+  legend(x = "bottomright", legend = c("R*", "PC birth", "PC death"), col = c("black", "seagreen1", "tomato"), lwd = 2, bty = "n")
+# Plot time series
+  max_y <- max(odeOut_1R2S[,-1])
+  plot(x = NA, xlim = c(0, max_time), xlab = "Time", ylab = "Density", las = 1, ylim = c(0, max_y))
+  lines(x = odeOut_1R2S[,1], y = odeOut_1R2S[,2], lwd = 2, col = "black")
+  lines(x = odeOut_1R2S[,1], y = odeOut_1R2S[,3], lwd = 2, col = "blue")
+  lines(x = odeOut_1R2S[,1], y = odeOut_1R2S[,4], lwd = 2, col = "red")
+  abline(h = c(Rstar_1, Rstar_2))
+  legend(x = "right", legend = c("R", "N1", "N2"), col = c("black", "blue", "red"), lwd = 2, bty = "n")
+```
+
+## Under different initial conditions
+
+```{r, fig.dim = c(6, 6)}
+# Initial values for each variable
+  init_vec_A <- c(R = 1, N1 = 0.01, N2 = 0.02)
+  init_vec_B <- c(R = 1, N1 = 0.5, N2 = 0.6)
+  init_vec_C <- c(R = 1, N1 = 0.3, N2 = 0.38)
+
+# Solve initial value problem with our numerical solver, ode
+  odeOut_1R2S_A <- ode(y = init_vec_A, times = time_vec, parms = parm_vec, func = oneRtwoS, events=list(func = posfun, time = c(0:max_time)))
+  odeOut_1R2S_B <- ode(y = init_vec_B, times = time_vec, parms = parm_vec, func = oneRtwoS, events=list(func = posfun, time = c(0:max_time)))
+  odeOut_1R2S_C <- ode(y = init_vec_C, times = time_vec, parms = parm_vec, func = oneRtwoS, events=list(func = posfun, time = c(0:max_time)))
+
+# Plot R and per-capita rates next to the time series
+  # Make 1 row and 2 columns of graphs
+  par(mfrow = c(3, 2), mar = c(4.5, 4.5, 0.1, 0.1))
+  # R and per-capita rates of A
+  plot(x = R_vec, y = birth_1, type = "l", xlab = "Resource (R)", ylab = "Per-capita rate", las = 1, lwd = 2, col = "seagreen1")
+  lines(x = R_vec, y = death_1, lwd = 2, col = "tomato")
+  lines(x = R_vec, y = birth_2, lwd = 2, col = "seagreen")
+  lines(x = R_vec, y = death_2, lwd = 2, col = "tomato3")
+  abline(v = c(Rstar_1, Rstar_2))
+  legend(x = "bottomright", legend = c("R*", "PC birth", "PC death"), col = c("black", "seagreen1", "tomato"), lwd = 2, bty = "n")
+# Plot time series
+  max_y <- max(odeOut_1R2S_A[,-1])
+  plot(x = NA, xlim = c(0, max_time), xlab = "Time", ylab = "Density", las = 1, ylim = c(0, max_y))
+  lines(x = odeOut_1R2S_A[,1], y = odeOut_1R2S_A[,2], lwd = 2, col = "black")
+  lines(x = odeOut_1R2S_A[,1], y = odeOut_1R2S_A[,3], lwd = 2, col = "blue")
+  lines(x = odeOut_1R2S_A[,1], y = odeOut_1R2S_A[,4], lwd = 2, col = "red")
+  abline(h = c(Rstar_1, Rstar_2))
+  legend(x = "right", legend = c("R", "N1", "N2"), col = c("black", "blue", "red"), lwd = 2, bty = "n")
+
+ # R and per-capita rates of B
+  plot(x = R_vec, y = birth_1, type = "l", xlab = "Resource (R)", ylab = "Per-capita rate", las = 1, lwd = 2, col = "seagreen1")
+  lines(x = R_vec, y = death_1, lwd = 2, col = "tomato")
+  lines(x = R_vec, y = birth_2, lwd = 2, col = "seagreen")
+  lines(x = R_vec, y = death_2, lwd = 2, col = "tomato3")
+  abline(v = c(Rstar_1, Rstar_2))
+  legend(x = "bottomright", legend = c("R*", "PC birth", "PC death"), col = c("black", "seagreen1", "tomato"), lwd = 2, bty = "n")
+# Plot time series
+  max_y <- max(odeOut_1R2S_B[,-1])
+  plot(x = NA, xlim = c(0, max_time), xlab = "Time", ylab = "Density", las = 1, ylim = c(0, max_y))
+  lines(x = odeOut_1R2S_B[,1], y = odeOut_1R2S_B[,2], lwd = 2, col = "black")
+  lines(x = odeOut_1R2S_B[,1], y = odeOut_1R2S_B[,3], lwd = 2, col = "blue")
+  lines(x = odeOut_1R2S_B[,1], y = odeOut_1R2S_B[,4], lwd = 2, col = "red")
+  abline(h = c(Rstar_1, Rstar_2))
+  legend(x = "right", legend = c("R", "N1", "N2"), col = c("black", "blue", "red"), lwd = 2, bty = "n")
+
+ # R and per-capita rates of C
+  plot(x = R_vec, y = birth_1, type = "l", xlab = "Resource (R)", ylab = "Per-capita rate", las = 1, lwd = 2, col = "seagreen1")
+  lines(x = R_vec, y = death_1, lwd = 2, col = "tomato")
+  lines(x = R_vec, y = birth_2, lwd = 2, col = "seagreen")
+  lines(x = R_vec, y = death_2, lwd = 2, col = "tomato3")
+  abline(v = c(Rstar_1, Rstar_2))
+  legend(x = "bottomright", legend = c("R*", "PC birth", "PC death"), col = c("black", "seagreen1", "tomato"), lwd = 2, bty = "n")
+# Plot time series
+  max_y <- max(odeOut_1R2S_C[,-1])
+  plot(x = NA, xlim = c(0, max_time), xlab = "Time", ylab = "Density", las = 1, ylim = c(0, max_y))
+  lines(x = odeOut_1R2S_C[,1], y = odeOut_1R2S_C[,2], lwd = 2, col = "black")
+  lines(x = odeOut_1R2S_C[,1], y = odeOut_1R2S_C[,3], lwd = 2, col = "blue")
+  lines(x = odeOut_1R2S_C[,1], y = odeOut_1R2S_C[,4], lwd = 2, col = "red")
+  abline(h = c(Rstar_1, Rstar_2))
+  legend(x = "right", legend = c("R", "N1", "N2"), col = c("black", "blue", "red"), lwd = 2, bty = "n")
+```
+
+
+
+
+# Two resources, two species
+```{r eval = F}
+# Create function
+  twoRtwoS <- function(t, y, parms) {
+    with(as.list(c(y, parms)), {
+      dR1 <- r1*R1 - alpha1*R1*R1 - beta11*R1*N1 - beta12*R1*N2
+      dR2 <- r2*R2 - alpha2*R2*R2 - beta21*R2*N1 - beta22*R2*N2
+      dN1 <- b11*N1*R1 + b12*N1*R2 - m1*N1
+      dN2 <- b21*N2*R1 + b22*N2*R2 - m2*N2
+      return(list(c(dR1, dR2, dN1, dN2)))
+    })
+  }
+
+# Define arguments that we pass to our numerical solver, ode()
+  # A time vector
+  max_time <- 100
+  time_vec <- seq(from = 0, to = max_time, length.out = 1e5)
+  # Initial values for each variable
+  init_vec <- c(R = 1, N1 = 0.01, N2 = 0.02)
+  # Parameter values
+  parm_vec <- c(r1 = 0.9, r2 = 0.9, alpha1 = 1, alpha2 = 1, beta11 = 0.5, beta12 = 0.5, beta21 = 0.6, beta22 = 0.6, b11 = 0.55, b12 = 0.45, b21 = 0.4, b22 = 0.6, m1 = 0.15, b2 = 0.5, m2 = 0.2)
+
+# Solve initial value problem with our numerical solver, ode
+  odeOut_2R2S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRoneS, events=list(func = posfun, time = c(0:max_time)))
+
+# Look at the relationship between R and per-capita rates
+  no_Rs <- 1e4
+  R_vec <- seq(from = 0, to = 1, length.out = no_Rs)
+  birth_1 <- parm_vec["b1"]*R_vec
+  death_1 <- parm_vec["m1"]*R_vec^0
+  birth_2 <- parm_vec["b2"]*R_vec
+  death_2 <- parm_vec["m2"]*R_vec^0
+
+# Find R*
+  Rstar_1 <- parm_vec["m1"]/parm_vec["b1"]
+  Rstar_2 <- parm_vec["m2"]/parm_vec["b2"]
+
+# Plot R and per-capita rates next to the time series
+  # Make 1 row and 2 columns of graphs
+  par(mfrow = c(1, 2), mar = c(4.5, 4.5, 0.1, 0.1))
+  # R and per-capita rates
+  plot(x = R_vec, y = birth_1, type = "l", xlab = "Resource (R)", ylab = "Per-capita rate", las = 1, lwd = 2, col = "seagreen1")
+  lines(x = R_vec, y = death_1, lwd = 2, col = "tomato")
+  lines(x = R_vec, y = birth_2, lwd = 2, col = "seagreen")
+  lines(x = R_vec, y = death_2, lwd = 2, col = "tomato3")
+  abline(v = c(Rstar_1, Rstar_2), lty = 2)
+  legend(x = "bottomright", legend = c("R*", "PC birth", "PC death"), col = c("black", "seagreen1", "tomato"), lwd = 2, bty = "n", lty = c(2, 1, 1))
+# Plot time series
+  max_y <- max(odeOut_1R2S[,-1])
+  plot(x = NA, xlim = c(0, max_time), xlab = "Time", ylab = "Density", las = 1, ylim = c(0, max_y))
+  lines(x = odeOut_1R2S[,1], y = odeOut_1R2S[,2], lwd = 2, col = "black")
+  lines(x = odeOut_1R2S[,1], y = odeOut_1R2S[,3], lwd = 2, col = "blue")
+  lines(x = odeOut_1R2S[,1], y = odeOut_1R2S[,4], lwd = 2, col = "red")
+  abline(h = c(Rstar_1, Rstar_2), lty = 2)
+  legend(x = "right", legend = c("R", "N1", "N2"), col = c("black", "blue", "red"), lwd = 2, bty = "n")
+```
