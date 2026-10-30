@@ -1,6 +1,8 @@
 ---
-layout: assignment
 title: "Problem set 4, part II: Competition and other 2-species interactions"
+output:
+  html_document:
+    code_folding: hide
 ---
 ```{r include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -25,3 +27,148 @@ For each phase plane, please:
 - Show all the same type of interaction plots of 1 row and *n*-outcome columns. Use `par(mfrow = c(1, n))` with *n* being the number of columns before each set of plots. You might want to change the space around each plot, too,by passing the `mar = ` argument to `par()`. Set `mar` to a 4-element vector for the space around the bottom, left, top, and right. The default in R is `mar = c(``r par()$mar``)`. Play around with the margin space until it looks good.
 - Label each plot with `main =` to a string with the outcome as the title
 - Label each interaction as its own heading (e.g., with # or ##)
+
+***
+```{r}
+  library(package = "deSolve")
+  library(package = "phaseR")
+```
+
+# Neutralism
+```{r, fig.dim = c(4, 4)}
+  neut <- function(t, y, p) {
+    with(as.list(c(y, p)), {
+      dN1 <- r1*N1 - alpha1*N1*N1
+      dN2 <- r2*N2 - alpha2*N2*N2
+      return(list(c(dN1, dN2)))
+    })
+  }
+  parms_vec <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2)
+  name_vec <- c("N1", "N2")
+  lims_vec <- c(0, 1)
+  
+  par(mar = c(4.5, 4.5, 1, 1))
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Coexistence")
+  trash <- flowField(deriv = neut, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec, state.names = name_vec)
+  trash <- nullclines(deriv = neut, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+```
+
+# Amensalism
+```{r, fig.dim = c(8, 4)}
+  amen <- function(t, y, p) {
+    with(as.list(c(y, p)), {
+      dN1 <- r1*N1 - alpha1*N1*N1 - beta1*N1*N2
+      dN2 <- r2*N2 - alpha2*N2*N2
+      return(list(c(dN1, dN2)))
+    })
+  }
+  parms_vec_1 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 0.5)
+  parms_vec_2 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 3)
+  name_vec <- c("N1", "N2")
+  lims_vec <- c(0, 1)
+  
+  par(mar = c(4.5, 4.5, 1, 1), mfrow = c(1, 2))
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Coexistence")
+  trash <- flowField(deriv = amen, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_1, state.names = name_vec)
+  trash <- nullclines(deriv = amen, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_1, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+
+    plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Exclusion/extinction")
+  trash <- flowField(deriv = amen, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_2, state.names = name_vec)
+  trash <- nullclines(deriv = amen, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_2, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+```
+
+# Commensalism
+```{r, fig.dim = c(4, 4)}
+  comm <- function(t, y, p) {
+    with(as.list(c(y, p)), {
+      dN1 <- r1*N1 - alpha1*N1*N1 + beta1*N1*N2
+      dN2 <- r2*N2 - alpha2*N2*N2
+      return(list(c(dN1, dN2)))
+    })
+  }
+  parms_vec <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 0.5)
+  name_vec <- c("N1", "N2")
+  lims_vec <- c(0, 1)
+  
+  par(mar = c(4.5, 4.5, 1, 1))
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Coexistence")
+  trash <- flowField(deriv = comm, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec, state.names = name_vec)
+  trash <- nullclines(deriv = comm, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+```
+
+# Mutualism
+```{r, fig.dim = c(8, 4)}
+  mut <- function(t, y, p) {
+    with(as.list(c(y, p)), {
+      dN1 <- r1*N1 - alpha1*N1*N1 + beta1*N1*N2
+      dN2 <- r2*N2 - alpha2*N2*N2 + beta2*N1*N2
+      return(list(c(dN1, dN2)))
+    })
+  }
+  parms_vec_1 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 0.5, beta2 = 0.5)
+  parms_vec_2 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 3, beta2 = 3)
+  name_vec <- c("N1", "N2")
+  lims_vec <- c(0, 1)
+  
+  par(mar = c(4.5, 4.5, 1, 1), mfrow = c(1, 2))
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Coexistence")
+  trash <- flowField(deriv = mut, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_1, state.names = name_vec)
+  trash <- nullclines(deriv = mut, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_1, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Unbounded growth")
+  trash <- flowField(deriv = mut, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_2, state.names = name_vec)
+  trash <- nullclines(deriv = mut, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_2, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+```
+
+# Predator-prey
+```{r, fig.dim = c(8, 4)}
+  pp <- function(t, y, p) {
+    with(as.list(c(y, p)), {
+      dN1 <- r1*N1 - alpha1*N1*N1 - beta1*N1*N2
+      dN2 <- r2*N2 - alpha2*N2*N2 + beta2*N1*N2
+      return(list(c(dN1, dN2)))
+    })
+  }
+  parms_vec_1 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 0.5, beta2 = 0.5)
+  parms_vec_2 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 3, beta2 = 3)
+  name_vec <- c("N1", "N2")
+  lims_vec <- c(0, 1)
+  
+  par(mar = c(4.5, 4.5, 1, 1), mfrow = c(1, 2))
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Coexistence")
+  trash <- flowField(deriv = pp, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_1, state.names = name_vec)
+  trash <- nullclines(deriv = pp, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_1, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Exclusion/extinction")
+  trash <- flowField(deriv = pp, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_2, state.names = name_vec)
+  trash <- nullclines(deriv = pp, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_2, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+```
+
+# Competition
+```{r, fig.dim = c(8, 8/3)}
+  comp <- function(t, y, p) {
+    with(as.list(c(y, p)), {
+      dN1 <- r1*N1 - alpha1*N1*N1 - beta1*N1*N2
+      dN2 <- r2*N2 - alpha2*N2*N2 - beta2*N1*N2
+      return(list(c(dN1, dN2)))
+    })
+  }
+  parms_vec_1 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 0.5, beta2 = 0.5)
+  parms_vec_2 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 0.5, beta2 = 3)
+  parms_vec_3 <- c(r1 = 1, r2 = 1, alpha1 = 2, alpha2 = 2, beta1 = 3, beta2 = 3)
+  name_vec <- c("N1", "N2")
+  lims_vec <- c(0, 1)
+  
+  par(mar = c(4.5, 4.5, 1, 1), mfrow = c(1, 3))
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Coexistence")
+  trash <- flowField(deriv = comp, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_1, state.names = name_vec)
+  trash <- nullclines(deriv = comp, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_1, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+
+  plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Exclution/extinction")
+  trash <- flowField(deriv = comp, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_2, state.names = name_vec)
+  trash <- nullclines(deriv = comp, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_2, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+
+   plot(x = NA, type = "n", xlim = lims_vec, ylim = lims_vec, xlab = "N1", ylab = "N2", las = 1, main = "Exclusion/extinction")
+  trash <- flowField(deriv = comp, xlim = lims_vec, ylim = lims_vec, parameters = parms_vec_3, state.names = name_vec)
+  trash <- nullclines(deriv = comp, xlim = c(-0.1, lims_vec[2]), ylim = c(-0.1, lims_vec[2]), parameters = parms_vec_3, state.names = name_vec, add.legend = FALSE, col = c("#5BCEFA", "#F5A9B8"), lwd = 3)
+```
