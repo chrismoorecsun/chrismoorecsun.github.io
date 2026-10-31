@@ -24,7 +24,7 @@ library(package = "deSolve")
 # Function for keeping values positive that we pass to ode()
   posfun <- function(t, y, parms){
     with(as.list(y), {
-      y[which( y <0.001)] <- 0  
+      y[which( y < 0.001)] <- 0  
       return(y)
     })
   }
@@ -86,7 +86,7 @@ library(package = "deSolve")
 
 
 # One resource, two species
-```{r message=FALSE}
+```{r}
 # Create function
   oneRtwoS <- function(t, y, parms) {
     with(as.list(c(y, parms)), {
@@ -99,15 +99,25 @@ library(package = "deSolve")
 
 # Define arguments that we pass to our numerical solver, ode()
   # A time vector
-  max_time <- 100
+  max_time <- 1000
   time_vec <- seq(from = 0, to = max_time, length.out = 1e5)
   # Initial values for each variable
   init_vec <- c(R = 1, N1 = 0.01, N2 = 0.02)
   # Parameter values
   parm_vec <- c(r = 0.9, alpha = 1, beta1 = 0.5, beta2 = 0.5, b1 = 0.55, m1 = 0.15, b2 = 0.5, m2 = 0.2)
 
+## remove later (top)
+  # Function for keeping values positive that we pass to ode()
+  posfun <- function(t, y, parms){
+    with(as.list(y), {
+      y[which( y < 0.001)] <- 0  
+      return(y)
+    })
+  }
+## remove later (bottom)
+  
 # Solve initial value problem with our numerical solver, ode
-  odeOut_1R2S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRtwoS, events=list(func = posfun, time = c(0:max_time)))
+  odeOut_1R2S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRtwoS, events = list(func = posfun, time = time_vec))
 
 # Look at the relationship between R and per-capita rates
   no_Rs <- 1e4
@@ -209,6 +219,7 @@ library(package = "deSolve")
 
 
 
+
 # Two resources, two species
 ```{r eval = F}
 # Create function
@@ -232,7 +243,7 @@ library(package = "deSolve")
   parm_vec <- c(r1 = 0.9, r2 = 0.9, alpha1 = 1, alpha2 = 1, beta11 = 0.5, beta12 = 0.5, beta21 = 0.6, beta22 = 0.6, b11 = 0.55, b12 = 0.45, b21 = 0.4, b22 = 0.6, m1 = 0.15, b2 = 0.5, m2 = 0.2)
 
 # Solve initial value problem with our numerical solver, ode
-  odeOut_2R2S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRoneS, events=list(func = posfun, time = c(0:max_time)))
+  odeOut_2R2S <- ode(y = init_vec, times = time_vec, parms = parm_vec, func = oneRoneS, events = list(func = posfun, time = c(0:max_time)))
 
 # Look at the relationship between R and per-capita rates
   no_Rs <- 1e4
