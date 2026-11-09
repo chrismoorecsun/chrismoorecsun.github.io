@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE, collapse = T)
 library(package = "deSolve")
 ```
 
-# Creating a density-dependent model, en Français
+# Creating a density-dependent model, en français
 ![VerhulstImage](DensDep_files/Verhulst.png)
 ---
 # Creating a density-dependent model, translated

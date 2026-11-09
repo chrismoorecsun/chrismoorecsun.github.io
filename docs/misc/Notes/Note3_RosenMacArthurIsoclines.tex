@@ -1,0 +1,89 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper, total={5.5in, 10in}]{geometry}
+\usepackage{hyperref} % for url link
+\setlength{\parskip}{0.25cm}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{natbib}
+\setlength{\parindent}{0in}
+\setlength{\bibsep}{0.0pt}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{pgfplots}
+%\renewcommand{\arraystretch}{1.7}
+
+\begin{document}
+
+\section{Rosenzweig-MacArthur consumer-resource model isoclines}
+
+Our Lotka-Volterra predator-prey model was one that tracked the rates of gains and losses of prey, $V$, and predator, $P$, populations:
+
+\begin{equation}
+\begin{aligned}
+    \frac{\mathrm{d}V}{\mathrm{d}t} &= \text{prey gains} - \text{prey losses} \\
+    &= \text{density-independent growth} - \text{consumption of prey proportional to prey density} \\
+    &= \alpha V -\beta bVP \\
+    \frac{\mathrm{d}P}{\mathrm{d}t} &=  \text{predator gains} - \text{predator losses} \\
+    &= \text{predator gain through prey conversion} - \text{density-independent mortality} \\
+    &= \gamma VP - \delta P.
+\end{aligned}
+\end{equation}
+
+Rosenzweig and MacArthur studied a model that modified two terms: (1) they replaced density-independent growth of prey with logistic/density-dependent growth and (2) they replaced consumption of prey proportional to prey density (type I functional response) with consumption of prey that includes the time it takes predators to handle the prey before returning to searching for prey (type II functional response). The predator-prey/consumer-resource model is now
+
+\begin{equation}
+\begin{aligned}
+    \frac{\mathrm{d}V}{\mathrm{d}t} &= rV\left(\frac{K - V}{K}\right) - \frac{aV}{1 + ahV}P \\
+    \frac{\mathrm{d}P}{\mathrm{d}t} &= c\frac{aV}{1 + ahV}P - mP.
+\end{aligned}
+\end{equation}
+
+To find the nullclines for each we set each to 0 and algebraically rearrange and plot. For the prey equation, we can first factor out $V$ and we know that $V = 0$ is one nullcline. The other factor we can rearrange:
+\begin{equation}
+\begin{aligned}
+    0 &= r\left(\frac{K - V}{K}\right) - \frac{a}{1 + ahV}P \\
+     \frac{a}{1 + ahV}P &= r\left(\frac{K - V}{K}\right) \\
+     \frac{1}{1 + ahV}P &= \frac{r}{a}\left(\frac{K - V}{K}\right) \\
+     \frac{1}{1 + ahV}P &= \frac{r}{a}\left(\frac{K - V}{K}\right) \\
+     P &= \frac{r}{a}\left(\frac{K - V}{K}\right)(1 + ahV) \\
+     P &= \left(\frac{r}{a}-\frac{r}{Ka}V\right)(1 + ahV) \\
+     P &= - \frac{rh}{K}V^2 + \left(rh-\frac{r}{Ka}\right)V + \frac{r}{a}. \\
+\end{aligned}
+\end{equation}
+
+This nullcline takes a quadratic form, $0 = ax^2 + bx + c$, so we can see that it is a convex parabola whose shape and location changes depending on parameters that affect $a$, $b$, or $c$.
+
+For the predator equation, we can first factor out $P$ and we know that $P = 0$ is one nullcline. The other factor we can rearrange:
+\begin{equation}
+\begin{aligned}
+    0 &= c\frac{aV}{1 + ahV} - m \\
+    c\frac{aV}{1 + ahV} &= m \\
+    \frac{aV}{1 + ahV} &= \frac{m}{c} \\
+    aV &= \frac{m}{c}\left(1 + ahV\right) \\
+    V &= \frac{m}{ac}\left(1 + ahV\right) \\
+    V &= \frac{m}{ac} + \frac{m}{ac}\left(ahV\right) \\
+    V - \frac{m}{ac}\left(ahV\right) &= \frac{m}{ac}  \\
+    V(1 -\frac{mah}{ac}) &= \frac{m}{ac}  \\
+    V\left(\frac{ac - mah}{ac}\right) &= \frac{m}{ac}  \\
+    V &= \frac{m}{ac}\left(\frac{ac}{ac - mah}\right)  \\
+    V &= \frac{m}{a(c - mh)}  \\
+\end{aligned}
+\end{equation}
+
+Here, the predator rate of change is at 0 when $V =$ a combination of constants. This means $V =$ a constant  whose location changes depending on parameters in the numerator or denominator (e.g., increasing $a$ will increase the denominator thereby shifting the line toward 0).
+
+Together, the prey nullcline will be a convex parabola and the predator nullcline with be a line.
+
+
+\begin{tikzpicture}
+  \draw[->] (-0.5, 0) -- (5, 0) node[right] {Prey~$(V)$};
+  \draw[->] (0, -0.5) -- (0, 5) node[above] {Predator~$(P)$};
+  \draw[scale=0.5, domain=-0:6.605, smooth, variable=\x, red] plot ({\x}, {-0.5*\x^2 + 3*\x + 2});
+    \draw [blue] (2,0) -- (2,5);
+    \draw [red] (0,0) -- (0,5);
+    \draw [blue] (0,0) -- (5,0);
+
+\end{tikzpicture}
+
+    \end{document}
