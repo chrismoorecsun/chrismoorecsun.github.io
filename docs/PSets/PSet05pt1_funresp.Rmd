@@ -1,0 +1,19 @@
+---
+layout: assignment
+title: "Problem set 5, part I: Analysis of functional response data"
+---
+```{r include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Please note that because of the Microsoft outage I was a day late in posting this, so I ask that you turn it in a day later than I asked. Please submit by 11:59:59 PM on Monday November 16.
+
+On Tuesday, November 10 you learned how to derive a saturating (type II) functional response from first principles of predator behavior. On Thursday, November 12 you conducted an experiment, foraging for peanuts, to compare linear (type I) and saturating functional responses. Furthermore, on Thursday we work-shopped the data to:
+- Curate the data
+- Visualize the data
+- Estimate parameters from two types of biologically-realistic model terms
+- Statistically compared the two models
+
+We did all of this on the combined data that contained trails where you, the hunters/predators, either shelled (Y) or didn't shell (N) the peanuts.
+
+What I asked on Thursday is that for this next problem set, was to conduct the same analyses on subsets of the data: the shelled and unshelled trials. You should include figures with data and fitted models as well as the statistical measure for best-fit model. The only additional thing I ask for is a few additional paragraphs interpreting (i) the parameter estimates in biological terms (e.g., what they mean, does it make sense given the behavior of the hunters/predators), (ii) which model fits best, and (iii) examine the results in terms of what you would expect for each trial.
