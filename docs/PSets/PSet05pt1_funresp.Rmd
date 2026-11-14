@@ -9,6 +9,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 # Please note that because of the Microsoft outage I was a day late in posting this, so I ask that you turn it in a day later than I asked. Please submit by 11:59:59 PM on Monday November 16.
 
 On Tuesday, November 10 you learned how to derive a saturating (type II) functional response from first principles of predator behavior. On Thursday, November 12 you conducted an experiment, foraging for peanuts, to compare linear (type I) and saturating functional responses. Furthermore, on Thursday we work-shopped the data to:
+
 - Curate the data
 - Visualize the data
 - Estimate parameters from two types of biologically-realistic model terms
