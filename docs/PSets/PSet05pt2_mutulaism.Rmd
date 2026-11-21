@@ -1,0 +1,49 @@
+---
+title: "Problem set 5, part II: Mutualism"
+output:
+  html_document:
+    code_folding: hide
+---
+```{r include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+# Replicate Holland and DeAngelis (2010)
+The sole problem for you to complete this week is to recreate a figure from a study.
+
+Learning about the study of population dynamics of mutualism, you read and heard from me in class how the linear models of mutualism have an unwanted state of unbounded, exponential growth. The contemporary way of modeling mutualisms is by viewing them as consumer-resource interactions where each species provides a resource at a cost to itself and benefits from the resources of another. This framework, as highlighted in your text, was put forward by Holland and DeAngelis in 2010: [link to the paper](https://doi.org/10.1890/09-1163.1). Additionally, the encompassed more than resource-exchange mutualisms because only some are bi-directional exchanges of resources, as they are uni-directional exchanges of resources.
+
+For this problem set, I ask that you only re-create one of Holland and DeAngelis' figures, figure 2. This is a 4x2 graph showing obligate and facultative as well as bi-directional and uni-directional mutualisms. The equations that you use for mutualist 1 ($M_1$) and mutualist 2 ($M_2$) are respectively equations 6 and 7 for bi-directional mutualisms and 8 and 9 for uni-directional mutualisms. You can find all of the parameter values in the figure caption.
+
+At this point you've created many of these phase planes, so although the equation is longer, setting up an `deSolve::ode()`-compatible function, creating the necessary vectors to pass to `phaseR::flowField()` and `phaseR::nullclines()` should take you relatively little time. That, and please note how much easier it is than if I would have asked you to do this at the beginning of the semester—that's learning/growth!
+
+Below is an example that I made of the upper-left panel in a few minutes if that helps (setting your axis limits, at least.
+
+Anyhow, please turn this in by the end of Wednesday, November 25, 2026 at 23:59:59.
+
+```{r echo = F}
+library(package = "deSolve")
+library(package = "phaseR")
+
+bidir <- function(time, y, parms) {
+  with(as.list(c(y, parms)), {
+    dM1 <- M1*(r1 + c1*alpha12*M2/(h2 + M2) - q1*beta1*M2/(e1 + M1) - d1*M1)
+    dM2 <- M2*(r2 + c2*alpha21*M1/(h1 + M1) - q2*beta2*M1/(e2 + M2) - d2*M2)
+    
+    return(list(c(dM1, dM2)))
+  })
+}
+
+parms_constant <- c(beta1 = 0.2, beta2 = 0.2, c1 = 1, c2 = 1, d1 = 0.01, d2 = 0.01, h1 = 0.3, h2 = 0.3, e1 = 0.3, e2 = 0.3)
+parm_bifacfac <- c(r1 = 0.3, r2 = 0.3, alpha12 = 0.6, alpha21 = 0.6, q1 = 1, q2 = 1, parms_constant)
+
+lims <- c(0, 105)
+
+par(mar = c(4.5, 5.5, 0.5, 0.5))
+plot(x = NA, type = "n", xlim = lims, ylim = lims, xlab = "", ylab = "", las = 1)
+  trash <- flowField(deriv = bidir, xlim = lims, ylim = lims, parameters = parm_bifacfac, state.names = c("M1", "M2"))
+  trash <- nullclines(deriv = bidir, xlim = lims + c(-0.1, 0), ylim = lims+ c(-0.1, 0), parameters = parm_bifacfac, state.names = c("M1", "M2"), col = c("darkred", "forestgreen"), lwd = 2, add.legend = F)
+  mtext(side = 1, text = expression("M"[1]), line = 2.5)
+  mtext(side = 2, text = expression("Facultative-facultative\n", M[2]), line = 2.5)
+```
+
